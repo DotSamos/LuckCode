@@ -41,8 +41,6 @@ class LuckCodePlugin extends PluginBase
             '§b          By @SamosMC 2021',
             '§8'
         ]));
-
-        $data = new YamlData('config', $this->getDataFolder(), $this);
     }
 
     public function onDisable()
