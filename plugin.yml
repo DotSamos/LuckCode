@@ -1,0 +1,7 @@
+name: LuckCode
+version: 0.1
+main: luckCode\LuckCodePlugin
+author: '@SamosMC'
+prefix: §f§6Luck§5Code§f
+api: 2.0.0
+website: https://twitter.com/SamosMC
