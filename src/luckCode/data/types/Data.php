@@ -22,7 +22,7 @@ abstract class Data implements IData
     protected $pluginOwner;
 
     /** @var array $data */
-    protected $data;
+    protected $data = [];
 
     function __construct(string $file, string $filePath, PluginBase $plugin)
     {
