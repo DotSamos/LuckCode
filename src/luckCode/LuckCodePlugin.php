@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace luckCode;
 
 use luckCode\data\save\manager\DataSaveWorker;
+use luckCode\data\types\YamlData;
 use pocketmine\plugin\PluginBase;
+use pocketmine\Server;
 
 class LuckCodePlugin extends PluginBase
 {
@@ -16,7 +18,8 @@ class LuckCodePlugin extends PluginBase
     private static $instance;
 
     /** @return LuckCodePlugin */
-    public static function getInstance() : LuckCodePlugin {
+    public static function getInstance(): LuckCodePlugin
+    {
         return self::$instance;
     }
 
@@ -28,6 +31,18 @@ class LuckCodePlugin extends PluginBase
     public function onEnable()
     {
 
+        // Eh... Peguei o console do servidor só por estetica mesmo '-'
+        Server::getInstance()->getLogger()->info(implode("§r\n", [
+            '§8',
+            '§8',
+            '§e         Plugin LuckCode v0.1',
+            '§f"A minha querida caixa de ferramentas"',
+            '§8',
+            '§b          By @SamosMC 2021',
+            '§8'
+        ]));
+
+        $data = new YamlData('config', $this->getDataFolder(), $this);
     }
 
     public function onDisable()
