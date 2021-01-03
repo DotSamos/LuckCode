@@ -30,7 +30,7 @@ class DataSaveTaskAsync extends AsyncTask
     public function __construct(string $filePath, array $contents, string $writeEngine)
     {
         $this->filePath = $filePath;
-        $this->contents = $contents;
+        $this->contents = serialize($contents);
         $this->writeEngine = $writeEngine;
     }
 
@@ -41,14 +41,6 @@ class DataSaveTaskAsync extends AsyncTask
     {
         /** @var IFileSaveEngine $engineWrite */
         $engineWrite = new $this->writeEngine();
-        $this->setResult($engineWrite->save($this->filePath, $this->contents), false);
-    }
-
-    /** @param Server $server */
-    public function onCompletion(Server $server)
-    {
-        if($this->getResult()) {
-            DataSaveWorker::$successWorked[] = $this->filePath;
-        }
+        $this->setResult($engineWrite->save($this->filePath, unserialize($this->contents)), false);
     }
 }

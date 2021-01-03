@@ -21,6 +21,6 @@ class YamlSaveFileEngine implements IFileSaveEngine
     public function save(string $filePath, array $contents): bool
     {
         $content = yaml_emit($contents, YAML_UTF8_ENCODING);
-        return file_put_contents($filePath, $content) !== false;
+        return file_put_contents($filePath, $content, 0) !== false;
     }
 }

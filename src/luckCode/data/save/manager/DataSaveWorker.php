@@ -6,6 +6,7 @@ namespace luckCode\data\save\manager;
 
 use luckCode\data\interfaces\IData;
 use luckCode\data\save\task\DataSaveTaskAsync;
+use luckCode\LuckCodePlugin;
 use pocketmine\Server;
 
 class DataSaveWorker
@@ -14,8 +15,8 @@ class DataSaveWorker
     /** @var IData[] $cache */
     private static $cache = [];
 
-    /** @var string[] $successWorked */
-    public static $successWorked = [];
+    /** @var DataSaveTaskAsync[] $taskList */
+    public static $taskList = [];
 
     /**
      * @param IData $data
@@ -54,10 +55,36 @@ class DataSaveWorker
 
     public static function startWorker()
     {
-        array_walk(self::$cache, function (IData $data) {
-            Server::getInstance()->getScheduler()->scheduleAsyncTask(
-                new DataSaveTaskAsync($data->getFilePath(), $data->getContents(), $data->getSaveEngine())
-            );
-        });
+        $logger = LuckCodePlugin::getInstance()->getLogger();
+
+        $logger->info('§7Começando a salvar as configurações em cache...');
+        $startAt = microtime(true);
+
+        foreach (self::$cache as $data) {
+            $task = new DataSaveTaskAsync($data->getFilePath(), $data->getContents(), $data->getSaveEngine());
+            Server::getInstance()->getScheduler()->scheduleAsyncTask($task);
+            self::$taskList[] = $task;
+        }
+
+        $lastPercent = null;
+
+        while (
+        $count = count(
+            array_filter(self::$taskList, function (DataSaveTaskAsync $task) {
+                return !$task->hasResult();
+            })
+        )) {
+            $diff = count(self::$taskList) - $count;
+            $percent = (int) ($diff * 100 / count(self::$taskList));
+
+            if (($lastPercent != $percent && $lastPercent != null) && $percent % ($percent > 10 ? 20 : 5) <= 1) $logger->info('§aSalvando configurações §e[' . $percent . '%]');
+            $lastPercent = $percent;
+        }
+
+        $endTime = number_format(microtime(true) - $startAt, 2);
+
+        $logger->info('§aConfigurações salvas! §f('.$endTime.'s)');
+
+        self::$taskList = [];
     }
 }

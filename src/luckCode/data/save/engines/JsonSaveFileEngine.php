@@ -21,6 +21,6 @@ class JsonSaveFileEngine implements IFileSaveEngine
     public function save(string $filePath, array $contents): bool
     {
         $content = json_encode($contents, JSON_PRETTY_PRINT | JSON_BIGINT_AS_STRING);
-        return file_put_contents($filePath, $content) !== false;
+        return file_put_contents($filePath, $content, 0) !== false;
     }
 }
