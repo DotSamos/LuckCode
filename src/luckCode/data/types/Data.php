@@ -35,6 +35,7 @@ abstract class Data implements IData
         $this->pluginOwner = $plugin;
 
         $plugin->saveResource($file);
+        $this->load();
     }
 
     public function reload()
