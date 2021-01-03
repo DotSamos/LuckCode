@@ -10,6 +10,8 @@ use pocketmine\plugin\PluginBase;
 class LuckCodePlugin extends PluginBase
 {
 
+    const PREFIX = '§f[§6Luck§5Code§f] ';
+
     /** @var LuckCodePlugin $instance */
     private static $instance;
 
