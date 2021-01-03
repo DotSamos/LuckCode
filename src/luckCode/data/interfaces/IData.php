@@ -14,6 +14,9 @@ interface IData
     public function getTypeFile() : string;
 
     /** @return string */
+    public function getFileName() : string;
+
+    /** @return string */
     public function getFilePath() : string;
 
     public function load();

@@ -71,6 +71,14 @@ abstract class Data implements IData
     /**
      * @inheritDoc
      */
+    public function getFileName(): string
+    {
+        return explode('.', $this->file)[0];
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function hasKey(string $key): bool
     {
         return isset($this->data[$key]);
