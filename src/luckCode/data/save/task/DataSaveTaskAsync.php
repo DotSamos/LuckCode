@@ -15,7 +15,7 @@ class DataSaveTaskAsync extends AsyncTask
     /** @var string $filePath */
     private $filePath;
 
-    /** @var array $contents */
+    /** @var string $contents */
     private $contents;
 
     /** @var string $writeEngine */
