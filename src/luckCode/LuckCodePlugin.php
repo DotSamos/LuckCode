@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace luckCode;
 
 use luckCode\data\save\manager\DataSaveWorker;
-use luckCode\data\types\YamlData;
 use pocketmine\plugin\PluginBase;
 use pocketmine\Server;
 
