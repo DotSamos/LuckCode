@@ -10,9 +10,9 @@ use Throwable;
 interface InfoStatus
 {
 
-    const INFO_PREFIX = '§7[Info]';
-    const ALERT_PREFIX = '§e[Alert]';
-    const ERROR_PREFIX = '§c[Error]';
+    const INFO_PREFIX = '§7[Info] ';
+    const ALERT_PREFIX = '§e[Alert] ';
+    const ERROR_PREFIX = '§c[Error] ';
 
     /** @return PluginLogger */
     public function getLogger() : PluginLogger;
