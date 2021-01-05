@@ -52,7 +52,7 @@ abstract class Provider implements InfoStatus, interfaces\IProvider
      */
     public function showInfo(string $info)
     {
-        $this->getLogger()->info(self::INFO_PREFIX.'§b[Provider '.$this->getType().'] §7'.$info);
+        $this->getLogger()->info(self::INFO_PREFIX.'§b[Provider-'.$this->getType().'] §7'.$info);
     }
 
     /**
@@ -60,7 +60,7 @@ abstract class Provider implements InfoStatus, interfaces\IProvider
      */
     public function showAlert(string $alert)
     {
-        $this->getLogger()->info(self::ALERT_PREFIX.'§b[Provider '.$this->getType().'] §7'.$alert);
+        $this->getLogger()->info(self::ALERT_PREFIX.'§b[Provider-'.$this->getType().'] §7'.$alert);
     }
 
     /**
@@ -68,7 +68,7 @@ abstract class Provider implements InfoStatus, interfaces\IProvider
      */
     public function showError(string $error)
     {
-        $this->getLogger()->info(self::ERROR_PREFIX.'§b[Provider '.$this->getType().'] §7'.$error);
+        $this->getLogger()->info(self::ERROR_PREFIX.'§b[Provider-'.$this->getType().'] §7'.$error);
     }
 
     /**
@@ -77,8 +77,10 @@ abstract class Provider implements InfoStatus, interfaces\IProvider
     public function printError(Throwable $error)
     {
         $this->showError(implode("§r\n", [
-            '§4('.$error->getCode().') §7'.$error->getMessage(),
-            '§7Em §f'.$error->getFile().' ['.$error->getLine().']'
+            '§7'.$error->getMessage().'§4('.$error->getCode().')',
+            "§c> §aIn line {$error->getLine()} from:",
+            "§c> §e".substr($error->getFile(), strpos($error->getFile(), 'luckCode')),
+            "§8"
         ]));
     }
 
