@@ -68,7 +68,7 @@ abstract class Provider implements InfoStatus, interfaces\IProvider
      */
     public function showError(string $error)
     {
-        $this->getLogger()->info(self::ERROR_PREFIX.'§b[Provider-'.$this->getType().'] §7'.$error);
+        $this->getLogger()->info(self::ERROR_PREFIX.'§b[Provider(§a'.$this->getType().'§b)] §7'.$error);
     }
 
     /**
@@ -78,7 +78,7 @@ abstract class Provider implements InfoStatus, interfaces\IProvider
     {
         $this->showError(implode("§r\n", [
             '§7'.$error->getMessage().'§4('.$error->getCode().')',
-            "§c> §aIn line {$error->getLine()} from:",
+            "§c> §aIn line §f{$error->getLine()}§a from:",
             "§c> §e".substr($error->getFile(), strpos($error->getFile(), 'luckCode')),
             "§8"
         ]));
