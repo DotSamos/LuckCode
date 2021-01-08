@@ -1,0 +1,40 @@
+# ------------------------------------------------------------------------------------------------------------------------
+# Tipos de provedores
+#
+# "pdo-mysqli" Utiliza o php-data-object para gerar uma conexão com o banco de dados mysqli (requer autenticação)
+# "pdo-sqlite3" Utiliza o php-data-object para gerar uma database em local host (não requer autenticação)
+# "mysqli" Gera uma conexão padrão com o banco de dados mysqli (requer autenticação)
+# "sqlite3" Gera uma database em local host (não requer autenticação)
+#
+# Vale lembrar que os tipos "pdo-mysqli" e "pdo-sqlite3" nem sempre vão funcionar, isso se deve a falta de suporte
+# que o interpretador de sua hospedagem oferece. Com tudo o tipos "mysqli" e "sqlite3" são mais utilizados e quase
+# sempre vão funcionar em seu servidor.
+# Minha recomendação é que se for utilizar o plugin em sua hospedagem (servidor dedicado mesmo) tente utilizar
+# os provedores do tipo "pdo" antes (afinal eles tem mais desempenho). Contudo caso utilize o pocketmine para celular
+# dê preferencia a utilizar o "sqlite3".
+#
+# *Atualmente os provedores do tipo "pdo" estão em faze de teste, caso tenha problemas troque para "mysqli" ou "sqlite3"*
+# ------------------------------------------------------------------------------------------------------------------------
+
+# Esta é quase como a prioridade de "boot" de um computador. O sistema vai tentar inicializar na ordem aqui
+# descrita o provedor do banco de dados principal, em caso de erro o proximo tipo de provedor da lista vai ser inicializado.
+# Caso nenhum provedor conseguir inicializar o plugin vai ser desabilitado
+type_priority:
+  - "pdo-mysqli"
+  - "pdo-sqlite3"
+  - "mysqli"
+  - "sqlite3"
+
+# Aqui você pode configurar a autenticação com o banco de dados mysqli
+# As informações como host, port (geralmente é 21), user e password a sua hospedagem deve prover. Já dbName é o nome do banco
+# de dados a qual o sistema vai trabalhar, este deve ser criado por você no painel do banco de dados.
+mysqli_auth:
+  host: "localhost"
+  port: 3306
+  user: "root"
+  password: ""
+  dbname: "luckCode"
+
+# Caso você utilize o plugin como apenas uma dependencia para outros plugins pode definir isto como false.
+# Por padrão o plugin gera uma tabela de testes que posteriormente não é mais utilizada.
+enable_test_table: true
