@@ -12,6 +12,11 @@ abstract class DataManager implements IDataManager
     /** @var IData[] $cache */
     protected $cache = [];
 
+    public function __construct()
+    {
+        $this->loadDefaults();
+    }
+
     /**
      * @inheritDoc
      */
