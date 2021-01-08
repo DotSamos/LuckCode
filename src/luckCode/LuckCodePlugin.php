@@ -58,7 +58,7 @@ class LuckCodePlugin extends PluginBase
     {
         DataSaveWorker::startWorker();
         $database = $this->database;
-        if($database) $database->getProvider()->close();
+        if($database) $database->close();
     }
 
     /** @return LuckDataManager */
