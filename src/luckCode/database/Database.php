@@ -55,6 +55,11 @@ abstract class Database implements interfaces\IDatabase, InfoStatus
     {
     }
 
+    public function close(): bool
+    {
+        return $this->provider->close();
+    }
+
     /**
      * @inheritDoc
      */

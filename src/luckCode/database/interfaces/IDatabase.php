@@ -15,6 +15,9 @@ interface IDatabase
     /** @return PluginBase */
     public function getOwnerPlugin() : PluginBase;
 
+    /** @return bool */
+    public function close() : bool;
+    
     public function onPreLoadTables();
 
     public function onInvalidProvider();
