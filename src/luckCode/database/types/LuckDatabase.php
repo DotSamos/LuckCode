@@ -6,6 +6,7 @@ namespace luckCode\database\types;
 
 use luckCode\database\Database;
 use luckCode\database\table\types\LuckTable;
+use luckCode\listener\database\LuckDatabaseDisableEvent;
 use luckCode\listener\database\LuckDatabaseEnableEvent;
 use luckCode\listener\database\LuckDatabaseNotInitializeEvent;
 use luckCode\LuckCodePlugin;
@@ -29,6 +30,14 @@ class LuckDatabase extends Database
     public function onInvalidProvider()
     {
         (new LuckDatabaseNotInitializeEvent($this))->call();
+    }
+
+    public function close(): bool
+    {
+        $ev = new LuckDatabaseDisableEvent($this);
+        $ev->call();
+        if($ev->isCancelled()) return false;
+        return parent::close();
     }
 
     /** @return LuckTable|null */
