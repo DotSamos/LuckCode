@@ -6,6 +6,7 @@ namespace luckCode\database\provider;
 
 use PDO;
 use PDOException;
+use function var_dump;
 
 abstract class PDOProvider extends Provider
 {
@@ -61,7 +62,8 @@ abstract class PDOProvider extends Provider
     public function exec(string $exec): bool
     {
         try {
-            return $this->connection->exec($exec) === false;
+            $result = $this->connection->exec($exec);
+            return $result !== FALSE;
         } catch (PDOException $e) {
             $this->lastError = $e;
             $this->printError($e);
