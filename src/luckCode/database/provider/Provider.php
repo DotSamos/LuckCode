@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace luckCode\database\provider;
 
+use luckCode\database\provider\exceptions\ProviderInitializeException;
 use luckCode\utils\InfoStatus;
 use pocketmine\plugin\PluginBase;
 use pocketmine\plugin\PluginLogger;
@@ -18,6 +19,9 @@ abstract class Provider implements InfoStatus, interfaces\IProvider
     /** @var Throwable $lastError */
     protected $lastError;
 
+    /** @var ProviderInitializeException|null $initializeException */
+    protected $initializeException;
+
     protected $connection;
 
     /**
@@ -28,7 +32,9 @@ abstract class Provider implements InfoStatus, interfaces\IProvider
     public function __construct(array $conArgs, PluginBase $owner)
     {
         $this->ownerPlugin = $owner;
-        $this->tryConnect($conArgs);
+        if(!$this->tryConnect($conArgs)) {
+            $this->initializeException = new ProviderInitializeException($this->lastError->getMessage(), $this->lastError->getCode());
+        }
     }
 
     /**
@@ -52,7 +58,7 @@ abstract class Provider implements InfoStatus, interfaces\IProvider
      */
     public function showInfo(string $info)
     {
-        $this->getLogger()->info(self::INFO_PREFIX.'§b[Provider-'.$this->getType().'] §7'.$info);
+        $this->getLogger()->info('§7[Provider(§a'.$this->getType().'§7)] §7'.$info);
     }
 
     /**
@@ -60,7 +66,7 @@ abstract class Provider implements InfoStatus, interfaces\IProvider
      */
     public function showAlert(string $alert)
     {
-        $this->getLogger()->info(self::ALERT_PREFIX.'§b[Provider-'.$this->getType().'] §7'.$alert);
+        $this->getLogger()->info('§e[Provider(§a'.$this->getType().'§e)] §7'.$alert);
     }
 
     /**
@@ -68,7 +74,7 @@ abstract class Provider implements InfoStatus, interfaces\IProvider
      */
     public function showError(string $error)
     {
-        $this->getLogger()->info(self::ERROR_PREFIX.'§b[Provider(§a'.$this->getType().'§b)] §7'.$error);
+        $this->getLogger()->info('§c[Provider(§a'.$this->getType().'§c)] §7'.$error);
     }
 
     /**
@@ -78,8 +84,8 @@ abstract class Provider implements InfoStatus, interfaces\IProvider
     {
         $this->showError(implode("§r\n", [
             '§7'.$error->getMessage().'§4('.$error->getCode().')',
-            "§c> §aIn line §f{$error->getLine()}§a from:",
-            "§c> §e".substr($error->getFile(), strpos($error->getFile(), 'luckCode')),
+            "§c+-> §aIn line §f{$error->getLine()}§a from:",
+            "§c+-> §e".substr($error->getFile(), strpos($error->getFile(), 'luckCode')),
             "§8"
         ]));
     }
@@ -89,8 +95,19 @@ abstract class Provider implements InfoStatus, interfaces\IProvider
         return $this->connection;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function fail()
     {
         return $this->lastError;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function failInitializeException()
+    {
+        return $this->initializeException;
     }
 }
