@@ -50,6 +50,7 @@ class Sqlite3Provider extends Provider
     public function close(): bool
     {
         if($this->connection) {
+            parent::close();
             return $this->connection->close();
         }
         return false;

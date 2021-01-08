@@ -52,7 +52,8 @@ abstract class PDOProvider extends Provider
      */
     public function close(): bool
     {
-        $this->connection = null; // sim, nem eu acreditei que é assim que fecha a conexão com o PDO '-'
+        $this->connection = null; // sim, nem eu acreditei que é assim que fecha a conexão com o PDO 
+        parent::close();
         return true;
     }
 

@@ -37,6 +37,11 @@ abstract class Provider implements InfoStatus, interfaces\IProvider
         }
     }
 
+    public function close() : bool {
+        $this->showInfo('A conexão foi finalizada pelo sistema!');
+        return true;
+    }
+
     /**
      * @inheritDoc
      */
