@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace luckCode\database\provider\interfaces;
 
 use Exception;
+use luckCode\database\provider\exceptions\ProviderInitializeException;
 use pocketmine\plugin\PluginBase;
 
 interface IProvider
@@ -20,6 +21,12 @@ interface IProvider
 
     /** @return Exception|null */
     public function fail();
+
+    /** @return ProviderInitializeException|null */
+    public function failInitializeException();
+
+    /** @return bool */
+    public function isLocal() : bool;
 
     /**
      * @param array $args
