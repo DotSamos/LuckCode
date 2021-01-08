@@ -29,6 +29,11 @@ class PDOMysqliProvider extends PDOProvider
         return "mysql:host={$host};port={$port};dbname={$dbName}";
     }
 
+    public function isLocal(): bool
+    {
+        return false;
+    }
+
     /**
      * @inheritDoc
      */

@@ -30,6 +30,11 @@ class PDOSqlite3Provider extends PDOProvider
         return "sqlite:{$finalPath}";
     }
 
+    public function isLocal(): bool
+    {
+        return true;
+    }
+
     /**
      * @inheritDoc
      */

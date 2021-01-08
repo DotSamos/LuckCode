@@ -55,6 +55,11 @@ class Sqlite3Provider extends Provider
         return false;
     }
 
+    public function isLocal(): bool
+    {
+        return true;
+    }
+
     /**
      * @inheritDoc
      */

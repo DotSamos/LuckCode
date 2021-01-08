@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace luckCode\database\provider\types;
 
 use Exception;
-use luckCode\database\provider\error\MysqliConnectionException;
+use luckCode\database\provider\exceptions\ProviderInitializeException;
 use luckCode\database\provider\Provider;
 use mysqli;
 use mysqli_result;
@@ -40,7 +40,7 @@ class MysqliProvider extends Provider
             $con = @new mysqli($host, $user, $password, $dbName, $port);
 
             if($con->connect_error ?? $con->error) {
-                throw new Exception($con->connect_error ?? $con->error, $con->connect_errno ?? $con->errno);
+                throw new ProviderInitializeException($con->connect_error ?? $con->error, $con->connect_errno ?? $con->errno);
             }
             if(!$con->get_charset()->charset == 'utf8') {
                 if($con->set_charset("utf8")) {
@@ -57,6 +57,11 @@ class MysqliProvider extends Provider
             $this->printError($e);
             return false;
         }
+    }
+
+    public function isLocal(): bool
+    {
+        return false;
     }
 
     /**
