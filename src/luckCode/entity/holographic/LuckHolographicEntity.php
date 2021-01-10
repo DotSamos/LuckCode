@@ -26,7 +26,8 @@ class LuckHolographicEntity extends LuckHolographicEntityBase
         $barFront = substr($bar, $this->nextColor);
         $barRedo = substr($bar, strlen($bar) - $this->nextColor);
         $bar = '§f'.$barFront.'§b--§f'.$barRedo;
-        $text = $bar."\n§r§l§3 Luck§5Code§r §7v".LuckCodePlugin::VERSION."\n".$bar;
+        $redoBar = '§f'.$barRedo.'§b--§f'.$barFront;
+        $text = $bar."\n§r§l§3 Luck§5Code§r §7v".LuckCodePlugin::VERSION."\n".$redoBar;
 
         array_walk($this->hasSpawned, function (Player $p) use($text) {
            $this->setNameTagFor($p, $text);
