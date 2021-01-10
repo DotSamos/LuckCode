@@ -6,15 +6,19 @@ namespace luckCode\command;
 
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
+use pocketmine\plugin\PluginBase;
 use function array_filter;
 use function array_map;
 use function array_values;
+use function in_array;
+use function strtolower;
+use function var_dump;
 
 abstract class LuckCommand extends Command
 {
 
     /** @var LuckSubCommand[] $subCommands */
-    private $subCommands = [];
+    protected $subCommands = [];
 
     public function __construct($name, $description = "", $usageMessage = null, array $aliases = [])
     {
@@ -25,12 +29,17 @@ abstract class LuckCommand extends Command
     private function loadSubCommands()
     {
         $this->subCommands = array_map(function (string $subcmd) {
-            return new $subcmd();
-        }, $this->getSubCommands());
+            return new $subcmd($this);
+        }, $this->getDefaultSubCommands());
+    }
+
+    /** @return LuckSubCommand[] */
+    public function getSubCommands() : array {
+        return $this->subCommands;
     }
 
     /** @return string[] */
-    public abstract function getSubCommands(): array;
+    public abstract function getDefaultSubCommands() : array;
 
     /**
      * @param CommandSender $s
@@ -45,9 +54,10 @@ abstract class LuckCommand extends Command
             $s->sendMessage($helpUsage);
         } else {
             /** @var LuckSubCommand|null $found */
+            $exec = strtolower($args[0]);
             $found = array_values(
-                    array_filter($this->subCommands, function (LuckSubCommand $subCommand) use ($s) {
-                        return $subCommand->canExecute($s);
+                    array_filter($this->subCommands, function (LuckSubCommand $subCommand) use ($s, $exec) {
+                        return $subCommand->canExecute($s) && ($subCommand->getName() == $exec || in_array($exec, $subCommand->getAliases()));
                     })
                 )[0] ?? null;
             if($found) {
@@ -59,5 +69,16 @@ abstract class LuckCommand extends Command
             }
         }
         return false;
+    }
+
+    /**
+     * @param PluginBase $plugin
+     * @param string|null $prefix
+     */
+    public function registerCommand(PluginBase $plugin, string $prefix = null) {
+        if(!$prefix) {
+            $prefix = strtolower($plugin->getName()).'.command';
+        }
+        $plugin->getServer()->getCommandMap()->register($prefix, $this);
     }
 }
