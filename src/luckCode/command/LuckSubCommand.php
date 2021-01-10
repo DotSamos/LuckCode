@@ -9,6 +9,18 @@ use pocketmine\command\CommandSender;
 abstract class LuckSubCommand
 {
 
+    /** @var LuckCommand $baseCommand */
+    public $baseCommand;
+
+    /**
+     * LuckSubCommand constructor.
+     * @param LuckCommand $command
+     */
+    public function __construct(LuckCommand $command)
+    {
+        $this->baseCommand = $command;
+    }
+
     /** @return string */
     public abstract function getName() : string;
 
@@ -17,6 +29,9 @@ abstract class LuckSubCommand
 
     /** @return string */
     public abstract function getUsage() : string;
+
+    /** @return string */
+    public abstract function getDescription() : string;
 
     /**
      * @param CommandSender $sender
