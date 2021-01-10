@@ -11,7 +11,7 @@ use luckCode\listener\LuckEvent;
 class LuckDatabaseEvent extends LuckEvent
 {
 
-    /** @var IProvider $database */
+    /** @var LuckDatabase $database */
     protected $database;
 
     /**
@@ -23,8 +23,8 @@ class LuckDatabaseEvent extends LuckEvent
         $this->database = $database;
     }
 
-    /** @return IProvider */
-    public function getDatabase() : IProvider {
+    /** @return LuckDatabase */
+    public function getDatabase() : LuckDatabase {
         return $this->database;
     }
 
