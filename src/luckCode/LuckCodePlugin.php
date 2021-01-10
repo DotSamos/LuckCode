@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace luckCode;
 
+use luckCode\command\defaults\LuckCodeCommand;
 use luckCode\data\manager\types\LuckDataManager;
 use luckCode\data\save\manager\DataSaveWorker;
 use luckCode\database\types\LuckDatabase;
+use luckCode\entity\EntityManager;
 use luckCode\scheduler\loader\DatabaseLoaderWaitTask;
 use luckCode\utils\ProviderLoader;
 use pocketmine\plugin\PluginBase;
@@ -16,6 +18,8 @@ class LuckCodePlugin extends PluginBase
 {
 
     const PREFIX = '§f[§l§3L§5C§r§f] ';
+    const VERSION = 0.1;
+    const ADMIN_PERMISSION = 'luckcode.admin';
 
     /** @var LuckDataManager $dataManager */
     private $dataManager;
@@ -41,8 +45,9 @@ class LuckCodePlugin extends PluginBase
     {
         $this->dataManager = ($dataManager = $this->loadDataManager());
         (new DatabaseLoaderWaitTask())->registerToRepeat(1);
+        EntityManager::registerDefaults();
+        (new LuckCodeCommand())->registerCommand($this, 'samos.luckcode.command');
 
-        // Eh... Peguei o console do servidor só por estetica mesmo '-'
         Server::getInstance()->getLogger()->info(implode("§r\n", [
             '§8',
             '§8',
@@ -58,23 +63,26 @@ class LuckCodePlugin extends PluginBase
     {
         DataSaveWorker::startWorker();
         $database = $this->database;
-        if($database) $database->close();
+        if ($database) $database->close();
     }
 
     /** @return LuckDataManager */
-    public function getDataManager() : LuckDataManager {
+    public function getDataManager(): LuckDataManager
+    {
         return $this->dataManager;
     }
 
-    private function loadDataManager() : LuckDataManager {
+    private function loadDataManager(): LuckDataManager
+    {
         return $this->dataManager = new LuckDataManager();
     }
 
-    public function loadDatabase() {
-        if(!$this->database) {
+    public function loadDatabase()
+    {
+        if (!$this->database) {
             $providerData = $this->dataManager->get('database')->getContents();
             $provider = (new ProviderLoader($this, $providerData['type_priority'], $providerData['mysqli_auth']))->get();
-            if($provider == null) {
+            if ($provider == null) {
                 $this->getLogger()->info('§cNenhum provedor de dados pode ser inicializado!');
                 $this->getServer()->getPluginManager()->disablePlugin($this);
             } else {
