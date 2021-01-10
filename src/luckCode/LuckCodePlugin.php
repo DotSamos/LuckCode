@@ -9,10 +9,12 @@ use luckCode\data\manager\types\LuckDataManager;
 use luckCode\data\save\manager\DataSaveWorker;
 use luckCode\database\types\LuckDatabase;
 use luckCode\entity\EntityManager;
+use luckCode\menu\tile\MenuChestTile;
 use luckCode\scheduler\loader\DatabaseLoaderWaitTask;
 use luckCode\utils\ProviderLoader;
 use pocketmine\plugin\PluginBase;
 use pocketmine\Server;
+use pocketmine\tile\Tile;
 
 class LuckCodePlugin extends PluginBase
 {
@@ -47,6 +49,7 @@ class LuckCodePlugin extends PluginBase
         (new DatabaseLoaderWaitTask())->registerToRepeat(1);
         EntityManager::registerDefaults();
         (new LuckCodeCommand())->registerCommand($this, 'samos.luckcode.command');
+        Tile::registerTile(MenuChestTile::class);
 
         Server::getInstance()->getLogger()->info(implode("§r\n", [
             '§8',
