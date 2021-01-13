@@ -12,9 +12,11 @@ use luckCode\entity\EntityManager;
 use luckCode\menu\tile\MenuChestTile;
 use luckCode\scheduler\loader\DatabaseLoaderWaitTask;
 use luckCode\utils\ProviderLoader;
+use luckCode\utils\text\TextFormatter;
 use pocketmine\plugin\PluginBase;
 use pocketmine\Server;
 use pocketmine\tile\Tile;
+use function implode;
 
 class LuckCodePlugin extends PluginBase
 {
@@ -51,15 +53,15 @@ class LuckCodePlugin extends PluginBase
         (new LuckCodeCommand())->registerCommand($this, 'samos.luckcode.command');
         Tile::registerTile(MenuChestTile::class);
 
-        Server::getInstance()->getLogger()->info(implode("§r\n", [
+        Server::getInstance()->getLogger()->info(TextFormatter::center(implode("§r\n", [
             '§8',
             '§8',
-            '§e         Plugin LuckCode v0.1',
+            '§ePlugin LuckCode v0.1',
             '§f"A minha querida caixa de ferramentas"',
             '§8',
-            '§b          By @SamosMC 2021',
+            '§bBy @SamosMC 2021',
             '§8'
-        ]));
+        ])));
     }
 
     public function onDisable()
