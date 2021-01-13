@@ -97,19 +97,14 @@ abstract class DoubleMenu extends Menu
      */
     public function onOpen(Player $who)
     {
+        
         $inv = $this;
         $class = new class($inv, $who) extends LuckTask {
 
-            /** @var DoubleMenu $inv */
             private $inv;
 
-            /** @var Player $who */
             private $who;
 
-            /**
-             * @param DoubleMenu $inv
-             * @param Player $who
-             */
             public function __construct(DoubleMenu $inv, Player $who)
             {
                 $this->inv = $inv;
@@ -122,7 +117,7 @@ abstract class DoubleMenu extends Menu
                 parent::onRun($currentTick);
             }
         };
-        $class->registerAfter(5);
+        $class->registerAfter(LuckCodePlugin::getInstance()->getDataManager()->get('menu')->get('menu_double_open_cooldown'));
     }
 
     /**
