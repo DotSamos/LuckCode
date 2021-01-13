@@ -38,7 +38,7 @@ final class EntityController
      * @return bool
      */
     public static function inFastKill(Player $player) : bool {
-        return isset(self::$fastKill[spl_object_hash($player)]);
+        return array_key_exists(spl_object_hash($player), self::$fastKill);
     }
 
     /**
