@@ -4,19 +4,20 @@ declare(strict_types=1);
 
 namespace luckCode;
 
+use function implode;
 use luckCode\command\defaults\LuckCodeCommand;
 use luckCode\data\manager\types\LuckDataManager;
 use luckCode\data\save\manager\DataSaveWorker;
 use luckCode\database\types\LuckDatabase;
 use luckCode\entity\EntityManager;
+use luckCode\menu\manager\MenuController;
 use luckCode\menu\tile\MenuChestTile;
 use luckCode\scheduler\loader\DatabaseLoaderWaitTask;
 use luckCode\utils\ProviderLoader;
 use luckCode\utils\text\TextFormatter;
-use pocketmine\plugin\PluginBase;
 use pocketmine\Server;
+use pocketmine\plugin\PluginBase;
 use pocketmine\tile\Tile;
-use function implode;
 
 class LuckCodePlugin extends PluginBase
 {
@@ -66,6 +67,7 @@ class LuckCodePlugin extends PluginBase
 
     public function onDisable()
     {
+        MenuController::closeAll('§cMenu fechado devido a um evento inesperado. Tente reabrir ele novamente dentro de alguns segundos...');
         DataSaveWorker::startWorker();
         $database = $this->database;
         if ($database) $database->close();
