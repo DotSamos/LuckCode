@@ -39,11 +39,7 @@ abstract class NormalMenu extends Menu
             if($pos->y <= 0) {
                 throw new Exception(self::BAD_POSITION);
             }
-            if($pos->y+2 > 127) {
-                $diff = -2;
-            } else {
-                $diff = 2;
-            }
+            $diff = ($pos->y+2) > 127 ? -2 : 2;
             $pos = $pos->add(0, $diff, 0);
             if($level->getTile($pos)) {
                 throw  new Exception(self::HAS_TILE);
