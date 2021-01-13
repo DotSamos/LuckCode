@@ -48,15 +48,16 @@ abstract class DoubleMenu extends Menu
         if(!$p->isCreative()) {
             $level = $p->level;
             $pos = $p->getPosition()->floor();
-            if($pos->y <= 0) {
+            if($pos->y <= 0 || $pos->y >= 127) {
                 throw new Exception(self::BAD_POSITION);
             }
-            $diff = ($pos->y+2) > 127 ? -2 : 2;
+            $diff = -2;
             $pos = $pos->add(0, $diff, 0);
             $pos2 = $pos->add(1, 0, 0);
             if($level->getTile($pos) || $level->getTile($pos2)) {
                 throw new Exception(self::HAS_TILE);
             }
+
             $this->position = ($pos = new Position($pos->x, $pos->y, $pos->z, $level));
             $pos2 = new Position($pos2->x, $pos2->y, $pos2->z, $level);
 

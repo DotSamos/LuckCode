@@ -36,14 +36,15 @@ abstract class NormalMenu extends Menu
         if(!$p->isCreative()) {
             $level = $p->level;
             $pos = $p->getPosition()->floor();
-            if($pos->y <= 0) {
+            if($pos->y <= 0 || $pos->y >= 127) {
                 throw new Exception(self::BAD_POSITION);
             }
-            $diff = ($pos->y+2) > 127 ? -2 : 2;
+            $diff = -2;
             $pos = $pos->add(0, $diff, 0);
             if($level->getTile($pos)) {
                 throw  new Exception(self::HAS_TILE);
             }
+            
             $this->position = $pos = new Position($pos->x, $pos->y, $pos->z, $level);
             $this->sendBlock($p, Block::get(Block::CHEST, 0, $pos));
             $holder = $this->makeTile($pos, $p, $name);
