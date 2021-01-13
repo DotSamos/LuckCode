@@ -8,7 +8,9 @@ use luckCode\command\LuckSubCommand;
 use luckCode\LuckCodePlugin;
 use luckCode\menu\NormalMenu;
 use luckCode\menu\types\TestDoubleMenu;
+use luckCode\menu\types\TestDoublePaginatedMenu;
 use luckCode\menu\types\TestNormalMenu;
+use luckCode\menu\types\TestNormalPaginatedMenu;
 use pocketmine\command\CommandSender;
 use pocketmine\Player;
 use Throwable;
@@ -38,7 +40,7 @@ class OpenMenuLuckCodeSubCommand extends LuckSubCommand
      */
     public function getUsage(): string
     {
-        return '/lc open [normal/double]';
+        return '/lc open [normal/double] <-p>';
     }
 
     /**
@@ -68,12 +70,16 @@ class OpenMenuLuckCodeSubCommand extends LuckSubCommand
             if($type == null) {
                 $s->sendMessage($prefix.'§cArgumentos inválidos! Use '.$this->getUsage());
             } else {
+                $isPaginated = $args[1] ?? null;
+                if($isPaginated == '-p') {
+                    $isPaginated = true;
+                }
                 $type = strtolower($type);
                 $name = '§l§5Luck§bCode§r§7 v'.LuckCodePlugin::VERSION;
                 if($type == 'normal') {
-                    $inv = TestNormalMenu::class;
+                    $inv = $isPaginated ? TestNormalPaginatedMenu::class : TestNormalMenu::class;
                 } else if($type == 'double') {
-                    $inv = TestDoubleMenu::class;
+                    $inv = $isPaginated ? TestDoublePaginatedMenu::class : TestDoubleMenu::class;
                 } else {
                     $s->sendMessage($prefix.'§cO tipo de menu/window '.$type.' não existe!');
                 }
