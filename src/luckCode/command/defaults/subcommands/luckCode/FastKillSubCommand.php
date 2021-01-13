@@ -40,7 +40,7 @@ class FastKillSubCommand extends LuckSubCommand
      */
     public function getDescription(): string
     {
-        return 'ative\desative o modo fastkill';
+        return 'Ative\desative o modo fastkill';
     }
 
     /**
@@ -56,7 +56,7 @@ class FastKillSubCommand extends LuckSubCommand
      */
     public function execute(CommandSender $sender, array $args)
     {
-        $sender->sendMessage(!(EntityController::inFastKill($sender)) ? '§r§aModo fastkill ativado.' : '§r§cModo fastkill desativado.');
+        $sender->sendMessage(LuckCodePlugin::PREFIX.(!(EntityController::inFastKill($sender)) ? '§r§aModo fastkill ativado.' : '§r§cModo fastkill desativado.'));
         (!EntityController::inFastKill($sender)) ? EntityController::addFastKill($sender) : EntityController::removeFastKill($sender);
     }
 }
