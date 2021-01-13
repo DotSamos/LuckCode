@@ -1,7 +1,9 @@
 name: LuckCode
 version: 0.1
 main: luckCode\LuckCodePlugin
-author: '@SamosMC'
+authors: 
+  - '@SamosMC'
+  - '@SmallkingDev_'
 prefix: §f§3L§5C§f
 api: 2.0.0
-website: https://twitter.com/SamosMC
+website: https://twitter.com/SamosMC | https://twitter.com/SmallkingDev_
