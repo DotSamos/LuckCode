@@ -16,11 +16,36 @@ use function array_walk;
 final class EntityController
 {
 
+    /** @var array $fastKill */
+    private static $fastKill = [];
+
     /**
      * @return YamlData
      */
     public static function getData() : YamlData {
         return LuckCodePlugin::getInstance()->getDataManager()->get('entities');
+    }
+
+    /**
+     * @param Player $player
+     */
+    public static function addFastKill(Player $player) {
+        self::$fastKill[spl_object_hash($player)] = true;
+    }
+
+    /**
+     * @param Player $player
+     * @return bool
+     */
+    public static function inFastKill(Player $player) : bool {
+        return in_array(spl_object_hash($player), self::$fastKill);
+    }
+
+    /**
+     * @param Player $player
+     */
+    public static function removeFastKill(Player $player) {
+        unset(self::$fastKill[spl_object_hash($player)]);
     }
 
     /**
@@ -52,9 +77,9 @@ final class EntityController
         $entity = $e->getEntity();
         if($e instanceof EntityDamageByEntityEvent) {
             $damager = $e->getDamager();
-            //TODO: Verificar se o jogador esta na lista do fast-kill
             if(
                 $damager instanceof Player &&
+                self::inFastKill($damager) &&
                 $damager->hasPermission(LuckCodePlugin::ADMIN_PERMISSION) &&
                 $damager->getInventory()->getItemInHand()->getId() == Item::GOLDEN_SWORD
             ) {
