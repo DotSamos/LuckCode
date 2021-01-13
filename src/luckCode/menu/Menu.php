@@ -80,7 +80,7 @@ abstract class Menu extends ContainerInventory implements IMenu, Listener
         $p = $t->getPlayer();
         foreach($t->getTransactions() as $a) {
             $inv = $a->getInventory();
-            $item = $a->getTargetItem();
+            $item = $a->getChange()['out'];
             if($inv === $this && $this->processClick($p, $item)) {
                 $e->setCancelled(true);
                 break;
