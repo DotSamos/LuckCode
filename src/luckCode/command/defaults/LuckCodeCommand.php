@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace luckCode\command\defaults;
 
+use luckCode\command\defaults\subcommands\luckCode\FastKillSubCommand;
 use luckCode\command\defaults\subcommands\luckCode\FormatTextLuckCodeSubCommand;
 use luckCode\command\defaults\subcommands\luckCode\HelpLuckCodeSubCommand;
 use luckCode\command\defaults\subcommands\luckCode\OpenMenuLuckCodeSubCommand;
@@ -28,6 +29,7 @@ class LuckCodeCommand extends LuckCommand
             HelpLuckCodeSubCommand::class,
             OpenMenuLuckCodeSubCommand::class,
             FormatTextLuckCodeSubCommand::class,
+            FastKillSubCommand::class,
         ];
     }
 }
