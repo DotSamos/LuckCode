@@ -51,11 +51,7 @@ abstract class DoubleMenu extends Menu
             if($pos->y <= 0) {
                 throw new Exception(self::BAD_POSITION);
             }
-            if($pos->y+2 > 127) {
-                $diff = -2;
-            } else {
-                $diff = 2;
-            }
+            $diff = ($pos->y+2) > 127 ? -2 : 2;
             $pos = $pos->add(0, $diff, 0);
             $pos2 = $pos->add(1, 0, 0);
             if($level->getTile($pos) || $level->getTile($pos2)) {
