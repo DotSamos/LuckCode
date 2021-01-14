@@ -27,7 +27,7 @@ class LuckUpdater extends AsyncTask
 
     public function onRun()
     {
-        $data = yaml_parse_file(self::URL);
+        $data = @file_get_contents(self::URL);
 
         $value = $data['version'] != $this->version ? 'true' : 'false';
 
