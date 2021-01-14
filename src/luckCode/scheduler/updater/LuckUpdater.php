@@ -36,7 +36,7 @@ class LuckUpdater extends AsyncTask
         try {
             $data = @yaml_parse(Config::fixYAMLIndexes(Utils::getURL(self::URL)));
 
-            $value = is_null($data) ? 'error' : version_compare(((string)$this->version), ((string)$data['version']));
+            $value = is_null($data) ? 'error' : strcmp(((string)$this->version), ((string)$data['version']));
 
             if (!is_null($data) && is_array($data)) {
                 $this->setResult(['update' => $value, 'version' => $data['version']]);
