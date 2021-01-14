@@ -7,6 +7,9 @@ namespace luckCode\scheduler\updater;
 use pocketmine\scheduler\AsyncTask;
 use pocketmine\utils\Utils;
 use pocketmine\Server;
+use Throwable;
+use function is_null;
+use function version_compare;
 use function yaml_parse;
 
 class LuckUpdater extends AsyncTask
@@ -28,12 +31,16 @@ class LuckUpdater extends AsyncTask
 
     public function onRun()
     {
-        $data = yaml_parse(Utils::getURL(self::URL));
+        try {
+            $data = yaml_parse(Utils::getURL(self::URL));
 
-        $value = is_null($data) ? 'error' : version_compare($this->version, $data['version']);
+            $value = is_null($data) ? 'error' : version_compare(((string)$this->version), ((string)$data['version']));
 
-        if (!is_null($data)) {
-            $this->setResult(['update' => $value]);
+            if (!is_null($data)) {
+                $this->setResult(['update' => $value, 'version' => $data['version']]);
+            }
+        } catch (Throwable $e) {
+            $this->setResult(['update' => 'error']);
         }
     }
 
@@ -46,9 +53,9 @@ class LuckUpdater extends AsyncTask
 
         if (isset($result['error'])) {
             $message = '§r§cOcorreu um erro ao realizar a requesitação dos dados!';
-        } else {
-             $message = $this->getResult()['update'] ? '§r§cUma nova versão do LuckCode disponivel.' : '§r§eNehuma versão nova encontrada.';
+        } else if($this->getResult()['update']) {
+             $message = '§r§6Uma nova versão do LuckCode está disponível em §fhttps://github.com/SamosMC/LuckCode §7[v'.$result['version'].']';
         }
-        $server->getLogger()->info($message);
+        if(isset($message)) $server->getPluginManager()->getPlugin('LuckCode')->getLogger()->info($message);
     }
 }
