@@ -18,5 +18,5 @@ interface LuckDatabaseRequire
     public function onDatabaseConnectionError(LuckDatabaseNotInitializeEvent $e);
 
     /** @return string[] */
-    public function getBaseTables() : array;
+    public function getBaseTables(): array;
 }

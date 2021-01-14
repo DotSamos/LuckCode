@@ -9,10 +9,8 @@ use luckCode\system\System;
 use pocketmine\plugin\PluginBase;
 use pocketmine\Server;
 use function array_filter;
-use function array_map;
 use function array_walk;
 use function count;
-use function var_dump;
 
 class SystemController implements interfaces\ISystemController
 {
@@ -43,7 +41,7 @@ class SystemController implements interfaces\ISystemController
             return $this->ownerPlugin instanceof LuckSystemLoader &&
                 (bool)$this->ownerPlugin->getSystemStatusList()[$name];
         });
-        foreach($systems as $class) {
+        foreach ($systems as $class) {
             $this->systems[$class::NAME] = new $class($this->ownerPlugin);
         }
     }

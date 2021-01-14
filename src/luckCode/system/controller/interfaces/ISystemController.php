@@ -8,10 +8,10 @@ use pocketmine\plugin\PluginBase;
 interface ISystemController
 {
     /** @return PluginBase */
-    public function getOwnerPlugin() : PluginBase;
+    public function getOwnerPlugin(): PluginBase;
 
     /** @return System[] */
-    public function getSystems() : array;
+    public function getSystems(): array;
 
     /**
      * @param string $name

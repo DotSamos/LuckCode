@@ -5,14 +5,9 @@ declare(strict_types=1);
 namespace luckCode\menu;
 
 use luckCode\menu\page\interfaces\IPage;
-use pocketmine\event\inventory\InventoryTransactionEvent;
 use pocketmine\item\Item;
 use pocketmine\Player;
-use function array_search;
 use function array_values;
-use function count;
-use function is_numeric;
-use function range;
 
 abstract class NormalPaginatedMenu extends NormalMenu implements page\interfaces\IPaginatedMenu
 {
@@ -28,6 +23,12 @@ abstract class NormalPaginatedMenu extends NormalMenu implements page\interfaces
         return $this->getMainPage()->getItems($p);
     }
 
+    public function redoPage()
+    {
+        $redo = $this->page->getRedoPage();
+        if ($redo) $this->setPage($redo);
+    }
+
     /**
      * @inheritDoc
      */
@@ -35,12 +36,6 @@ abstract class NormalPaginatedMenu extends NormalMenu implements page\interfaces
     {
         $this->page = $page;
         $this->setItems($page->getItems(array_values($this->viewers)[0]));
-    }
-
-    public function redoPage()
-    {
-        $redo = $this->page->getRedoPage();
-        if($redo) $this->setPage($redo);
     }
 
     /**

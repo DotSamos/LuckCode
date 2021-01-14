@@ -9,7 +9,8 @@ use pocketmine\Server;
 
 abstract class LuckEvent extends Event
 {
-    public function call() {
+    public function call()
+    {
         Server::getInstance()->getPluginManager()->callEvent($this);
     }
 }

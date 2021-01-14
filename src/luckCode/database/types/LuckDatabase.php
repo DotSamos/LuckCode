@@ -36,12 +36,13 @@ class LuckDatabase extends Database
     {
         $ev = new LuckDatabaseDisableEvent($this);
         $ev->call();
-        if($ev->isCancelled()) return false;
+        if ($ev->isCancelled()) return false;
         return parent::close();
     }
 
     /** @return LuckTable|null */
-    public function getDefaultTable() {
+    public function getDefaultTable()
+    {
         return $this->tables[LuckTable::$name] ?? null;
     }
 }

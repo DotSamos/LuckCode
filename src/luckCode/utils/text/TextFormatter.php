@@ -10,13 +10,11 @@ use function array_sum;
 use function array_values;
 use function array_walk;
 use function explode;
-use function floor;
 use function implode;
 use function max;
 use function str_repeat;
 use function strlen;
 use function strpos;
-use function var_dump;
 
 final class TextFormatter
 {
@@ -32,7 +30,7 @@ final class TextFormatter
 
         $partKey = 0;
 
-        $maxLengthPart = max(array_values(array_map(function (string $string) use($bkParts, &$partKey){
+        $maxLengthPart = max(array_values(array_map(function (string $string) use ($bkParts, &$partKey) {
             $defaultPart = $bkParts[$partKey];
             $partKey++;
             $boldIn = strpos($defaultPart, "§l");
@@ -40,7 +38,7 @@ final class TextFormatter
 
             $cKey = 0;
 
-            return array_sum(array_map(function (string $c) use($boldIn, $resetAt, &$cKey) {
+            return array_sum(array_map(function (string $c) use ($boldIn, $resetAt, &$cKey) {
                 $length = FontInfo::getLength($c) + ($boldIn >= $cKey && $cKey < $resetAt ? 1 : 0);
                 $cKey++;
                 return $length;
@@ -53,7 +51,7 @@ final class TextFormatter
 
             $cKey = 0;
 
-            $length = array_sum(array_map(function (string $c) use($boldIn, $resetAt, &$cKey) {
+            $length = array_sum(array_map(function (string $c) use ($boldIn, $resetAt, &$cKey) {
                 $length = FontInfo::getLength($c) + ($boldIn >= $cKey && $cKey < $resetAt ? 1 : 0);
                 $cKey++;
                 return $length;

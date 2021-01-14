@@ -39,11 +39,11 @@ class MysqliProvider extends Provider
         try {
             $con = @new mysqli($host, $user, $password, $dbName, $port);
 
-            if($con->connect_error ?? $con->error) {
+            if ($con->connect_error ?? $con->error) {
                 throw new ProviderInitializeException($con->connect_error ?? $con->error, $con->connect_errno ?? $con->errno);
             }
-            if(!$con->get_charset()->charset == 'utf8') {
-                if($con->set_charset("utf8")) {
+            if (!$con->get_charset()->charset == 'utf8') {
+                if ($con->set_charset("utf8")) {
                     $this->showInfo('Codificação definida para UTF-8');
                 } else {
                     $this->showAlert('Não foi possivel definir a codificação para UTF-8');
@@ -52,7 +52,7 @@ class MysqliProvider extends Provider
             $this->connection = $con;
             $this->showInfo('§aOK.');
             return true;
-        } catch(Throwable $e) {
+        } catch (Throwable $e) {
             $this->lastError = $e;
             $this->printError($e);
             return false;
@@ -69,7 +69,7 @@ class MysqliProvider extends Provider
      */
     public function close(): bool
     {
-        if($this->connection) {
+        if ($this->connection) {
             parent::close();
             return $this->connection->close();
         }
@@ -82,7 +82,7 @@ class MysqliProvider extends Provider
     public function exec(string $exec): bool
     {
         try {
-            return (bool) $this->connection->query($exec);
+            return (bool)$this->connection->query($exec);
         } catch (Throwable $e) {
             $this->lastError = $e;
             $this->printError($e);
@@ -98,10 +98,10 @@ class MysqliProvider extends Provider
         try {
             $result = $this->connection->query($query);
             $finalResult = null;
-            if($result instanceof mysqli_result) {
-                if($fetchAll) {
+            if ($result instanceof mysqli_result) {
+                if ($fetchAll) {
                     $finalResult = [];
-                    while($r = $result->fetch_array(MYSQLI_ASSOC)) {
+                    while ($r = $result->fetch_array(MYSQLI_ASSOC)) {
                         $finalResult[] = $r;
                     }
                 } else {

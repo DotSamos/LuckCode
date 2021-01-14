@@ -5,9 +5,7 @@ declare(strict_types=1);
 namespace luckCode\data\save\task;
 
 use luckCode\data\save\engines\IFileSaveEngine;
-use luckCode\data\save\manager\DataSaveWorker;
 use pocketmine\scheduler\AsyncTask;
-use pocketmine\Server;
 
 class DataSaveTaskAsync extends AsyncTask
 {

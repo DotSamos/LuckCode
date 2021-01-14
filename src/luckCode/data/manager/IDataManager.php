@@ -15,7 +15,7 @@ interface IDataManager
      * @param string $file
      * @return bool
      */
-    public function contains(string $file) : bool;
+    public function contains(string $file): bool;
 
     /**
      * @param string $file
@@ -27,13 +27,13 @@ interface IDataManager
      * @param IData $data
      * @return bool
      */
-    public function put(IData $data) : bool;
+    public function put(IData $data): bool;
 
     /**
      * @param string $file
      * @return bool
      */
-    public function remove(string $file) : bool;
+    public function remove(string $file): bool;
 
     public function putAllInSaveWorker();
 

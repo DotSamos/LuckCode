@@ -1,30 +1,41 @@
-#
-# **Recomendo ler se tiver tempo**
-#
+# --------------------------------------------------------------------------------
+#                                    Luck-Menu
+# Na versão 15.10 é muito comum termos vários bugs nos menus, eles variam de
+# simples bugs visuais a dups de itens. Caso tenha um pouco de tempo recomendo ler
+# todas as anotações aqui, afinal elas podem resolver parte desses problemas nos
+# menus que são gerados **a partir** do LuckCode, mas isso também vai depender
+# da pessoa que criou este menu a partir da api aqui contida, afinal não podemos
+# resolver problemas que são causados por pessoas que não sabem o que fazem no
+# código não é mesmo? 
+# --------------------------------------------------------------------------------
 
-# O Floating Inventory é o sistema de anti-cheat de itens no pocketmine, todo os itens que são
-# transferidos dos invetários, criados, givados e etc passam pela verificação deste anti-cheat,
-# porem ele é o que tambem causa bugs visuais nos menus do sistema. Por padrão consigo "fixar"
-# esse bug visual por inteiro, é necessario um update a mais de transação para sutir efeito na 
-# menu, mas comparado a antes isto já é um bom avanço.
-# Um bom exemplo de onde o floating-inventory bugava era onde tu fechava o menu e os itens que 
-# você tentou passar para dentro do menu são misteriosamente dropados no chão (e para servidores
-# de rankup/factions isso não é muito legal...) 
-# Caso tenha problemas com itens que não são craftados ou algo do genero desative essa opção...
-#
+# O Floating Inventory é o sistema de anti-cheat de itens no pocketmine, todo os
+# itens que são transferidos dos invetários, criados, givados e etc passam pela
+# verificação deste anti-cheat, porem ele é o que também causa bugs visuais
+# nos menus do sistema. Por padrão não consigo "fixar" esse bug visual por
+# inteiro, é necessário um update a mais de transação para surtir efeito no
+# menu, mas comparado a antes isto já é um bom avanço. Um bom exemplo de onde o
+# floating-inventory bugava era onde tu fechava o menu e os itens que você tentou
+# passar para dentro do menu são misteriosamente dropados no chão (e para
+# servidoresde rankup/factions isso não é muito legal...).
+# Caso tenha problemas com itens que não são craftados ou algo do gênero
+# desative essa opção...
 fix_floating_inventory: true
 
-# Não da para perceber muito, porem o menu duplo demora (por padrão) cerca de 0,25 segundos para 
-# abrir, isto se deve ao tempo de atrazo para gerar todo o aparato para que o menu possa abrir
-# normalmente.
-# Caso tenha problemas com o menu duplo não abrir, ou ele até abrir mais fechar logo após ter 
-# aberto considere aumentar este tempo de delay.
-# O tempo aqui esta em ticks, desta maneira 20 ticks = 1 segundo, 5 ticks = 0,25 segundos
+# Não dá para perceber muito, porem o menu duplo demora (por padrão) cerca de
+# 0,25 segundos para abrir, isto se deve ao tempo de atraso para gerar todo o
+# aparato para que o menu possa abrir normalmente.
+# Caso tenha problemas com o menu duplo não abrir, ou ele até abrir mais fechar
+# logo após ter aberto considere aumentar este tempo de delay.
+# O tempo aqui está em ticks, desta maneira 20 ticks = 1 segundo, 5 ticks = 0,25
+# segundos.
 menu_double_open_cooldown: 5
 
-# Sempre que temos mais de 2 packets pesados sendo enviados para o jogador, como um de mensagem
-# (mensagem normal, popup ou tip) e um outro como o de remover o menu, temos um bug comun que
-# acaba ocultando a gui do jogador, desta maneira ele não consegue ver os botões ou a sua hotbar.
-# Este "cooldown" serve para tentar evitar este tipo de coisa, porem se o que fizeram no menu
-# não foi pensando nisto, este sistema não surte efeito.
+# Sempre que temos mais de 2 packets pesados sendo enviados para o jogador, como
+# um de mensagem (mensagem normal, popup ou tip) e um outro como o de remover o
+# menu, temos um bug comum que acaba ocultando a gui do jogador, desta maneira ele
+# não consegue ver os botões ou a sua hotbar.
+# Este "cooldown" serve para tentar evitar este tipo de coisa, porém se o que
+# fizeram no menu não foi pensando nisto, este sistema não surte grandes
+# efeitos.
 close_after: 10

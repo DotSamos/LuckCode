@@ -27,7 +27,7 @@ class TestNormalMenu extends NormalMenu
         parent::onOpen($who);
 
         $window = $this;
-        $class = new class($window) extends LuckTask{
+        $class = new class($window) extends LuckTask {
 
             /** @var NormalMenu $window */
             private $window;
@@ -44,15 +44,15 @@ class TestNormalMenu extends NormalMenu
             {
                 $window = $this->window;
                 $newItems = [];
-                for($i = 8; $i < 16; $i++) {
+                for ($i = 8; $i < 16; $i++) {
                     $items = Item::getCreativeItems();
-                    if(empty($this->order)) {
+                    if (empty($this->order)) {
                         $item = $items[array_rand($items, 1)];
                         $newItems[$i] = $item;
                     } else {
                         foreach ($this->order as $k => $v) {
-                            $slot = $k+1;
-                            if($slot == 16) {
+                            $slot = $k + 1;
+                            if ($slot == 16) {
                                 continue;
                             } else {
                                 $newItems[$slot] = $v;
@@ -74,7 +74,7 @@ class TestNormalMenu extends NormalMenu
     public function onClose(Player $who)
     {
         parent::onClose($who);
-        if(count($this->getViewers())) {
+        if (count($this->getViewers())) {
             $this->taskUpdate->cancel();
         }
     }
@@ -82,7 +82,7 @@ class TestNormalMenu extends NormalMenu
     /**
      * @inheritDoc
      */
-    public function getItems(Player $p) : array
+    public function getItems(Player $p): array
     {
         return [];
     }

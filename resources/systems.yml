@@ -1,4 +1,22 @@
+# --------------------------------------------------------------------------------
+#                             Sistemas do LuckCode
+# Aqui você pode definir os sistemas que vão estar ativos no LuckCode, não há
+# muitos, porem os que “podem” ser desabilitados para economizar em
+# processamento eu aqui lhe dou a opção, porem se não souber ou não tiver
+# certeza do que está fazendo, recomendo não mexer aqui
+# --------------------------------------------------------------------------------
+
+# Desativar/ativar o LuckDatabase
 DataBase: true
+
+# Desativar/ativar o comando de gerenciamento do LuckCode
 LuckCommand: true
+
+# Desativar/ativar o Freeze-time (congelar o tempo do mundo apenas de dia, meio-dia
+# ou noite)
 FreezeTime: true
+
+# Desativar/ativar a verificação de atualizações 
+# (PS: Caso tenha uma atualização disponível você vai ser notificado assim que o 
+# plugin ligar)
 CheckUpdate: true

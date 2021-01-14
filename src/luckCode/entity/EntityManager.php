@@ -48,7 +48,7 @@ final class EntityManager
             ]),
             'Health' => new ShortTag('Health', 1),
         ]);
-        if($nameTag != null) {
+        if ($nameTag != null) {
             $nbt->CustomNameVisible = new ByteTag('CustomNameVisible', 1);
             $nbt->CustomName = new StringTag('CustomName', $nameTag);
         }

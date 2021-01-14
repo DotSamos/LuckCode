@@ -20,14 +20,6 @@ abstract class DataManager implements IDataManager
     /**
      * @inheritDoc
      */
-    public function contains(string $file): bool
-    {
-        return isset($this->cache[$file]);
-    }
-
-    /**
-     * @inheritDoc
-     */
     public function get(string $file)
     {
         return $this->cache[$file] ?? null;
@@ -43,6 +35,14 @@ abstract class DataManager implements IDataManager
             return true;
         }
         return false;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function contains(string $file): bool
+    {
+        return isset($this->cache[$file]);
     }
 
     /**

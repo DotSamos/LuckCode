@@ -59,12 +59,12 @@ class SpawnHolographicSubCommand extends LuckSubCommand
      */
     public function execute(CommandSender $s, array $args)
     {
-        if($s instanceof Player) {
+        if ($s instanceof Player) {
             $loc = $s->getLocation();
             $compound = EntityManager::getBaseSpawnCompound($loc);
             $entity = Entity::createEntity('LuckHolographicEntity', $s->chunk, $compound);
             $entity->spawnToAll();
-            $s->sendMessage(LuckCodePlugin::PREFIX.'§aHolograma de teste criado!');
+            $s->sendMessage(LuckCodePlugin::PREFIX . '§aHolograma de teste criado!');
         }
     }
 }

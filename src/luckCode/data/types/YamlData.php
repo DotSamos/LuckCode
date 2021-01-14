@@ -27,7 +27,7 @@ class YamlData extends Data
     public function load()
     {
         $filePath = $this->filePath;
-        if(file_exists($filePath)) {
+        if (file_exists($filePath)) {
             $content = Config::fixYAMLIndexes(file_get_contents($filePath));
             $this->data = yaml_parse($content);
         } else {

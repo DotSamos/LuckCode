@@ -40,35 +40,16 @@ class ProviderLoader implements InfoStatus
         $this->showInfo('Procurando provedor...');
 
         foreach ($order as $providerName) {
-            if($this->search($providerName, $ignoreError)) break;
+            if ($this->search($providerName, $ignoreError)) break;
         }
     }
 
     /**
-     * @param string $type
-     * @param bool $ignoreError
-     * @return bool
+     * @inheritDoc
      */
-    private function search(string $type, bool $ignoreError) : bool {
-        $ev = new SearchProviderEvent();
-        $ev->call();
-        $provider = $ev->getType($type);
-        if(!$provider) {
-            $this->showAlert('O provedor §f'.$type.'§7 não existe!');
-            return false;
-        }
-        $pl = $this->ownerPlugin;
-        $conArgs = array_merge($this->mysqliAuth, ['file' => strtolower($pl->getName()).'.db', 'path' => $pl->getDataFolder().'database'.DIRECTORY_SEPARATOR]);
-        /** @var IProvider $provider */
-        $provider = new $provider($conArgs, $pl);
-        if($provider->failInitializeException() && !$ignoreError) return false;
-        $this->found = $provider;
-        return true;
-    }
-
-    /** @return IProvider|null */
-    public function get() {
-        return $this->found;
+    public function showInfo(string $info)
+    {
+        $this->getLogger()->info('§7[ProviderLoader] §7' . $info);
     }
 
     /**
@@ -80,11 +61,27 @@ class ProviderLoader implements InfoStatus
     }
 
     /**
-     * @inheritDoc
+     * @param string $type
+     * @param bool $ignoreError
+     * @return bool
      */
-    public function showInfo(string $info)
+    private function search(string $type, bool $ignoreError): bool
     {
-        $this->getLogger()->info('§7[ProviderLoader] §7'.$info);
+        $type = strtolower($type);
+        $ev = new SearchProviderEvent();
+        $ev->call();
+        $provider = $ev->getType($type);
+        if (!$provider) {
+            $this->showAlert('O provedor §f' . $type . '§7 não existe!');
+            return false;
+        }
+        $pl = $this->ownerPlugin;
+        $conArgs = array_merge($this->mysqliAuth, ['file' => strtolower($pl->getName()) . '.db', 'path' => $pl->getDataFolder() . 'database' . DIRECTORY_SEPARATOR]);
+        /** @var IProvider $provider */
+        $provider = new $provider($conArgs, $pl);
+        if ($provider->failInitializeException() && !$ignoreError) return false;
+        $this->found = $provider;
+        return true;
     }
 
     /**
@@ -92,7 +89,13 @@ class ProviderLoader implements InfoStatus
      */
     public function showAlert(string $alert)
     {
-        $this->getLogger()->info('§e[ProviderLoader] §7'.$alert);
+        $this->getLogger()->info('§e[ProviderLoader] §7' . $alert);
+    }
+
+    /** @return IProvider|null */
+    public function get()
+    {
+        return $this->found;
     }
 
     /**
@@ -100,12 +103,13 @@ class ProviderLoader implements InfoStatus
      */
     public function showError(string $error)
     {
-        $this->getLogger()->info('§c[ProviderLoader] §7'.$error);
+        $this->getLogger()->info('§c[ProviderLoader] §7' . $error);
     }
 
     /**
      * @inheritDoc
      */
     public function printError(Throwable $error)
-    {}
+    {
+    }
 }

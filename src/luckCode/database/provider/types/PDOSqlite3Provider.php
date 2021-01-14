@@ -15,7 +15,7 @@ class PDOSqlite3Provider extends PDOProvider
      */
     public function getType(): string
     {
-       return 'PDO-Sqlite3';
+        return 'PDO-Sqlite3';
     }
 
     /**
@@ -25,8 +25,8 @@ class PDOSqlite3Provider extends PDOProvider
     {
         $path = $args['path'] ?? $this->getOwnerPlugin()->getDataFolder();
         $file = $args['file'] ?? 'database.db';
-        if(!is_dir($path)) mkdir($path);
-        $finalPath = $path.DIRECTORY_SEPARATOR.$file;
+        if (!is_dir($path)) mkdir($path);
+        $finalPath = $path . DIRECTORY_SEPARATOR . $file;
         return "sqlite:{$finalPath}";
     }
 

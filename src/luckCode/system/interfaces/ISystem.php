@@ -8,10 +8,10 @@ interface ISystem
 {
 
     /** @return string */
-    public function getName() : string;
+    public function getName(): string;
 
     /** @return PluginBase */
-    public function getOwnerPlugin() : PluginBase;
+    public function getOwnerPlugin(): PluginBase;
 
     public function onLoad();
 

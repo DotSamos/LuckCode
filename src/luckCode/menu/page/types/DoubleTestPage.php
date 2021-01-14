@@ -15,7 +15,7 @@ class DoubleTestPage extends TestPage
      */
     public function __construct(IPaginatedMenu $menu)
     {
-        parent::__construct($menu,8, 40, 40, 47);
+        parent::__construct($menu, 8, 40, 40, 47);
     }
 
 }

@@ -1,14 +1,18 @@
-#-------------------------------------------------------------------------------------------------------------
-# Confira abaixo as configurações que são aplicadas as entidades do plugin:
-# Vale lembrar que as configurações aqui não são globais, ou seja, elas não se aplicam a todas as entidades
-# do pocketmine, apenas entidades que **utilizam** do luck-code como depencia da forma correta "sofrem" com as
-# alterações aqui feitas
-#-------------------------------------------------------------------------------------------------------------
+# --------------------------------------------------------------------------------
+#                            Entidades do LuckCode
+# Todos os plugins que usam parte da api do LuckCode como dependência sempre vão
+# estar interligados de alguma forma. As entidades que são geradas utilizando o
+# controlador do LuckCode são afetadas pelas seguintes configurações:
+# (LEMBRANDO: As configurações abaixo apenas se aplicam as entidades que são
+# geradas **utilizando** o controlador do LuckCode)
+# --------------------------------------------------------------------------------
 
-# Esta é a distância a qual os jogadores podem ver as entidades geradas pelo plugin
+# As entidades só podem ser vistas pelos jogadores que estão nesta distância
+# mínima (em blocos) das entidades
 range_view: 16
 
-# Utilizando o comando /lc fastkill e se o jogador tiver a permissão ele vai entrar no modo fast-kill,
-# o qual o deixa com o poder de matar instantaneamente qualquer entidade que o plugin gere mesmo se ela
-# não for "hitavel"
+# Utilizando o comando /lc fk o jogador entra no modo fast-kill, e todas as
+# entidades que são hitadas por ele utilizando uma espada de outro são
+# removidas, sejam elas hologramas ou mobs “invulneráveis” (lembrando, isso
+# só se aplica a entidades que **utilizam** o controlador do LuckCode).
 enable_fast_kill: true

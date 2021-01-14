@@ -14,7 +14,7 @@ interface IPaginatedMenu
     public function setItems(array $items);
 
     /** @return IPage */
-    public function getMainPage() : IPage;
+    public function getMainPage(): IPage;
 
     public function redoPage();
 }

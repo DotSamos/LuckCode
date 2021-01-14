@@ -25,8 +25,10 @@ class MenuChestTile extends Chest
     }
 
     public function saveNBT()
-    {}
+    {
+    }
 
     public function spawnToAll()
-    {}
+    {
+    }
 }

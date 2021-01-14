@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace luckCode\menu\types;
 
-use Exception;
 use luckCode\menu\DoubleMenu;
-use luckCode\menu\NormalMenu;
 use luckCode\scheduler\LuckTask;
 use pocketmine\item\Item;
 use pocketmine\Player;
@@ -23,7 +21,7 @@ class TestDoubleMenu extends DoubleMenu
     {
         parent::onOpen($who);
         $window = $this;
-        $class = new class($window) extends LuckTask{
+        $class = new class($window) extends LuckTask {
 
             private $window;
 
@@ -38,15 +36,15 @@ class TestDoubleMenu extends DoubleMenu
             {
                 $window = $this->window;
                 $newItems = [];
-                for($i = 16; $i < 31; $i++) {
+                for ($i = 16; $i < 31; $i++) {
                     $items = Item::getCreativeItems();
-                    if(empty($this->order)) {
+                    if (empty($this->order)) {
                         $item = $items[array_rand($items, 1)];
                         $newItems[$i] = $item;
                     } else {
                         foreach ($this->order as $k => $v) {
-                            $slot = $k+1;
-                            if($slot == 32) {
+                            $slot = $k + 1;
+                            if ($slot == 32) {
                                 continue;
                             } else {
                                 $newItems[$slot] = $v;
@@ -68,7 +66,7 @@ class TestDoubleMenu extends DoubleMenu
     public function onClose(Player $who)
     {
         parent::onClose($who);
-        if(count($this->getViewers())) {
+        if (count($this->getViewers())) {
             $this->taskUpdate->cancel();
         }
     }

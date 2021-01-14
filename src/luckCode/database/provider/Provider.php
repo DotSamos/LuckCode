@@ -32,12 +32,13 @@ abstract class Provider implements InfoStatus, interfaces\IProvider
     public function __construct(array $conArgs, PluginBase $owner)
     {
         $this->ownerPlugin = $owner;
-        if(!$this->tryConnect($conArgs)) {
+        if (!$this->tryConnect($conArgs)) {
             $this->initializeException = new ProviderInitializeException($this->lastError->getMessage(), $this->lastError->getCode());
         }
     }
 
-    public function close() : bool {
+    public function close(): bool
+    {
         $this->showInfo('A conexão foi finalizada pelo sistema!');
         return true;
     }
@@ -45,9 +46,9 @@ abstract class Provider implements InfoStatus, interfaces\IProvider
     /**
      * @inheritDoc
      */
-    public function getOwnerPlugin(): PluginBase
+    public function showInfo(string $info)
     {
-        return $this->ownerPlugin;
+        $this->getLogger()->info('§7[Provider(§a' . $this->getType() . '§7)] §7' . $info);
     }
 
     /**
@@ -61,9 +62,9 @@ abstract class Provider implements InfoStatus, interfaces\IProvider
     /**
      * @inheritDoc
      */
-    public function showInfo(string $info)
+    public function getOwnerPlugin(): PluginBase
     {
-        $this->getLogger()->info('§7[Provider(§a'.$this->getType().'§7)] §7'.$info);
+        return $this->ownerPlugin;
     }
 
     /**
@@ -71,15 +72,7 @@ abstract class Provider implements InfoStatus, interfaces\IProvider
      */
     public function showAlert(string $alert)
     {
-        $this->getLogger()->info('§e[Provider(§a'.$this->getType().'§e)] §7'.$alert);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function showError(string $error)
-    {
-        $this->getLogger()->info('§c[Provider(§a'.$this->getType().'§c)] §7'.$error);
+        $this->getLogger()->info('§e[Provider(§a' . $this->getType() . '§e)] §7' . $alert);
     }
 
     /**
@@ -88,11 +81,19 @@ abstract class Provider implements InfoStatus, interfaces\IProvider
     public function printError(Throwable $error)
     {
         $this->showError(implode("§r\n", [
-            '§7'.$error->getMessage().'§4('.$error->getCode().')',
+            '§7' . $error->getMessage() . '§4(' . $error->getCode() . ')',
             "§c+-> §aIn line §f{$error->getLine()}§a from:",
-            "§c+-> §e".substr($error->getFile(), strpos($error->getFile(), 'luckCode')),
+            "§c+-> §e" . substr($error->getFile(), strpos($error->getFile(), 'luckCode')),
             "§8"
         ]));
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function showError(string $error)
+    {
+        $this->getLogger()->info('§c[Provider(§a' . $this->getType() . '§c)] §7' . $error);
     }
 
     public function getRawConnection()

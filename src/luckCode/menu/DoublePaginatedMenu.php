@@ -8,11 +8,7 @@ use luckCode\menu\page\interfaces\IPage;
 use luckCode\menu\page\interfaces\IPaginatedMenu;
 use pocketmine\item\Item;
 use pocketmine\Player;
-use function array_search;
 use function array_values;
-use function count;
-use function is_numeric;
-use function range;
 
 abstract class DoublePaginatedMenu extends DoubleMenu implements IPaginatedMenu
 {
@@ -28,6 +24,12 @@ abstract class DoublePaginatedMenu extends DoubleMenu implements IPaginatedMenu
         return $this->getMainPage()->getItems($p);
     }
 
+    public function redoPage()
+    {
+        $redo = $this->page->getRedoPage();
+        if ($redo) $this->setPage($redo);
+    }
+
     /**
      * @inheritDoc
      */
@@ -37,11 +39,6 @@ abstract class DoublePaginatedMenu extends DoubleMenu implements IPaginatedMenu
         $this->setItems($page->getItems(array_values($this->viewers)[0]));
     }
 
-    public function redoPage()
-    {
-        $redo = $this->page->getRedoPage();
-        if($redo) $this->setPage($redo);
-    }
     /**
      * @inheritDoc
      */

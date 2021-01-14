@@ -12,20 +12,10 @@ use pocketmine\Server;
 class DataSaveWorker
 {
 
-    /** @var IData[] $cache */
-    private static $cache = [];
-
     /** @var DataSaveTaskAsync[] $taskList */
     public static $taskList = [];
-
-    /**
-     * @param IData $data
-     * @return bool
-     */
-    public static function contains(IData $data): bool
-    {
-        return isset(self::$cache[spl_object_hash($data)]);
-    }
+    /** @var IData[] $cache */
+    private static $cache = [];
 
     /**
      * @param IData $data
@@ -38,6 +28,15 @@ class DataSaveWorker
             return true;
         }
         return false;
+    }
+
+    /**
+     * @param IData $data
+     * @return bool
+     */
+    public static function contains(IData $data): bool
+    {
+        return isset(self::$cache[spl_object_hash($data)]);
     }
 
     /**
@@ -75,7 +74,7 @@ class DataSaveWorker
             })
         )) {
             $diff = count(self::$taskList) - $count;
-            $percent = (int) ($diff * 100 / count(self::$taskList));
+            $percent = (int)($diff * 100 / count(self::$taskList));
 
             if (($lastPercent != $percent && $lastPercent != null) && $percent % ($percent > 10 ? 20 : 5) <= 1) $logger->info('§aSalvando configurações §e[' . $percent . '%]');
             $lastPercent = $percent;
@@ -83,7 +82,7 @@ class DataSaveWorker
 
         $endTime = number_format(microtime(true) - $startAt, 2);
 
-        $logger->info('§aConfigurações salvas! §f('.$endTime.'s)');
+        $logger->info('§aConfigurações salvas! §f(' . $endTime . 's)');
 
         self::$taskList = [];
     }

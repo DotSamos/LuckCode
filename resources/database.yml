@@ -1,33 +1,43 @@
-# ------------------------------------------------------------------------------------------------------------------------
-# Tipos de provedores
+# --------------------------------------------------------------------------------
+#                                    LuckDataBase
+# Atualmente o LuckCode dá suporte a 4 tipos de banco de dados, onde 2 deles são
+# mais comumente usados por outros servidores (Mysqli e SQLite3), já os outros 2
+# tipos também são do gênero SQL, porem a conexão deles é gerada utilizando o
+# PDO (PhpDataObject), que por sua vez chega a ser mais rápido em certos pontos,
+# porém não é toda a hospedagem que oferece o driver do PHP para dar suporte ao
+# PDO. 
+# Se lembre que é sempre viável utilizar por padrão o Mysqli ou SQLite3, afinal
+# muitos plugins já o utilizam, no entanto caso opte por usar o PDO, seja ele
+# Mysqli ou SQLite3 fique por sua conta e risco.
 #
-# "pdo-mysqli" Utiliza o php-data-object para gerar uma conexão com o banco de dados mysqli (requer autenticação)
-# "pdo-sqlite3" Utiliza o php-data-object para gerar uma database em local host (não requer autenticação)
-# "mysqli" Gera uma conexão padrão com o banco de dados mysqli (requer autenticação)
-# "sqlite3" Gera uma database em local host (não requer autenticação)
-#
-# Vale lembrar que os tipos "pdo-mysqli" e "pdo-sqlite3" nem sempre vão funcionar, isso se deve a falta de suporte
-# que o interpretador de sua hospedagem oferece. Com tudo o tipos "mysqli" e "sqlite3" são mais utilizados e quase
-# sempre vão funcionar em seu servidor.
-# Minha recomendação é que se for utilizar o plugin em sua hospedagem (servidor dedicado mesmo) tente utilizar
-# os provedores do tipo "pdo" antes (afinal eles tem mais desempenho). Contudo caso utilize o pocketmine para celular
-# dê preferencia a utilizar o "sqlite3".
-#
-# *Atualmente os provedores do tipo "pdo" estão em faze de teste, caso tenha problemas troque para "mysqli" ou "sqlite3"*
-# ------------------------------------------------------------------------------------------------------------------------
+# Tipos disponíveis de banco de dados:
+# 
+# + SQLite3
+# + Mysqli (requer autenticação)
+# + PDO-SQLite3
+# + PDO-Mysqli (requer autenticação)
+# --------------------------------------------------------------------------------
 
-# Esta é quase como a prioridade de "boot" de um computador. O sistema vai tentar inicializar na ordem aqui
-# descrita o provedor do banco de dados principal, em caso de erro o proximo tipo de provedor da lista vai ser inicializado.
-# Caso nenhum provedor conseguir inicializar o plugin vai ser desabilitado
+# É possível estabelecer uma lista de execução de provedores para que o banco
+# de dados funcione. Abaixo é possível mudar a ordem na qual o sistema vai
+# tentar se conectar o provedor, se lembre que é comum ter erros de conexão com
+# o banco Mysqli, neste caso sempre verifique as informações de autenticação
+# na configuração.
+# Caso nenhum dos provedores conseguirem iniciar o LuckCode vai desabilitar.
 type_priority:
-  - "pdo-mysqli"
-  - "pdo-sqlite3"
   - "mysqli"
   - "sqlite3"
+  - "pdo-mysqli"
+  - "pdo-sqlite3"
 
-# Aqui você pode configurar a autenticação com o banco de dados mysqli
-# As informações como host, port (geralmente é 21), user e password a sua hospedagem deve prover. Já dbName é o nome do banco
-# de dados a qual o sistema vai trabalhar, este deve ser criado por você no painel do banco de dados.
+# Configure os campos abaixo caso for utilizar um provedor do tipo Mysqli. Algumas
+# doferecida estas configurações como host, user e password geralmente são 
+# oferecidas pela sua hospedagem, as vezes o dbname (ou “nome do banco de dados”) 
+# também é oferecida por padrão já criada no banco de dados, mas caso não tenha 
+# veja como criar uma (o que pode variar dependendo do tipo de painel que sua
+# hospedagem oferece, mas caso seja o PhpMyAdmin: https://bit.ly/3nIvRnJ [1:20].
+# PS: O link, usuário e senha de acesso ao painel do Mysqli devem ser oferecidos
+# por sua hospedagem caso ela ofereça esse serviço). 
 mysqli_auth:
   host: "localhost"
   port: 3306
@@ -35,6 +45,6 @@ mysqli_auth:
   password: ""
   dbname: "luckCode"
 
-# Caso você utilize o plugin como apenas uma dependencia para outros plugins pode definir isto como false.
-# Por padrão o plugin gera uma tabela de testes que posteriormente não é mais utilizada.
+
+# Defina se a tabela de testes do banco de dados esta ativa.
 enable_test_table: true

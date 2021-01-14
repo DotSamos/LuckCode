@@ -17,7 +17,7 @@ class LuckCodeCommand extends LuckCommand
 {
     public function __construct()
     {
-        parent::__construct('luckcode', 'LuckCode v'.LuckCodePlugin::VERSION.' by SamosMC', '/lc help', ['lc']);
+        parent::__construct('luckcode', 'LuckCode v' . LuckCodePlugin::VERSION . ' by SamosMC', '/lc help', ['lc']);
     }
 
     /**

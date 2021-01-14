@@ -11,7 +11,6 @@ use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\item\Item;
 use pocketmine\network\protocol\AddPlayerPacket;
 use pocketmine\Player;
-use function array_walk;
 use function spl_object_hash;
 use function uniqid;
 

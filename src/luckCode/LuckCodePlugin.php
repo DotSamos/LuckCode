@@ -4,6 +4,12 @@ declare(strict_types=1);
 
 namespace luckCode;
 
+use luckCode\data\manager\types\LuckDataManager;
+use luckCode\data\save\manager\DataSaveWorker;
+use luckCode\database\types\LuckDatabase;
+use luckCode\entity\EntityManager;
+use luckCode\menu\manager\MenuController;
+use luckCode\menu\tile\MenuChestTile;
 use luckCode\plugin\interfaces\LuckSystemLoader;
 use luckCode\scheduler\LuckUtilityTask;
 use luckCode\system\controller\SystemController;
@@ -11,18 +17,29 @@ use luckCode\system\types\CheckUpdateSystem;
 use luckCode\system\types\FreezeTimeSystem;
 use luckCode\system\types\LuckCommandSystem;
 use luckCode\system\types\LuckDatabaseSystem;
-use luckCode\data\manager\types\LuckDataManager;
-use luckCode\data\save\manager\DataSaveWorker;
-use luckCode\database\types\LuckDatabase;
-use luckCode\entity\EntityManager;
-use luckCode\menu\manager\MenuController;
-use luckCode\menu\tile\MenuChestTile;
 use luckCode\utils\ProviderLoader;
 use luckCode\utils\text\TextFormatter;
-use pocketmine\Server;
 use pocketmine\plugin\PluginBase;
+use pocketmine\Server;
 use pocketmine\tile\Tile;
 use function implode;
+
+/**
+ *  _                      _       ____               _        
+ * | |      _   _    ___  | | __  / ___|   ___     __| |   ___ 
+ * | |     | | | |  / __| | |/ / | |      / _ \   / _` |  / _ \
+ * | |___  | |_| | | (__  |   <  | |___  | (_) | | (_| | |  __/
+ * |_____|  \__,_|  \___| |_|\_\  \____|  \___/   \__,_|  \___|
+ * 
+ * @authors @SamosMC & @SmallkingDev_   
+ * @version 0.1
+ * @link https://github.com/SamosMC/LuckCode
+ * 
+ * Utilize este plugin/api como bem entender, apenas não diga que foi
+ * um dos criadores dele. 
+ * Contudo, tenha um bom uso.
+ *                                               - SamosMC 12/01/2020              
+ */
 
 class LuckCodePlugin extends PluginBase implements LuckSystemLoader
 {
@@ -30,18 +47,14 @@ class LuckCodePlugin extends PluginBase implements LuckSystemLoader
     const PREFIX = '§f[§l§3L§5C§r§f] ';
     const VERSION = 0.1;
     const ADMIN_PERMISSION = 'luckcode.admin';
-
-    /** @var LuckDataManager $dataManager */
-    private $dataManager;
-
-    /** @var LuckDatabase $database */
-    private $database;
-
-    /** @var SystemController $systemController */
-    private $systemController;
-
     /** @var LuckCodePlugin $instance */
     private static $instance;
+    /** @var LuckDataManager $dataManager */
+    private $dataManager;
+    /** @var LuckDatabase $database */
+    private $database;
+    /** @var SystemController $systemController */
+    private $systemController;
 
     /** @return LuckCodePlugin */
     public static function getInstance(): LuckCodePlugin
@@ -65,11 +78,18 @@ class LuckCodePlugin extends PluginBase implements LuckSystemLoader
             '§8',
             '§8',
             '§ePlugin LuckCode v0.1',
-            '§f"A minha querida caixa de ferramentas"',
+            '§f"A minha querida caixa de ferramentas para a 15.10"',
             '§8',
-            '§bBy @SamosMC 2021',
+            '§bBy @SamosMC and @SmallkingDev_ 2021',
             '§8'
         ])));
+    }
+
+    private function loadBase()
+    {
+        EntityManager::registerDefaults();
+        Tile::registerTile(MenuChestTile::class);
+        (new LuckUtilityTask())->registerToRepeat();
     }
 
     public function onDisable()
@@ -89,17 +109,6 @@ class LuckCodePlugin extends PluginBase implements LuckSystemLoader
     public function getDataManager(): LuckDataManager
     {
         return $this->dataManager;
-    }
-
-    private function loadDataManager(): LuckDataManager
-    {
-        return $this->dataManager = new LuckDataManager();
-    }
-
-    private function loadBase() {
-        EntityManager::registerDefaults();
-        Tile::registerTile(MenuChestTile::class);
-        (new LuckUtilityTask())->registerToRepeat();
     }
 
     public function loadDatabase()
@@ -143,5 +152,10 @@ class LuckCodePlugin extends PluginBase implements LuckSystemLoader
     public function getSystemController(): SystemController
     {
         return $this->systemController;
+    }
+
+    private function loadDataManager(): LuckDataManager
+    {
+        return $this->dataManager = new LuckDataManager();
     }
 }

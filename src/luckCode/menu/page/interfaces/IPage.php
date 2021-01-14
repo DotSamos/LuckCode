@@ -12,7 +12,7 @@ interface IPage
      * @param Player $player
      * @return Item[]
      */
-    public function getItems(Player $player) : array;
+    public function getItems(Player $player): array;
 
     /** @param Player $player */
     public function sendItems(Player $player);
@@ -28,5 +28,5 @@ interface IPage
      * @param Item $item
      * @return bool
      */
-    public function onClick(Player $player, Item $item) : bool;
+    public function onClick(Player $player, Item $item): bool;
 }

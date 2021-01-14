@@ -47,12 +47,63 @@ abstract class Database implements interfaces\IDatabase, InfoStatus
         }
     }
 
-    public function onPreLoadTables()
+    /**
+     * @inheritDoc
+     */
+    public function showError(string $error)
     {
+        $this->getLogger()->info('§c[Database] §7' . $error);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getLogger(): PluginLogger
+    {
+        return $this->ownerPlugin->getLogger();
     }
 
     public function onInvalidProvider()
     {
+    }
+
+    public function onPreLoadTables()
+    {
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function loadTables(): bool
+    {
+        $all = $this->getDefaultTables();
+        array_walk($all, function (string $table) {
+            /** @var Table $table */
+            $table = new $table($this->provider, $this->ownerPlugin);
+            $this->addTable($table);
+        });
+        if (count($all) > 0) $this->showInfo('Foram carregadas §f' . count($this->tables) . '§7 tabelas!');
+        return count($this->tables) == count($all);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function addTable(ITable $table): bool
+    {
+        if (!isset($this->tables[$name = $table::NAME])) {
+            $this->tables[$name] = $table;
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function showInfo(string $info)
+    {
+        $this->getLogger()->info('§7[Database] §7' . $info);
     }
 
     public function close(): bool
@@ -79,18 +130,6 @@ abstract class Database implements interfaces\IDatabase, InfoStatus
     /**
      * @inheritDoc
      */
-    public function addTable(ITable $table): bool
-    {
-        if (!isset($this->tables[$name = $table::NAME])) {
-            $this->tables[$name] = $table;
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * @inheritDoc
-     */
     public function getTable(string $name)
     {
         return $this->tables[$name] ?? null;
@@ -99,48 +138,9 @@ abstract class Database implements interfaces\IDatabase, InfoStatus
     /**
      * @inheritDoc
      */
-    public function loadTables(): bool
-    {
-        $all = $this->getDefaultTables();
-        array_walk($all, function (string $table) {
-            /** @var Table $table */
-            $table = new $table($this->provider, $this->ownerPlugin);
-            $this->addTable($table);
-        });
-        if (count($all) > 0) $this->showInfo('Foram carregadas §f' . count($this->tables) . '§7 tabelas!');
-        return count($this->tables) == count($all);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getLogger(): PluginLogger
-    {
-        return $this->ownerPlugin->getLogger();
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function showInfo(string $info)
-    {
-        $this->getLogger()->info('§7[Database] §7' . $info);
-    }
-
-    /**
-     * @inheritDoc
-     */
     public function showAlert(string $alert)
     {
         $this->getLogger()->info('§e[Database] §7' . $alert);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function showError(string $error)
-    {
-        $this->getLogger()->info('§c[Database] §7' . $error);
     }
 
     /**

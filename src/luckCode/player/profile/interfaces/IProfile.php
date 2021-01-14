@@ -7,14 +7,14 @@ use pocketmine\Player;
 interface IProfile
 {
     /** @return string */
-    public function getName() : string;
+    public function getName(): string;
 
     /** @return  Player|null */
     public function getPlayer();
 
     /** @return bool */
-    public function save() : bool;
+    public function save(): bool;
 
     /** @return array */
-    public function toData() : array;
+    public function toData(): array;
 }

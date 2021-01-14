@@ -10,6 +10,7 @@ use pocketmine\utils\Config;
 use pocketmine\utils\Utils;
 use Throwable;
 use function is_array;
+use function var_dump;
 use function version_compare;
 use function yaml_parse;
 
@@ -23,9 +24,9 @@ class LuckUpdater extends AsyncTask
 
     /**
      * LuckUpdater constructor.
-     * @param float $version
+     * @param string $version
      */
-    public function __construct(float $version)
+    public function __construct(string $version)
     {
         $this->version = $version;
     }
@@ -42,7 +43,7 @@ class LuckUpdater extends AsyncTask
 
             $value = version_compare(((string)$this->version), ((string)$data['version']));
 
-            $this->setResult(['update' => $value, 'version' => $data['version']]);
+            $this->setResult(['update' => $value, 'version' => $data['version'], 'data' => $data]);
 
         } catch (Throwable $e) {
             $this->setResult(['update' => 'error']);
@@ -62,6 +63,5 @@ class LuckUpdater extends AsyncTask
             $message = '§r§6Uma nova versão do LuckCode está disponível em §fhttps://github.com/SamosMC/LuckCode §7[v' . $result['version'] . ']';
         }
         if (isset($message)) $server->getPluginManager()->getPlugin('LuckCode')->getLogger()->info($message);
-
     }
 }

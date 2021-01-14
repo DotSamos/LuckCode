@@ -30,54 +30,24 @@ abstract class LuckPlugin extends PluginBase implements Listener
 
     public function onLoad()
     {
-        if(isset(self::$instance)) {
+        if (isset(self::$instance)) {
             self::$instance = $this;
         }
         $this->checkDataManager();
         $this->checkSystemLoader();
     }
 
-    public function onEnable()
+    protected function checkDataManager()
     {
-        $this->checkProvider();
-        if($this instanceof LuckSystemLoader) {
-            $this->systemController->onEnable();
-        }
-    }
-
-    public function onDisable()
-    {
-        if($this instanceof LuckSystemLoader) {
-            $this->systemController->onDisable();
-        }
-    }
-
-    /** @return LuckDatabase */
-    public function getDatabase() : LuckDatabase {
-        return $this->database;
-    }
-
-    /** @return SystemController */
-    public function getSystemController() : SystemController {
-        return $this->systemController;
-    }
-
-    protected function checkDataManager() {
-        if($this instanceof LuckDataManagerRequire) {
+        if ($this instanceof LuckDataManagerRequire) {
             $class = $this->getBaseDataManager();
             $this->dataManager = new $class();
         }
     }
 
-    protected function checkProvider() {
-        if($this instanceof LuckDatabaseRequire) {
-            $this->getServer()->getPluginManager()->registerEvents($this, $this);
-        }
-    }
-
     protected function checkSystemLoader()
     {
-        if($this instanceof LuckSystemLoader) {
+        if ($this instanceof LuckSystemLoader) {
             $class = $this->getSystemControllerBase();
             /** @var SystemController $sc */
             $sc = new $class($this);
@@ -86,22 +56,58 @@ abstract class LuckPlugin extends PluginBase implements Listener
         }
     }
 
+    public function onEnable()
+    {
+        $this->checkProvider();
+        if ($this instanceof LuckSystemLoader) {
+            $this->systemController->onEnable();
+        }
+    }
+
+    protected function checkProvider()
+    {
+        if ($this instanceof LuckDatabaseRequire) {
+            $this->getServer()->getPluginManager()->registerEvents($this, $this);
+        }
+    }
+
+    public function onDisable()
+    {
+        if ($this instanceof LuckSystemLoader) {
+            $this->systemController->onDisable();
+        }
+    }
+
+    /** @return LuckDatabase */
+    public function getDatabase(): LuckDatabase
+    {
+        return $this->database;
+    }
+
+    /** @return SystemController */
+    public function getSystemController(): SystemController
+    {
+        return $this->systemController;
+    }
+
     /** @param LuckDatabaseEnableEvent $e */
-    public function onConnectDatabase(LuckDatabaseEnableEvent $e) {
-        if($this instanceof LuckDatabaseRequire) {
+    public function onConnectDatabase(LuckDatabaseEnableEvent $e)
+    {
+        if ($this instanceof LuckDatabaseRequire) {
             $db = $e->getDatabase();
             $this->database = $db;
             $provider = $db->getProvider();
             $tables = $this->getBaseTables();
-            array_walk($tables, function (string $class) use($provider, $db){
+            array_walk($tables, function (string $class) use ($provider, $db) {
                 $db->addTable(new $class($provider, $this));
             });
         }
     }
 
     /** @param LuckDatabaseNotInitializeEvent $e */
-    public function onDatabaseConnectionError(LuckDatabaseNotInitializeEvent $e) {
-        if($this instanceof LuckDatabaseRequire) {
+    public function onDatabaseConnectionError(LuckDatabaseNotInitializeEvent $e)
+    {
+        if ($this instanceof LuckDatabaseRequire) {
             $this->getLogger()->info('§cO provedor de dados do LuckCode não pode ser carregado!');
             $this->getServer()->getPluginManager()->disablePlugin($this);
         }

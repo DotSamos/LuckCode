@@ -21,6 +21,6 @@ class LuckDatabaseSystem extends System
     public function onDisable()
     {
         $db = LuckCodePlugin::getInstance()->getDatabase();
-        if($db) $db->close();
+        if ($db) $db->close();
     }
 }

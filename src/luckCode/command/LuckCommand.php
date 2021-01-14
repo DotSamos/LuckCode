@@ -12,7 +12,6 @@ use function array_map;
 use function array_values;
 use function in_array;
 use function strtolower;
-use function var_dump;
 
 abstract class LuckCommand extends Command
 {
@@ -33,13 +32,14 @@ abstract class LuckCommand extends Command
         }, $this->getDefaultSubCommands());
     }
 
+    /** @return string[] */
+    public abstract function getDefaultSubCommands(): array;
+
     /** @return LuckSubCommand[] */
-    public function getSubCommands() : array {
+    public function getSubCommands(): array
+    {
         return $this->subCommands;
     }
-
-    /** @return string[] */
-    public abstract function getDefaultSubCommands() : array;
 
     /**
      * @param CommandSender $s
@@ -60,7 +60,7 @@ abstract class LuckCommand extends Command
                         return $subCommand->canExecute($s) && ($subCommand->getName() == $exec || in_array($exec, $subCommand->getAliases()));
                     })
                 )[0] ?? null;
-            if($found) {
+            if ($found) {
                 unset($args[0]);
                 $found->execute($s, array_values($args));
                 return true;
@@ -75,9 +75,10 @@ abstract class LuckCommand extends Command
      * @param PluginBase $plugin
      * @param string|null $prefix
      */
-    public function registerCommand(PluginBase $plugin, string $prefix = null) {
-        if(!$prefix) {
-            $prefix = strtolower($plugin->getName()).'.command';
+    public function registerCommand(PluginBase $plugin, string $prefix = null)
+    {
+        if (!$prefix) {
+            $prefix = strtolower($plugin->getName()) . '.command';
         }
         $plugin->getServer()->getCommandMap()->register($prefix, $this);
     }

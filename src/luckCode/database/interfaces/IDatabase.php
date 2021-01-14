@@ -10,14 +10,14 @@ interface IDatabase
 {
 
     /** @return IProvider */
-    public function getProvider() : IProvider;
+    public function getProvider(): IProvider;
 
     /** @return PluginBase */
-    public function getOwnerPlugin() : PluginBase;
+    public function getOwnerPlugin(): PluginBase;
 
     /** @return bool */
-    public function close() : bool;
-    
+    public function close(): bool;
+
     public function onPreLoadTables();
 
     public function onInvalidProvider();
@@ -26,7 +26,7 @@ interface IDatabase
      * @param ITable $table
      * @return bool
      */
-    public function addTable(ITable $table) : bool;
+    public function addTable(ITable $table): bool;
 
     /**
      * @param string $name
@@ -35,10 +35,10 @@ interface IDatabase
     public function getTable(string $name);
 
     /** @return string[] */
-    public function getDefaultTables() : array;
+    public function getDefaultTables(): array;
 
     /**
      * @return bool
      */
-    public function loadTables() : bool;
+    public function loadTables(): bool;
 }

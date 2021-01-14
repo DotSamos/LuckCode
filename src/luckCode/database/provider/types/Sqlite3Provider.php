@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace luckCode\database\provider\types;
 
+use Exception;
 use luckCode\database\provider\Provider;
 use SQLite3;
 use SQLite3Result;
@@ -12,7 +13,7 @@ use Throwable;
 class Sqlite3Provider extends Provider
 {
 
-    /** @var SQLite3 $connection*/
+    /** @var SQLite3 $connection */
     protected $connection;
 
     /**
@@ -30,9 +31,9 @@ class Sqlite3Provider extends Provider
     {
         $path = $args['path'] ?? $this->ownerPlugin->getDataFolder();
         $file = $args['file'] ?? 'database.db';
-        if(!is_dir($path)) mkdir($path);
+        if (!is_dir($path)) mkdir($path);
         try {
-            $con = @new SQLite3($path.DIRECTORY_SEPARATOR.$file);
+            $con = @new SQLite3($path . DIRECTORY_SEPARATOR . $file);
             $con->enableExceptions(true);
             $this->connection = $con;
             $this->showInfo('§aOK.');
@@ -49,7 +50,7 @@ class Sqlite3Provider extends Provider
      */
     public function close(): bool
     {
-        if($this->connection) {
+        if ($this->connection) {
             parent::close();
             return $this->connection->close();
         }
@@ -83,16 +84,16 @@ class Sqlite3Provider extends Provider
         try {
             $result = $this->connection->query($query);
             $finalResult = [];
-            if($result instanceof SQLite3Result) {
-                if($fetchAll) {
-                    while($r = $result->fetchArray(SQLITE3_ASSOC)) {
+            if ($result instanceof SQLite3Result) {
+                if ($fetchAll) {
+                    while ($r = $result->fetchArray(SQLITE3_ASSOC)) {
                         $finalResult[] = $r;
                     }
                 } else {
                     $finalResult = ($r = $result->fetchArray(SQLITE3_ASSOC)) == false ? [] : $r;
                 }
             } else {
-                throw new \Exception($this->connection->lastErrorMsg(), $this->connection->lastErrorCode());
+                throw new Exception($this->connection->lastErrorMsg(), $this->connection->lastErrorCode());
             }
             return $finalResult;
         } catch (Throwable $e) {

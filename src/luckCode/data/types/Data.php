@@ -26,12 +26,12 @@ abstract class Data implements IData
 
     function __construct(string $file, string $filePath, PluginBase $plugin)
     {
-        $file = $file.'.'.$this->getTypeFile();
+        $file = $file . '.' . $this->getTypeFile();
         $this->file = $file;
 
-        if(!is_dir($filePath)) mkdir($filePath);
+        if (!is_dir($filePath)) mkdir($filePath);
 
-        $this->filePath = $filePath.DIRECTORY_SEPARATOR.$file;
+        $this->filePath = $filePath . DIRECTORY_SEPARATOR . $file;
         $this->pluginOwner = $plugin;
 
         $plugin->saveResource($file);
@@ -79,14 +79,6 @@ abstract class Data implements IData
     /**
      * @inheritDoc
      */
-    public function hasKey(string $key): bool
-    {
-        return isset($this->data[$key]);
-    }
-
-    /**
-     * @inheritDoc
-     */
     public function set(string $key, $value)
     {
         $this->data[$key] = $value;
@@ -107,17 +99,17 @@ abstract class Data implements IData
     {
         $vars = explode(".", $route);
         $base = array_shift($vars);
-        if(isset($this->data[$base])){
+        if (isset($this->data[$base])) {
             $base = $this->data[$base];
-        }else{
+        } else {
             return $defaultReturn;
         }
 
-        while(count($vars) > 0){
+        while (count($vars) > 0) {
             $baseKey = array_shift($vars);
-            if(is_array($base) and isset($base[$baseKey])){
+            if (is_array($base) and isset($base[$baseKey])) {
                 $base = $base[$baseKey];
-            }else{
+            } else {
                 return $defaultReturn;
             }
         }
@@ -129,11 +121,19 @@ abstract class Data implements IData
      */
     public function remove(string $key): bool
     {
-        if($this->hasKey($key)) {
+        if ($this->hasKey($key)) {
             unset($this->data[$key]);
             return true;
         }
         return false;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function hasKey(string $key): bool
+    {
+        return isset($this->data[$key]);
     }
 
     /**

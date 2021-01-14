@@ -12,12 +12,12 @@ interface IProvider
 {
 
     /** @return PluginBase */
-    public function getOwnerPlugin() : PluginBase;
+    public function getOwnerPlugin(): PluginBase;
 
     public function getRawConnection();
 
     /** @return string */
-    public function getType() : string;
+    public function getType(): string;
 
     /** @return Exception|null */
     public function fail();
@@ -26,27 +26,27 @@ interface IProvider
     public function failInitializeException();
 
     /** @return bool */
-    public function isLocal() : bool;
+    public function isLocal(): bool;
 
     /**
      * @param array $args
      * @return bool
      */
-    public function tryConnect(array $args) : bool;
+    public function tryConnect(array $args): bool;
 
     /** @return bool */
-    public function close() : bool;
+    public function close(): bool;
 
     /**
      * @param string $exec
      * @return bool
      */
-    public function exec(string $exec) : bool;
+    public function exec(string $exec): bool;
 
     /**
      * @param string $query
      * @param bool $fetchAll
      * @return array
      */
-    public function executeQuery(string $query, $fetchAll = false) : array;
+    public function executeQuery(string $query, $fetchAll = false): array;
 }

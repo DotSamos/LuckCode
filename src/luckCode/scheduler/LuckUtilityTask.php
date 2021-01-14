@@ -20,14 +20,14 @@ class LuckUtilityTask extends LuckTask
         $pl = LuckCodePlugin::getInstance();
         $syController = $pl->getSystemController();
 
-        if($freezeTime = $syController->getSystem(FreezeTimeSystem::NAME)) {
-            foreach($freezeTime::$worlds as $name => $time) {
+        if ($freezeTime = $syController->getSystem(FreezeTimeSystem::NAME)) {
+            foreach ($freezeTime::$worlds as $name => $time) {
                 Server::getInstance()->getLevelByName($name)->setTime($time);
             }
         }
-        if($syController->getSystem(LuckCommandSystem::NAME)) {
+        if ($syController->getSystem(LuckCommandSystem::NAME)) {
             $all = EntityController::getAllInFastKill();
-            array_walk($all, function (Player $p){
+            array_walk($all, function (Player $p) {
                 $p->sendPopup('§r§eModo fast-kill ativo!');
             });
         }

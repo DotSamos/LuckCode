@@ -20,17 +20,18 @@ class SearchProviderEvent extends LuckEvent
 
     /** @var string[] $list */
     private $list = [
-      'pdo-mysqli' => PDOMysqliProvider::class,
-      'pdo-sqlite3' => PDOSqlite3Provider::class,
-      'mysqli' => MysqliProvider::class,
-      'sqlite3' => Sqlite3Provider::class
+        'pdo-mysqli' => PDOMysqliProvider::class,
+        'pdo-sqlite3' => PDOSqlite3Provider::class,
+        'mysqli' => MysqliProvider::class,
+        'sqlite3' => Sqlite3Provider::class
     ];
 
     /**
      * @param string $type
      * @param string $classProvider
      */
-    public function putType(string $type, string $classProvider) {
+    public function putType(string $type, string $classProvider)
+    {
         $this->list[strtolower($type)] = $classProvider;
     }
 
@@ -38,7 +39,8 @@ class SearchProviderEvent extends LuckEvent
      * @param string $type
      * @return string|null
      */
-    public function getType(string $type) {
+    public function getType(string $type)
+    {
         return $this->list[strtolower($type)] ?? null;
     }
 
@@ -46,8 +48,9 @@ class SearchProviderEvent extends LuckEvent
      * @param string $type
      * @return bool
      */
-    public function removeType(string $type) : bool {
-        if(isset($this->list[$type])) {
+    public function removeType(string $type): bool
+    {
+        if (isset($this->list[$type])) {
             unset($this->list[$type]);
             return true;
         }

@@ -8,23 +8,23 @@ interface IData
 {
 
     /** @return string */
-    public function getTypeData() : string;
+    public function getTypeData(): string;
 
     /** @return string */
-    public function getTypeFile() : string;
+    public function getTypeFile(): string;
 
     /** @return string */
-    public function getFileName() : string;
+    public function getFileName(): string;
 
     /** @return string */
-    public function getFilePath() : string;
+    public function getFilePath(): string;
 
     public function load();
 
     public function reload();
 
     /** @return array */
-    public function getContents() : array;
+    public function getContents(): array;
 
     /** @param array $data */
     public function setContents(array $data);
@@ -33,7 +33,7 @@ interface IData
      * @param string $key
      * @return bool
      */
-    public function hasKey(string $key) : bool;
+    public function hasKey(string $key): bool;
 
     /**
      * @param string $key
@@ -59,17 +59,17 @@ interface IData
      * @param string $key
      * @return bool
      */
-    public function remove(string $key) : bool;
+    public function remove(string $key): bool;
 
     /** @return string */
-    public function getSaveEngine() : string;
+    public function getSaveEngine(): string;
 
     /** @return bool */
-    public function forceSave() : bool;
+    public function forceSave(): bool;
 
     /** @return bool */
-    public function isInSaveWorker() : bool;
+    public function isInSaveWorker(): bool;
 
     /** @return bool */
-    public function addInSaveWorker() : bool;
+    public function addInSaveWorker(): bool;
 }

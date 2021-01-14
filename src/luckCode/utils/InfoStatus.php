@@ -11,7 +11,7 @@ interface InfoStatus
 {
 
     /** @return PluginLogger */
-    public function getLogger() : PluginLogger;
+    public function getLogger(): PluginLogger;
 
     /** @param string $info */
     public function showInfo(string $info);

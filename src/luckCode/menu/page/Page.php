@@ -33,15 +33,15 @@ abstract class Page implements interfaces\IPage
         $this->menu->setItems($this->getItems($player));
     }
 
-    /** @inheritDoc */
-    public function setRedoPage(IPage $page)
-    {
-        $this->redoPage = $page;
-    }
-
     /** @return IPage|null */
     public function getRedoPage()
     {
         return $this->redoPage;
+    }
+
+    /** @inheritDoc */
+    public function setRedoPage(IPage $page)
+    {
+        $this->redoPage = $page;
     }
 }

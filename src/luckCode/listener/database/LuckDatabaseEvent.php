@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace luckCode\listener\database;
 
-use luckCode\database\provider\interfaces\IProvider;
 use luckCode\database\types\LuckDatabase;
 use luckCode\listener\LuckEvent;
 
@@ -24,12 +23,14 @@ class LuckDatabaseEvent extends LuckEvent
     }
 
     /** @return LuckDatabase */
-    public function getDatabase() : LuckDatabase {
+    public function getDatabase(): LuckDatabase
+    {
         return $this->database;
     }
 
     /** @param LuckDatabase $database */
-    public function setDatabase(LuckDatabase $database) {
+    public function setDatabase(LuckDatabase $database)
+    {
         $this->database = $database;
     }
 }

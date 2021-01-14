@@ -4,31 +4,27 @@ declare(strict_types=1);
 
 namespace luckCode\menu;
 
-use luckCode\scheduler\LuckTask;
-use function count;
 use luckCode\LuckCodePlugin;
 use luckCode\menu\interfaces\IMenu;
 use luckCode\menu\manager\MenuController;
 use luckCode\menu\tile\MenuChestTile;
-use pocketmine\Player;
-use pocketmine\Server;
+use luckCode\scheduler\LuckTask;
 use pocketmine\block\Block;
-use pocketmine\event\Listener;
 use pocketmine\event\inventory\InventoryTransactionEvent;
+use pocketmine\event\Listener;
 use pocketmine\inventory\ContainerInventory;
 use pocketmine\inventory\InventoryHolder;
 use pocketmine\inventory\InventoryType;
-use pocketmine\inventory\Transaction;
 use pocketmine\item\Item;
 use pocketmine\level\Position;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\nbt\tag\IntTag;
 use pocketmine\nbt\tag\StringTag;
-use pocketmine\network\protocol\ContainerSetContentPacket;
-use pocketmine\network\protocol\ContainerSetSlotPacket;
 use pocketmine\network\protocol\UpdateBlockPacket;
-use pocketmine\tile\Chest;
+use pocketmine\Player;
+use pocketmine\Server;
 use pocketmine\tile\Tile;
+use function count;
 
 abstract class Menu extends ContainerInventory implements IMenu, Listener
 {
@@ -82,15 +78,16 @@ abstract class Menu extends ContainerInventory implements IMenu, Listener
      * @param InventoryTransactionEvent $e
      * @priority HIGHEST
      */
-    public function onTransaction(InventoryTransactionEvent $e) {
+    public function onTransaction(InventoryTransactionEvent $e)
+    {
         $t = $e->getTransaction();
         $p = $t->getPlayer();
-        foreach($t->getTransactions() as $a) {
+        foreach ($t->getTransactions() as $a) {
             $inv = $a->getInventory();
 
             $item = $a->getChange()['out'] ?? $a->getChange()['in'];
 
-            if($item != null && $inv === $this && $this->processClick($p, $item)) {
+            if ($item != null && $inv === $this && $this->processClick($p, $item)) {
                 $e->setCancelled(true);
                 $this->fixFloatingInventory($p);
                 break;
@@ -99,16 +96,16 @@ abstract class Menu extends ContainerInventory implements IMenu, Listener
     }
 
     /** @param Player $p */
-    private function fixFloatingInventory(Player $p) 
+    private function fixFloatingInventory(Player $p)
     {
-        if(LuckCodePlugin::getInstance()->getDataManager()->get('menu')->get('fix_floating_inventory')) {
+        if (LuckCodePlugin::getInstance()->getDataManager()->get('menu')->get('fix_floating_inventory')) {
             $floatingInventory = $p->getFloatingInventory();
-            $floatingContents = array_filter($floatingInventory->getContents(), function($item){
+            $floatingContents = array_filter($floatingInventory->getContents(), function ($item) {
                 return $item instanceof Item;
             });
             $floatingInventory->clearAll(false);
 
-            if(count($floatingContents) > 0) {
+            if (count($floatingContents) > 0) {
                 $inv = $p->getInventory();
                 $inv->addItem(...$floatingContents);
                 $inv->sendContents([$p]);
@@ -116,10 +113,10 @@ abstract class Menu extends ContainerInventory implements IMenu, Listener
         }
     }
 
-    /** 
+    /**
      * @param Player $who
      */
-    public function onOpen(Player $who) 
+    public function onOpen(Player $who)
     {
         parent::onOpen($who);
         MenuController::put($who, $this);
@@ -158,12 +155,13 @@ abstract class Menu extends ContainerInventory implements IMenu, Listener
     /**
      * @param Player $who
      */
-    public function finalClose(Player $who) {
+    public function finalClose(Player $who)
+    {
         parent::onClose($who);
-        if(count($this->getViewers()) < 1 && $this->holder instanceof MenuChestTile) {
+        if (count($this->getViewers())-1 < 1 && $this->holder instanceof MenuChestTile) {
             $pair = $this->holder->getPair();
             $this->holder->close();
-            if($pair != null) $pair->close();
+            if ($pair != null) $pair->close();
         }
         MenuController::remove($who);
     }

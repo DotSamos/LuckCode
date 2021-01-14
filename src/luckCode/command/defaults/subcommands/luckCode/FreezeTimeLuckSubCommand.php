@@ -60,7 +60,7 @@ class FreezeTimeLuckSubCommand extends LuckSubCommand
      */
     public function execute(CommandSender $s, array $args)
     {
-        if($s instanceof Player) {
+        if ($s instanceof Player) {
             try {
                 $menu = new FreezeTimeMenu($s, '§r§bFreeze§l§3Time');
                 $s->addWindow($menu);

@@ -22,22 +22,22 @@ abstract class LuckSubCommand
     }
 
     /** @return string */
-    public abstract function getName() : string;
+    public abstract function getName(): string;
 
     /** @return string[] */
-    public abstract function getAliases() : array;
+    public abstract function getAliases(): array;
 
     /** @return string */
-    public abstract function getUsage() : string;
+    public abstract function getUsage(): string;
 
     /** @return string */
-    public abstract function getDescription() : string;
+    public abstract function getDescription(): string;
 
     /**
      * @param CommandSender $sender
      * @return bool
      */
-    public abstract function canExecute(CommandSender $sender) : bool;
+    public abstract function canExecute(CommandSender $sender): bool;
 
     /**
      * @param CommandSender $sender

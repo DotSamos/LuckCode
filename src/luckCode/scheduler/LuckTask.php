@@ -18,29 +18,32 @@ abstract class LuckTask extends Task
      */
     public function onRun($currentTick)
     {
-        if($this->isCooldown) {
+        if ($this->isCooldown) {
             $this->cancel();
         }
     }
 
-    /**
-     * @param int $ticks
-     */
-    public function registerToRepeat(int $ticks = 20) {
-       Server::getInstance()->getScheduler()->scheduleRepeatingTask($this, $ticks);
-    }
-
-    /**
-     * @param int $ticks
-     */
-    public function registerAfter(int $ticks) {
-        $this->isCooldown = true;
-        Server::getInstance()->getScheduler()->scheduleDelayedTask($this, $ticks);
-    }
-
-    public function cancel() {
-        if($this->getTaskId() != null) {
+    public function cancel()
+    {
+        if ($this->getTaskId() != null) {
             Server::getInstance()->getScheduler()->cancelTask($this->getTaskId());
         }
+    }
+
+    /**
+     * @param int $ticks
+     */
+    public function registerToRepeat(int $ticks = 20)
+    {
+        Server::getInstance()->getScheduler()->scheduleRepeatingTask($this, $ticks);
+    }
+
+    /**
+     * @param int $ticks
+     */
+    public function registerAfter(int $ticks)
+    {
+        $this->isCooldown = true;
+        Server::getInstance()->getScheduler()->scheduleDelayedTask($this, $ticks);
     }
 }

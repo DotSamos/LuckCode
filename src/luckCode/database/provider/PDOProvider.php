@@ -6,24 +6,12 @@ namespace luckCode\database\provider;
 
 use PDO;
 use PDOException;
-use function var_dump;
 
 abstract class PDOProvider extends Provider
 {
 
     /** @var PDO $connection */
     protected $connection;
-
-    /**
-     * @param array $args
-     * @return string
-     */
-    public abstract function getDSN(array $args) : string;
-
-    /**
-     * @return array
-     */
-    public abstract function getDriverOptions() : array;
 
     /**
      * @inheritDoc
@@ -46,6 +34,17 @@ abstract class PDOProvider extends Provider
             return false;
         }
     }
+
+    /**
+     * @param array $args
+     * @return string
+     */
+    public abstract function getDSN(array $args): string;
+
+    /**
+     * @return array
+     */
+    public abstract function getDriverOptions(): array;
 
     /**
      * @inheritDoc

@@ -16,7 +16,7 @@ class CheckUpdateSystem extends System
 
     public function onEnable()
     {
-        $version = LuckCodePlugin::getInstance()->getDescription()->getVersion();
+        $version = (string)LuckCodePlugin::getInstance()->getDescription()->getVersion();
         Server::getInstance()->getScheduler()->scheduleAsyncTask(new LuckUpdater($version));
     }
 

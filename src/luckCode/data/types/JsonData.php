@@ -26,7 +26,7 @@ class JsonData extends Data
     public function load()
     {
         $filePath = $this->filePath;
-        if(file_exists($filePath)) {
+        if (file_exists($filePath)) {
             $contents = file_get_contents($filePath);
             $this->data = json_decode($contents, true);
         } else {

@@ -27,13 +27,13 @@ interface IMenu
      * @param string $name
      * @return MenuChestTile
      */
-    public function makeTile(Position $pos, Player $p, string $name) : MenuChestTile;
+    public function makeTile(Position $pos, Player $p, string $name): MenuChestTile;
 
     /**
      * @param Player $p
      * @return Item[]
      */
-    public function getItems(Player $p) : array;
+    public function getItems(Player $p): array;
 
     /**
      * @param array $items
@@ -45,5 +45,5 @@ interface IMenu
      * @param Item $item
      * @return bool
      */
-    public function processClick(Player $p, Item $item) : bool;
+    public function processClick(Player $p, Item $item): bool;
 }
