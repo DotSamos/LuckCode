@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace luckCode\menu;
 
+use luckCode\scheduler\LuckTask;
 use function count;
 use luckCode\LuckCodePlugin;
 use luckCode\menu\interfaces\IMenu;
@@ -37,7 +38,7 @@ abstract class Menu extends ContainerInventory implements IMenu, Listener
 
     public function __construct(InventoryHolder $holder, InventoryType $type, array $items = [], $overrideSize = null, $overrideTitle = null)
     {
-        parent::__construct($holder, $type, $items, $overrideSize, $overrideTitle);
+        parent::__construct($holder, $type, $items, $overrideSize, $holder);
         Server::getInstance()->getPluginManager()->registerEvents($this, LuckCodePlugin::getInstance());
     }
 
@@ -129,13 +130,41 @@ abstract class Menu extends ContainerInventory implements IMenu, Listener
      */
     public function onClose(Player $who)
     {
+        $menu = $this;
+        $close = new class ($who, $menu) extends LuckTask {
+
+            /** @var Menu $menu */
+            private $menu;
+
+            /** @var Player $player */
+            private $player;
+
+            public function __construct(Player $player, Menu $menu)
+            {
+                $this->menu = $menu;
+                $this->player = $player;
+            }
+
+            public function onRun($currentTick)
+            {
+                $this->menu->finalClose($this->player);
+                parent::onRun($currentTick);
+            }
+        };
+        $close->registerAfter(LuckCodePlugin::getInstance()->getDataManager()->get('menu')->get('close_after'));
+        $this->fixFloatingInventory($who);
+    }
+
+    /**
+     * @param Player $who
+     */
+    public function finalClose(Player $who) {
         parent::onClose($who);
-        if(!count($this->getViewers()) && $this->holder instanceof Chest) {
+        if(count($this->getViewers()) < 1 && $this->holder instanceof MenuChestTile) {
             $pair = $this->holder->getPair();
             $this->holder->close();
             if($pair != null) $pair->close();
         }
         MenuController::remove($who);
-        $this->fixFloatingInventory($who);
     }
 }
