@@ -8,6 +8,7 @@ use Exception;
 use luckCode\LuckCodePlugin;
 use luckCode\menu\interfaces\IMenu;
 use luckCode\menu\tile\MenuChestTile;
+use luckCode\scheduler\LuckTask;
 use pocketmine\block\Block;
 use pocketmine\event\inventory\InventoryTransactionEvent;
 use pocketmine\event\Listener;
@@ -70,9 +71,9 @@ abstract class NormalMenu extends Menu
 
     public function onClose(Player $who)
     {
-        parent::onClose($who);
         $pos = $this->position;
         $realBlock = $pos->level->getBlock($pos);
         $this->sendBlock($who, $realBlock);
+        parent::onClose($who);
     }
 }
