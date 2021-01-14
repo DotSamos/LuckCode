@@ -16,7 +16,7 @@ use function array_walk;
 final class EntityController
 {
 
-    /** @var array $fastKill */
+    /** @var Player[] $fastKill */
     private static $fastKill = [];
 
     /**
@@ -30,7 +30,7 @@ final class EntityController
      * @param Player $player
      */
     public static function addFastKill(Player $player) {
-        self::$fastKill[spl_object_hash($player)] = true;
+        self::$fastKill[spl_object_hash($player)] = $player;
     }
 
     /**
@@ -46,6 +46,11 @@ final class EntityController
      */
     public static function removeFastKill(Player $player) {
         unset(self::$fastKill[spl_object_hash($player)]);
+    }
+
+    /** @return Player[] */
+    public static function getAllInFastKill() : array {
+        return self::$fastKill;
     }
 
     /**
