@@ -42,7 +42,7 @@ abstract class Table implements interfaces\ITable, InfoStatus
      */
     public function name(): string
     {
-        return static::$name;
+        return static::NAME;
     }
 
     /**

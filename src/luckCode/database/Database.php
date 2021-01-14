@@ -81,7 +81,7 @@ abstract class Database implements interfaces\IDatabase, InfoStatus
      */
     public function addTable(ITable $table): bool
     {
-        if (!isset($this->tables[$name = $table::$name])) {
+        if (!isset($this->tables[$name = $table::NAME])) {
             $this->tables[$name] = $table;
             return true;
         }
