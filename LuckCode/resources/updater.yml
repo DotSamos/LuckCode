@@ -1,0 +1,6 @@
+#----------------------------------------------------------------------------------
+# Gerenciamento da atualização do LuckCode
+
+# Checar se existe uma nova atualização do LuckCode
+update-enable: true
+#-----------------------------------------------------------------------------------
