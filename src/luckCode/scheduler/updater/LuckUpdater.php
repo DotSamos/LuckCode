@@ -29,7 +29,7 @@ class LuckUpdater extends AsyncTask
     {
         $data = @file_get_contents(self::URL);
 
-        $value = $data['version'] != $this->version ? 'true' : 'false';
+        $value = $data['version'] < $this->version ? 'true' : 'false';
 
         $this->setResult(['update' => (bool)$value]);
     }
