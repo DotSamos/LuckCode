@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace luckCode;
 
 use luckCode\plugin\interfaces\LuckSystemLoader;
+use luckCode\scheduler\LuckUtilityTask;
 use luckCode\system\controller\SystemController;
 use luckCode\system\types\FreezeTimeSystem;
 use luckCode\system\types\LuckCommandSystem;
@@ -100,6 +101,7 @@ class LuckCodePlugin extends PluginBase implements LuckSystemLoader
         EntityManager::registerDefaults();
         Tile::registerTile(MenuChestTile::class);
         AutoUpdater::check();
+        (new LuckUtilityTask())->registerToRepeat();
     }
 
     public function loadDatabase()
