@@ -6,6 +6,7 @@ namespace luckCode\command\models;
 
 use luckCode\command\LuckSubCommand;
 use pocketmine\command\CommandSender;
+use function array_chunk;
 use function array_filter;
 use function array_map;
 use function array_values;
@@ -97,19 +98,15 @@ abstract class HelpSubCommandModel extends LuckSubCommand
      * @return array
      */
     public function getPage(array $lines, int $page, int $totalPerPage = 5) : array {
-        $page--;
-        $totalLines = count($lines);
-        $totalPages = ceil($totalLines / $totalPerPage);
-        if($page > $totalPages) return [];
+        $commands = array_chunk($lines, $totalPerPage);
+        $pageNumber = min(count($commands), $page);
+        if($pageNumber < 1) {
+            $pageNumber = 1;
+        }
         $finalPage = [];
-        $total = 0;
-        for($i = 0; $i < $totalLines; $i++) {
-            $k = ($page / $totalPages) * $totalLines + $i;
-            if(isset($lines[$k]) && $total < $totalPerPage) {
-                $finalPage[] = $lines[$k];
-                $total++;
-            } else {
-                break;
+        if(isset($commands[$pageNumber - 1])) {
+            foreach($commands[$pageNumber - 1] as $line) {
+                $finalPage[] = $line;
             }
         }
         return $finalPage;
