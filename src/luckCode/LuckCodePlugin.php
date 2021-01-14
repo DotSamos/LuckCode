@@ -4,6 +4,11 @@ declare(strict_types=1);
 
 namespace luckCode;
 
+use luckCode\plugin\interfaces\LuckSystemLoader;
+use luckCode\system\controller\SystemController;
+use luckCode\system\types\FreezeTimeSystem;
+use luckCode\system\types\LuckCommandSystem;
+use luckCode\system\types\LuckDatabaseSystem;
 use luckCode\updater\AutoUpdater;
 use luckCode\command\defaults\LuckCodeCommand;
 use luckCode\data\manager\types\LuckDataManager;
@@ -12,7 +17,6 @@ use luckCode\database\types\LuckDatabase;
 use luckCode\entity\EntityManager;
 use luckCode\menu\manager\MenuController;
 use luckCode\menu\tile\MenuChestTile;
-use luckCode\scheduler\loader\DatabaseLoaderWaitTask;
 use luckCode\utils\ProviderLoader;
 use luckCode\utils\text\TextFormatter;
 use pocketmine\Server;
@@ -20,7 +24,7 @@ use pocketmine\plugin\PluginBase;
 use pocketmine\tile\Tile;
 use function implode;
 
-class LuckCodePlugin extends PluginBase
+class LuckCodePlugin extends PluginBase implements LuckSystemLoader
 {
 
     const PREFIX = '§f[§l§3L§5C§r§f] ';
@@ -32,6 +36,9 @@ class LuckCodePlugin extends PluginBase
 
     /** @var LuckDatabase $database */
     private $database;
+
+    /** @var SystemController $systemController */
+    private $systemController;
 
     /** @var LuckCodePlugin $instance */
     private static $instance;
@@ -45,17 +52,15 @@ class LuckCodePlugin extends PluginBase
     public function onLoad()
     {
         self::$instance = $this;
+        $this->dataManager = new LuckDataManager();
+        $this->systemController = ($sy = new SystemController($this));
+        $sy->onLoad();
     }
 
     public function onEnable()
     {
-        $this->dataManager = ($dataManager = $this->loadDataManager());
-        (new DatabaseLoaderWaitTask())->registerToRepeat(1);
-        EntityManager::registerDefaults();
-        (new LuckCodeCommand())->registerCommand($this, 'samos.luckcode.command');
-        Tile::registerTile(MenuChestTile::class);
-        AutoUpdater::check();
-
+        $this->loadDatabase();
+        $this->systemController->onEnable();
         Server::getInstance()->getLogger()->info(TextFormatter::center(implode("§r\n", [
             '§8',
             '§8',
@@ -69,10 +74,9 @@ class LuckCodePlugin extends PluginBase
 
     public function onDisable()
     {
+        $this->systemController->onDisable();
         MenuController::closeAll('§cMenu fechado devido a um evento inesperado. Tente reabrir ele novamente dentro de alguns segundos...');
         DataSaveWorker::startWorker();
-        $database = $this->database;
-        if ($database) $database->close();
     }
 
     /** @return LuckDataManager */
@@ -84,6 +88,12 @@ class LuckCodePlugin extends PluginBase
     private function loadDataManager(): LuckDataManager
     {
         return $this->dataManager = new LuckDataManager();
+    }
+
+    private function loadBase() {
+        EntityManager::registerDefaults();
+        Tile::registerTile(MenuChestTile::class);
+        AutoUpdater::check();
     }
 
     public function loadDatabase()
@@ -98,5 +108,33 @@ class LuckCodePlugin extends PluginBase
                 $this->database = new LuckDatabase($provider, $this);
             }
         }
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getSystemStatusList(): array
+    {
+        return $this->dataManager->get('systems')->getContents();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getSystemsBases(): array
+    {
+        return [
+            FreezeTimeSystem::class,
+            LuckCommandSystem::class,
+            LuckDatabaseSystem::class
+        ];
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getSystemController(): SystemController
+    {
+        return $this->systemController;
     }
 }

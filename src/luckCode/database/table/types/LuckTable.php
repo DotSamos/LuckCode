@@ -11,7 +11,7 @@ use function timezone_open;
 class LuckTable extends Table
 {
 
-    public static $name = 'luckcode_default';
+    const NAME = 'luckcode_default';
 
     /**
      * @inheritDoc
