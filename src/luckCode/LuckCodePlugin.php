@@ -44,7 +44,6 @@ class LuckCodePlugin extends PluginBase
 
     public function onLoad()
     {
-        AutoUpdater::check();
         self::$instance = $this;
     }
 
@@ -55,6 +54,7 @@ class LuckCodePlugin extends PluginBase
         EntityManager::registerDefaults();
         (new LuckCodeCommand())->registerCommand($this, 'samos.luckcode.command');
         Tile::registerTile(MenuChestTile::class);
+        AutoUpdater::check();
 
         Server::getInstance()->getLogger()->info(TextFormatter::center(implode("§r\n", [
             '§8',

@@ -13,22 +13,22 @@ class LuckUpdater extends AsyncTask
 
     const URL = 'https://raw.githubusercontent.com/SamosMC/LuckCode/main/plugin.yml';
 
-    /** @var string $version */
+    /** @var mixed $version */
     private $version;
 
     /**
      * LuckUpdater constructor.
-     * @param string $version
+     * @param mixed $version
      */
-    public function __construct(string $version)
+    public function __construct($version)
     {
         $this->version = $version;
     }
 
     public function onRun()
     {
-        $data = file_get_contents(self::URL);
-        var_dump($data);
+        $data = yaml_parse_file(self::URL);
+
         $value = $data['version'] != $this->version ? 'true' : 'false';
 
         $this->setResult(['update' => (bool)$value]);
