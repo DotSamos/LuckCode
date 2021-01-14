@@ -79,6 +79,12 @@ class LuckCodePlugin extends PluginBase implements LuckSystemLoader
         DataSaveWorker::startWorker();
     }
 
+    /** @return LuckDatabase|null */
+    public function getDatabase()
+    {
+        return $this->database;
+    }
+
     /** @return LuckDataManager */
     public function getDataManager(): LuckDataManager
     {
