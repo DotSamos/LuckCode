@@ -21,7 +21,7 @@ class DatabaseLoaderWaitTask extends LuckTask
         $wait = array_filter($pl->getServer()->getPluginManager()->getPlugins(), function (PluginBase $check){
            return !$check->isEnabled();
         });
-        if(count($wait) == 0) {
+        if(!count($wait)) {
             $pl->loadDatabase();
             $this->cancel();
         }

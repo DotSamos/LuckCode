@@ -17,7 +17,7 @@ final class AutoUpdater
         $server = $plugin->getServer();
 
         if ($data->get('updater')->get('update-enable')) {
-            $version = $plugin->getDescription()->getVersion();
+            $version = (string)$plugin->getDescription()->getVersion();
             $server->getScheduler()->scheduleAsyncTask(new LuckUpdater($version));
         }
     }
