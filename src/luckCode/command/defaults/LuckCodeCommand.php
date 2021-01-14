@@ -6,6 +6,7 @@ namespace luckCode\command\defaults;
 
 use luckCode\command\defaults\subcommands\luckCode\FastKillSubCommand;
 use luckCode\command\defaults\subcommands\luckCode\FormatTextLuckCodeSubCommand;
+use luckCode\command\defaults\subcommands\luckCode\FreezeTimeLuckSubCommand;
 use luckCode\command\defaults\subcommands\luckCode\HelpLuckCodeSubCommand;
 use luckCode\command\defaults\subcommands\luckCode\OpenMenuLuckCodeSubCommand;
 use luckCode\command\defaults\subcommands\luckCode\SpawnHolographicSubCommand;
@@ -30,6 +31,7 @@ class LuckCodeCommand extends LuckCommand
             OpenMenuLuckCodeSubCommand::class,
             FormatTextLuckCodeSubCommand::class,
             FastKillSubCommand::class,
+            FreezeTimeLuckSubCommand::class
         ];
     }
 }
