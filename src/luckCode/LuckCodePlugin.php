@@ -59,7 +59,7 @@ class LuckCodePlugin extends PluginBase implements LuckSystemLoader
 
     public function onEnable()
     {
-        $this->loadDatabase();
+        $this->loadBase();
         $this->systemController->onEnable();
         Server::getInstance()->getLogger()->info(TextFormatter::center(implode("§r\n", [
             '§8',
