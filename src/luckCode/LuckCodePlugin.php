@@ -7,11 +7,10 @@ namespace luckCode;
 use luckCode\plugin\interfaces\LuckSystemLoader;
 use luckCode\scheduler\LuckUtilityTask;
 use luckCode\system\controller\SystemController;
+use luckCode\system\types\CheckUpdateSystem;
 use luckCode\system\types\FreezeTimeSystem;
 use luckCode\system\types\LuckCommandSystem;
 use luckCode\system\types\LuckDatabaseSystem;
-use luckCode\updater\AutoUpdater;
-use luckCode\command\defaults\LuckCodeCommand;
 use luckCode\data\manager\types\LuckDataManager;
 use luckCode\data\save\manager\DataSaveWorker;
 use luckCode\database\types\LuckDatabase;
@@ -100,7 +99,6 @@ class LuckCodePlugin extends PluginBase implements LuckSystemLoader
     private function loadBase() {
         EntityManager::registerDefaults();
         Tile::registerTile(MenuChestTile::class);
-        AutoUpdater::check();
         (new LuckUtilityTask())->registerToRepeat();
     }
 
@@ -134,7 +132,8 @@ class LuckCodePlugin extends PluginBase implements LuckSystemLoader
         return [
             FreezeTimeSystem::class,
             LuckCommandSystem::class,
-            LuckDatabaseSystem::class
+            LuckDatabaseSystem::class,
+            CheckUpdateSystem::class
         ];
     }
 
