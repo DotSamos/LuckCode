@@ -1,3 +1,4 @@
 DataBase: true
 LuckCommand: true
 FreezeTime: true
+CheckUpdate: true
