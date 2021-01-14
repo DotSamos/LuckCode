@@ -5,12 +5,11 @@ declare(strict_types=1);
 namespace luckCode\scheduler\updater;
 
 use pocketmine\scheduler\AsyncTask;
+use pocketmine\Server;
 use pocketmine\utils\Config;
 use pocketmine\utils\Utils;
-use pocketmine\Server;
 use Throwable;
 use function is_array;
-use function is_null;
 use function version_compare;
 use function yaml_parse;
 
@@ -24,9 +23,9 @@ class LuckUpdater extends AsyncTask
 
     /**
      * LuckUpdater constructor.
-     * @param string $version
+     * @param float $version
      */
-    public function __construct(string $version)
+    public function __construct(float $version)
     {
         $this->version = $version;
     }
@@ -34,15 +33,17 @@ class LuckUpdater extends AsyncTask
     public function onRun()
     {
         try {
-            $data = @yaml_parse(Config::fixYAMLIndexes(Utils::getURL(self::URL)));
+            $data = @yaml_parse(Config::fixYAMLIndexes(Utils::getURL(self::URL, 120)));
 
-            $value = is_null($data) ? 'error' : version_compare(((string)$this->version), ((string)$data['version']));
-
-            if (!is_null($data) && is_array($data)) {
-                $this->setResult(['update' => $value, 'version' => $data['version']]);
-            } else {
+            if (!is_array($data) || !isset($data['version'])) {
                 $this->setResult(['update' => 'error']);
+                return;
             }
+
+            $value = version_compare(((string)$this->version), ((string)$data['version']));
+
+            $this->setResult(['update' => $value, 'version' => $data['version']]);
+
         } catch (Throwable $e) {
             $this->setResult(['update' => 'error']);
         }
@@ -55,11 +56,12 @@ class LuckUpdater extends AsyncTask
     {
         $result = $this->getResult();
 
-        if (isset($result['error'])) {
-            $message = '§r§cOcorreu um erro ao realizar a requesitação dos dados!';
-        } else if($this->getResult()['update'] == -1) {
-             $message = '§r§6Uma nova versão do LuckCode está disponível em §fhttps://github.com/SamosMC/LuckCode §7[v'.$result['version'].']';
+        if ($result['update'] === 'error') {
+            $message = '§r§eAcho que vem uma nova versão do LuckCode por ai! Fica esperto oO';
+        } else if ($this->getResult()['update'] == -1) {
+            $message = '§r§6Uma nova versão do LuckCode está disponível em §fhttps://github.com/SamosMC/LuckCode §7[v' . $result['version'] . ']';
         }
-        if(isset($message)) $server->getPluginManager()->getPlugin('LuckCode')->getLogger()->info($message);
+        if (isset($message)) $server->getPluginManager()->getPlugin('LuckCode')->getLogger()->info($message);
+
     }
 }
