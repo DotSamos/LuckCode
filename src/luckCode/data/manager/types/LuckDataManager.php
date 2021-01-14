@@ -14,7 +14,7 @@ class LuckDataManager extends DataManager
     public function loadDefaults()
     {
         $pl = LuckCodePlugin::getInstance();
-        $defaults = ['database', 'entities', 'menu'];
+        $defaults = ['database', 'entities', 'menu', 'updater'];
         array_walk($defaults, function (string $file) use($pl){
            $this->cache[$file] = new YamlData($file, $pl->getDataFolder(), $pl);
         });

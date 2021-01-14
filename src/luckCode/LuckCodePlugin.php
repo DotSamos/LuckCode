@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace luckCode;
 
-use function implode;
+use luckCode\updater\AutoUpdater;
 use luckCode\command\defaults\LuckCodeCommand;
 use luckCode\data\manager\types\LuckDataManager;
 use luckCode\data\save\manager\DataSaveWorker;
@@ -18,6 +18,7 @@ use luckCode\utils\text\TextFormatter;
 use pocketmine\Server;
 use pocketmine\plugin\PluginBase;
 use pocketmine\tile\Tile;
+use function implode;
 
 class LuckCodePlugin extends PluginBase
 {
@@ -43,6 +44,7 @@ class LuckCodePlugin extends PluginBase
 
     public function onLoad()
     {
+        AutoUpdater::check();
         self::$instance = $this;
     }
 
