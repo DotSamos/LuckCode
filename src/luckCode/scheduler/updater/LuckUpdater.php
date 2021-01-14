@@ -9,6 +9,7 @@ use pocketmine\utils\Config;
 use pocketmine\utils\Utils;
 use pocketmine\Server;
 use Throwable;
+use function is_array;
 use function is_null;
 use function version_compare;
 use function yaml_parse;
@@ -37,8 +38,10 @@ class LuckUpdater extends AsyncTask
 
             $value = is_null($data) ? 'error' : version_compare(((string)$this->version), ((string)$data['version']));
 
-            if (!is_null($data)) {
+            if (!is_null($data) && is_array($data)) {
                 $this->setResult(['update' => $value, 'version' => $data['version']]);
+            } else {
+                $this->setResult(['update' => 'error']);
             }
         } catch (Throwable $e) {
             $this->setResult(['update' => 'error']);
@@ -54,7 +57,7 @@ class LuckUpdater extends AsyncTask
 
         if (isset($result['error'])) {
             $message = '§r§cOcorreu um erro ao realizar a requesitação dos dados!';
-        } else if((bool)$this->getResult()['update']) {
+        } else if($this->getResult()['update'] == -1) {
              $message = '§r§6Uma nova versão do LuckCode está disponível em §fhttps://github.com/SamosMC/LuckCode §7[v'.$result['version'].']';
         }
         if(isset($message)) $server->getPluginManager()->getPlugin('LuckCode')->getLogger()->info($message);
