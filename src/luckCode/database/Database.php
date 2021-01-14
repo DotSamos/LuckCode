@@ -107,7 +107,7 @@ abstract class Database implements interfaces\IDatabase, InfoStatus
             $table = new $table($this->provider, $this->ownerPlugin);
             $this->addTable($table);
         });
-        if (count($all) > 0) $this->showInfo('Foram carregadas §f' . count($this->tables) . '§7 de §f' . count($all) . ' §7 tabelas!');
+        if (count($all) > 0) $this->showInfo('Foram carregadas §f' . count($this->tables) . '§7 tabelas!');
         return count($this->tables) == count($all);
     }
 
