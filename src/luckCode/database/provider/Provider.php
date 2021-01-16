@@ -80,10 +80,11 @@ abstract class Provider implements InfoStatus, interfaces\IProvider
      */
     public function printError(Throwable $error)
     {
+        $pos = strpos($error->getFile(), 'luckCode');
         $this->showError(implode("§r\n", [
             '§7' . $error->getMessage() . '§4(' . $error->getCode() . ')',
             "§c+-> §aIn line §f{$error->getLine()}§a from:",
-            "§c+-> §e" . substr($error->getFile(), strpos($error->getFile(), 'luckCode')),
+            "§c+-> §e" . is_numeric($pos) ? substr($error->getFile(), $pos) : $error->getFile(),
             "§8"
         ]));
     }
