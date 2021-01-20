@@ -12,8 +12,7 @@ use function str_repeat;
 use function strlen;
 use function substr;
 
-class LuckHolographicEntity extends LuckHolographicEntityBase
-{
+class LuckHolographicEntity extends LuckHolographicEntityBase {
 
     /** @var int $typeBar */
     private $nextColor = 0;
@@ -21,17 +20,17 @@ class LuckHolographicEntity extends LuckHolographicEntityBase
     /** @var bool $isComplete */
     private $isComplete = false;
 
-    public function onUpdate($tick)
-    {
+    public function onUpdate($tick) {
         $bar = str_repeat('-', 16);
+        $color = (int)((16 * 2) / 2) == $this->nextColor ? '§e' : '§6';
         if ($this->nextColor++ == strlen($bar)) {
             $this->nextColor = 0;
             $this->isComplete = $this->isComplete ? false : true;
         }
         $barFront = substr($bar, $this->nextColor);
         $barRedo = substr($bar, strlen($bar) - $this->nextColor);
-        $bar = '§f' . $barFront . '§6--§f' . $barRedo;
-        $redoBar = '§f' . $barRedo . '§6--§f' . $barFront;
+        $bar = '§f' . $barFront . $color . '--§f' . $barRedo;
+        $redoBar = '§f' . $barRedo . $color . '--§f' . $barFront;
         $text = ($this->isComplete ? $bar : $redoBar) . "\n§r§l§3Luck§5Code§r \n§7v" . LuckCodePlugin::VERSION . "\n" . ($this->isComplete ? $redoBar : $bar);
         $text = TextFormatter::center($text);
 

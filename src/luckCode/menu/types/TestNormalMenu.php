@@ -12,8 +12,7 @@ use pocketmine\Player;
 use function array_rand;
 use function count;
 
-class TestNormalMenu extends NormalMenu
-{
+class TestNormalMenu extends NormalMenu {
 
     /** @var LuckTask $taskUpdate */
     private $taskUpdate;
@@ -22,8 +21,7 @@ class TestNormalMenu extends NormalMenu
      * @param Player $who
      * @throws Exception
      */
-    public function onOpen(Player $who)
-    {
+    public function onOpen(Player $who) {
         parent::onOpen($who);
 
         $window = $this;
@@ -35,13 +33,11 @@ class TestNormalMenu extends NormalMenu
             /** @var Item[] $order */
             private $order = [];
 
-            public function __construct(NormalMenu $window)
-            {
+            public function __construct(NormalMenu $window) {
                 $this->window = $window;
             }
 
-            public function onRun($currentTick)
-            {
+            public function onRun($currentTick) {
                 $window = $this->window;
                 $newItems = [];
                 for ($i = 8; $i < 16; $i++) {
@@ -71,8 +67,7 @@ class TestNormalMenu extends NormalMenu
         $this->taskUpdate = $class;
     }
 
-    public function onClose(Player $who)
-    {
+    public function onClose(Player $who) {
         parent::onClose($who);
         if (count($this->getViewers())) {
             $this->taskUpdate->cancel();
@@ -82,16 +77,14 @@ class TestNormalMenu extends NormalMenu
     /**
      * @inheritDoc
      */
-    public function getItems(Player $p): array
-    {
+    public function getItems(Player $p): array {
         return [];
     }
 
     /**
      * @inheritDoc
      */
-    public function processClick(Player $p, Item $item): bool
-    {
+    public function processClick(Player $p, Item $item): bool {
         return true;
     }
 }

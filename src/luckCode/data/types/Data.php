@@ -9,8 +9,7 @@ use luckCode\data\save\engines\IFileSaveEngine;
 use luckCode\data\save\manager\DataSaveWorker;
 use pocketmine\plugin\PluginBase;
 
-abstract class Data implements IData
-{
+abstract class Data implements IData {
 
     /** @var string $file */
     protected $file;
@@ -24,8 +23,7 @@ abstract class Data implements IData
     /** @var array $data */
     protected $data = [];
 
-    function __construct(string $file, string $filePath, PluginBase $plugin)
-    {
+    function __construct(string $file, string $filePath, PluginBase $plugin) {
         $file = $file . '.' . $this->getTypeFile();
         $this->file = $file;
 
@@ -38,65 +36,54 @@ abstract class Data implements IData
         $this->load();
     }
 
-    public function reload()
-    {
+    public function reload() {
         $this->data = [];
         $this->load();
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function getFilePath(): string
-    {
+    /** @return string */
+    public function getFilePath(): string {
         return $this->filePath;
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function getContents(): array
-    {
+    /** @return mixed[] */
+    public function getContents(): array {
         return $this->data;
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function setContents(array $data)
-    {
+    /** @param mixed[] */
+    public function setContents(array $data) {
         $this->data = $data;
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function getFileName(): string
-    {
+    /** @return string */
+    public function getFileName(): string {
         return explode('.', $this->file)[0];
     }
 
     /**
-     * @inheritDoc
+     * @param string $key
+     * @param mixed $value
      */
-    public function set(string $key, $value)
-    {
+    public function set(string $key, $value) {
         $this->data[$key] = $value;
     }
 
     /**
-     * @inheritDoc
+     * @param string $key
+     * @param null $defaultReturn
+     * @return mixed
      */
-    public function get(string $key, $defaultReturn = null)
-    {
+    public function get(string $key, $defaultReturn = null) {
         return $this->data[$key] ?? $defaultReturn;
     }
 
     /**
-     * @inheritDoc
+     * @param string $route
+     * @param null $defaultReturn
+     * @return mixed
      */
-    public function getByRoute(string $route, $defaultReturn = null)
-    {
+    public function getByRoute(string $route, $defaultReturn = null) {
         $vars = explode(".", $route);
         $base = array_shift($vars);
         if (isset($this->data[$base])) {
@@ -117,10 +104,10 @@ abstract class Data implements IData
     }
 
     /**
-     * @inheritDoc
+     * @param string $key
+     * @return bool
      */
-    public function remove(string $key): bool
-    {
+    public function remove(string $key): bool {
         if ($this->hasKey($key)) {
             unset($this->data[$key]);
             return true;
@@ -129,37 +116,28 @@ abstract class Data implements IData
     }
 
     /**
-     * @inheritDoc
+     * @param string $key
+     * @return bool
      */
-    public function hasKey(string $key): bool
-    {
+    public function hasKey(string $key): bool {
         return isset($this->data[$key]);
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function forceSave(): bool
-    {
+    /** @return bool */
+    public function forceSave(): bool {
         $engine = $this->getSaveEngine();
         /** @var IFileSaveEngine $engineWriter */
         $engineWriter = new $engine();
         return $engineWriter->save($this->filePath, $this->data);
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function isInSaveWorker(): bool
-    {
+    /** @return bool */
+    public function isInSaveWorker(): bool {
         return DataSaveWorker::contains($this);
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function addInSaveWorker(): bool
-    {
+    /** @return bool */
+    public function addInSaveWorker(): bool {
         return DataSaveWorker::put($this);
     }
 }

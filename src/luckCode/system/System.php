@@ -7,8 +7,7 @@ namespace luckCode\system;
 use luckCode\system\interfaces\ISystem;
 use pocketmine\plugin\PluginBase;
 
-abstract class System implements ISystem
-{
+abstract class System implements ISystem {
 
     /** @var PluginBase $ownerPlugin */
     protected $ownerPlugin;
@@ -17,44 +16,33 @@ abstract class System implements ISystem
      * System constructor.
      * @param PluginBase $ownerPlugin
      */
-    public function __construct(PluginBase $ownerPlugin)
-    {
+    public function __construct(PluginBase $ownerPlugin) {
         $this->ownerPlugin = $ownerPlugin;
     }
 
-    public function onLoad()
-    {
+    public function onLoad() {
 
     }
 
-    public function onEnable()
-    {
+    public function onEnable() {
 
     }
 
-    public function onDisable()
-    {
+    public function onDisable() {
 
     }
 
-    public function onReload()
-    {
+    public function onReload() {
 
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function getName(): string
-    {
-        return self::NAME;
+    /** @return string */
+    public function getName(): string {
+        return static::NAME;
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function getOwnerPlugin(): PluginBase
-    {
+    /** @return PluginBase */
+    public function getOwnerPlugin(): PluginBase {
         return $this->ownerPlugin;
     }
 }

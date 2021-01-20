@@ -10,8 +10,7 @@ use pocketmine\inventory\InventoryType;
 use pocketmine\level\Position;
 use pocketmine\Player;
 
-abstract class NormalMenu extends Menu
-{
+abstract class NormalMenu extends Menu {
 
     /**
      * NormalMenu constructor.
@@ -19,8 +18,7 @@ abstract class NormalMenu extends Menu
      * @param string $name
      * @throws Exception
      */
-    public function __construct(Player $p, string $name)
-    {
+    public function __construct(Player $p, string $name) {
         if (!$p->isCreative()) {
             $level = $p->level;
             $pos = $p->getPosition()->floor();
@@ -46,8 +44,7 @@ abstract class NormalMenu extends Menu
      * @param Player $who
      * @throws Exception
      */
-    public function onOpen(Player $who)
-    {
+    public function onOpen(Player $who) {
         if (!$who->isCreative()) {
             parent::onOpen($who);
             $this->setItems($this->getItems($who));
@@ -56,8 +53,7 @@ abstract class NormalMenu extends Menu
         }
     }
 
-    public function onClose(Player $who)
-    {
+    public function onClose(Player $who) {
         $pos = $this->position;
         $realBlock = $pos->level->getBlock($pos);
         $this->sendBlock($who, $realBlock);

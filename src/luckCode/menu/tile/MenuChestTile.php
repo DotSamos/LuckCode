@@ -9,8 +9,7 @@ use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\Player;
 use pocketmine\tile\Chest;
 
-class MenuChestTile extends Chest
-{
+class MenuChestTile extends Chest {
 
     /**
      * MenuChestTile constructor.
@@ -18,17 +17,14 @@ class MenuChestTile extends Chest
      * @param CompoundTag $nbt
      * @param Player|null $p
      */
-    public function __construct(FullChunk $chunk, CompoundTag $nbt, Player $p = null)
-    {
+    public function __construct(FullChunk $chunk, CompoundTag $nbt, Player $p = null) {
         parent::__construct($chunk, $nbt);
         $this->spawnTo($p);
     }
 
-    public function saveNBT()
-    {
+    public function saveNBT() {
     }
 
-    public function spawnToAll()
-    {
+    public function spawnToAll() {
     }
 }

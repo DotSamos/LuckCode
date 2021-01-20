@@ -16,16 +16,14 @@ use pocketmine\nbt\tag\ShortTag;
 use pocketmine\nbt\tag\StringTag;
 use function array_walk;
 
-final class EntityManager
-{
+final class EntityManager {
 
     const DEFAULTS = [LuckHolographicEntity::class];
 
-    public static function registerDefaults()
-    {
+    public static function registerDefaults() {
         $all = self::DEFAULTS;
-        array_walk($all, function (string $string) {
-            Entity::registerEntity($string, true);
+        array_walk($all, function (string $entity) {
+            Entity::registerEntity($entity, true);
         });
     }
 
@@ -34,8 +32,7 @@ final class EntityManager
      * @param string|null $nameTag
      * @return CompoundTag
      */
-    public static function getBaseSpawnCompound(Location $loc, string $nameTag = null): CompoundTag
-    {
+    public static function getBaseSpawnCompound(Location $loc, string $nameTag = null): CompoundTag {
         $nbt = new CompoundTag('', [
             'Pos' => new ListTag('Pos', [
                 new DoubleTag('', $loc->x),
@@ -46,7 +43,7 @@ final class EntityManager
                 new FloatTag('', $loc->yaw),
                 new FloatTag('', $loc->pitch)
             ]),
-            'Health' => new ShortTag('Health', 1),
+            'Health' => new ShortTag('Health', 2),
         ]);
         if ($nameTag != null) {
             $nbt->CustomNameVisible = new ByteTag('CustomNameVisible', 1);

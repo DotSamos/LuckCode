@@ -4,8 +4,8 @@ namespace luckCode\plugin\interfaces;
 
 use luckCode\system\controller\SystemController;
 
-interface LuckSystemLoader
-{
+interface LuckSystemLoader {
+
     /** @return string[] */
     public function getSystemStatusList(): array;
 

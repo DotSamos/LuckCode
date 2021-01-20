@@ -6,6 +6,5 @@ namespace luckCode\database\provider\exceptions;
 
 use Exception;
 
-class ProviderInitializeException extends Exception
-{
+class ProviderInitializeException extends Exception {
 }

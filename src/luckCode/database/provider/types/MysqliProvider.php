@@ -11,25 +11,21 @@ use mysqli;
 use mysqli_result;
 use Throwable;
 
-class MysqliProvider extends Provider
-{
+class MysqliProvider extends Provider {
 
     /** @var mysqli $connection */
     protected $connection;
 
-    /**
-     * @inheritDoc
-     */
-    public function getType(): string
-    {
+    /** @return string */
+    public function getType(): string {
         return 'Mysqli';
     }
 
     /**
-     * @inheritDoc
+     * @param array $args
+     * @return bool
      */
-    public function tryConnect(array $args): bool
-    {
+    public function tryConnect(array $args): bool {
         $host = $args['host'] ?? 'localhost';
         $port = $args['port'] ?? 3306;
         $user = $args['user'] ?? 'root';
@@ -59,16 +55,12 @@ class MysqliProvider extends Provider
         }
     }
 
-    public function isLocal(): bool
-    {
+    public function isLocal(): bool {
         return false;
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function close(): bool
-    {
+    /** @return bool */
+    public function close(): bool {
         if ($this->connection) {
             parent::close();
             return $this->connection->close();
@@ -77,10 +69,10 @@ class MysqliProvider extends Provider
     }
 
     /**
-     * @inheritDoc
+     * @param string $exec
+     * @return bool
      */
-    public function exec(string $exec): bool
-    {
+    public function exec(string $exec): bool {
         try {
             return (bool)$this->connection->query($exec);
         } catch (Throwable $e) {
@@ -91,10 +83,11 @@ class MysqliProvider extends Provider
     }
 
     /**
-     * @inheritDoc
+     * @param string $query
+     * @param bool $fetchAll
+     * @return array
      */
-    public function executeQuery(string $query, $fetchAll = false): array
-    {
+    public function executeQuery(string $query, $fetchAll = false): array {
         try {
             $result = $this->connection->query($query);
             $finalResult = null;

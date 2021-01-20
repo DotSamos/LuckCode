@@ -6,8 +6,7 @@ namespace luckCode\data\manager;
 
 use luckCode\data\interfaces\IData;
 
-interface IDataManager
-{
+interface IDataManager {
 
     public function loadDefaults();
 

@@ -26,14 +26,12 @@ use pocketmine\Server;
 use pocketmine\tile\Tile;
 use function count;
 
-abstract class Menu extends ContainerInventory implements IMenu, Listener
-{
+abstract class Menu extends ContainerInventory implements IMenu, Listener {
 
     /** @var Position $position */
     protected $position;
 
-    public function __construct(InventoryHolder $holder, InventoryType $type, array $items = [], $overrideSize = null, $overrideTitle = null)
-    {
+    public function __construct(InventoryHolder $holder, InventoryType $type, array $items = [], $overrideSize = null, $overrideTitle = null) {
         parent::__construct($holder, $type, $items, $overrideSize, $holder);
         Server::getInstance()->getPluginManager()->registerEvents($this, LuckCodePlugin::getInstance());
     }
@@ -41,8 +39,7 @@ abstract class Menu extends ContainerInventory implements IMenu, Listener
     /**
      * @param array $items
      */
-    public function setItems(array $items)
-    {
+    public function setItems(array $items) {
         $this->clearAll(false);
         foreach ($items as $k => $v) {
             $this->setItem($k, $v, false);
@@ -53,16 +50,14 @@ abstract class Menu extends ContainerInventory implements IMenu, Listener
     /**
      * @inheritDoc
      */
-    public function sendBlock(Player $p, Block $block)
-    {
+    public function sendBlock(Player $p, Block $block) {
         $this->position->level->sendBlocks([$p], [$block], UpdateBlockPacket::FLAG_ALL);
     }
 
     /**
      * @inheritDoc
      */
-    public function makeTile(Position $pos, Player $p, string $name): MenuChestTile
-    {
+    public function makeTile(Position $pos, Player $p, string $name): MenuChestTile {
         $level = $pos->level;
         $c = new CompoundTag("", [
             new StringTag("id", Tile::CHEST),
@@ -78,8 +73,7 @@ abstract class Menu extends ContainerInventory implements IMenu, Listener
      * @param InventoryTransactionEvent $e
      * @priority HIGHEST
      */
-    public function onTransaction(InventoryTransactionEvent $e)
-    {
+    public function onTransaction(InventoryTransactionEvent $e) {
         $t = $e->getTransaction();
         $p = $t->getPlayer();
         foreach ($t->getTransactions() as $a) {
@@ -96,8 +90,7 @@ abstract class Menu extends ContainerInventory implements IMenu, Listener
     }
 
     /** @param Player $p */
-    private function fixFloatingInventory(Player $p)
-    {
+    private function fixFloatingInventory(Player $p) {
         if (LuckCodePlugin::getInstance()->getDataManager()->get('menu')->get('fix_floating_inventory')) {
             $floatingInventory = $p->getFloatingInventory();
             $floatingContents = array_filter($floatingInventory->getContents(), function ($item) {
@@ -116,8 +109,7 @@ abstract class Menu extends ContainerInventory implements IMenu, Listener
     /**
      * @param Player $who
      */
-    public function onOpen(Player $who)
-    {
+    public function onOpen(Player $who) {
         parent::onOpen($who);
         MenuController::put($who, $this);
     }
@@ -125,8 +117,7 @@ abstract class Menu extends ContainerInventory implements IMenu, Listener
     /**
      * @param Player $who
      */
-    public function onClose(Player $who)
-    {
+    public function onClose(Player $who) {
         $menu = $this;
         $close = new class ($who, $menu) extends LuckTask {
 
@@ -136,14 +127,12 @@ abstract class Menu extends ContainerInventory implements IMenu, Listener
             /** @var Player $player */
             private $player;
 
-            public function __construct(Player $player, Menu $menu)
-            {
+            public function __construct(Player $player, Menu $menu) {
                 $this->menu = $menu;
                 $this->player = $player;
             }
 
-            public function onRun($currentTick)
-            {
+            public function onRun($currentTick) {
                 $this->menu->finalClose($this->player);
                 parent::onRun($currentTick);
             }
@@ -155,10 +144,9 @@ abstract class Menu extends ContainerInventory implements IMenu, Listener
     /**
      * @param Player $who
      */
-    public function finalClose(Player $who)
-    {
+    public function finalClose(Player $who) {
         parent::onClose($who);
-        if (count($this->getViewers())-1 < 1 && $this->holder instanceof MenuChestTile) {
+        if (count($this->getViewers()) - 1 < 1 && $this->holder instanceof MenuChestTile) {
             $pair = $this->holder->getPair();
             $this->holder->close();
             if ($pair != null) $pair->close();

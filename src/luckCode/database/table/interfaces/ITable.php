@@ -4,8 +4,8 @@ namespace luckCode\database\table\interfaces;
 
 use pocketmine\plugin\PluginBase;
 
-interface ITable
-{
+interface ITable {
+
     /** @return string */
     public function name(): string;
 

@@ -4,8 +4,7 @@ namespace luckCode\menu\page\interfaces;
 
 use pocketmine\item\Item;
 
-interface IPaginatedMenu
-{
+interface IPaginatedMenu {
 
     /** @param IPage $page */
     public function setPage(IPage $page);

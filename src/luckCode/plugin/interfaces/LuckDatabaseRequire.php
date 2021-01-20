@@ -6,8 +6,8 @@ use luckCode\listener\database\LuckDatabaseDisableEvent;
 use luckCode\listener\database\LuckDatabaseEnableEvent;
 use luckCode\listener\database\LuckDatabaseNotInitializeEvent;
 
-interface LuckDatabaseRequire
-{
+interface LuckDatabaseRequire {
+
     /** @param LuckDatabaseEnableEvent $e */
     public function onConnectDatabase(LuckDatabaseEnableEvent $e);
 

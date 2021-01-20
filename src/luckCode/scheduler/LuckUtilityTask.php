@@ -12,19 +12,19 @@ use pocketmine\Player;
 use pocketmine\Server;
 use function array_walk;
 
-class LuckUtilityTask extends LuckTask
-{
+class LuckUtilityTask extends LuckTask {
 
-    public function onRun($currentTick)
-    {
+    public function onRun($currentTick) {
         $pl = LuckCodePlugin::getInstance();
         $syController = $pl->getSystemController();
 
         if ($freezeTime = $syController->getSystem(FreezeTimeSystem::NAME)) {
             foreach ($freezeTime::$worlds as $name => $time) {
-                Server::getInstance()->getLevelByName($name)->setTime($time);
+                $level = Server::getInstance()->getLevelByName($name);
+                if($level) $level->setTime($time);
             }
         }
+
         if ($syController->getSystem(LuckCommandSystem::NAME)) {
             $all = EntityController::getAllInFastKill();
             array_walk($all, function (Player $p) {

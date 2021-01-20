@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace luckCode\utils\text;
 
-final class FontInfo
-{
+final class FontInfo {
+
     const CHARACTERS = [
         'A' => 5,
         'a' => 5,
@@ -86,15 +86,15 @@ final class FontInfo
         '[' => 3,
         ']' => 3,
         ':' => 1,
-        ';' => 1,
+        ';' => 2,
         '"' => 3,
         '\'' => 3,
-        '<' => 4,
-        '>' => 4,
+        '<' => 5,
+        '>' => 5,
         '?' => 5,
         '/' => 5,
         '\\' => 5,
-        '|' => 1,
+        '|' => 2,
         '~' => 5,
         '`' => 2,
         '´' => 2,
@@ -107,8 +107,7 @@ final class FontInfo
      * @param string $c
      * @return int
      */
-    public static function getLength(string $c): int
-    {
+    public static function getLength(string $c): int {
         return self::CHARACTERS[$c] ?? 4;
     }
 
@@ -116,8 +115,7 @@ final class FontInfo
      * @param string $c
      * @return int
      */
-    public static function getBoldLength(string $c): int
-    {
-        return (self::CHARACTERS[$c] ?? 4) + 1;
+    public static function getBoldLength(string $c): int {
+        return (self::CHARACTERS[$c] ?? 4) + 2;
     }
 }

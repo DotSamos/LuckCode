@@ -8,17 +8,15 @@ use luckCode\database\provider\interfaces\IProvider;
 use luckCode\database\table\interfaces\ITable;
 use luckCode\database\table\Table;
 use luckCode\utils\InfoStatus;
+use luckCode\utils\Utils;
 use pocketmine\plugin\PluginBase;
 use pocketmine\plugin\PluginLogger;
 use Throwable;
 use function array_walk;
 use function count;
 use function implode;
-use function strpos;
-use function substr;
 
-abstract class Database implements interfaces\IDatabase, InfoStatus
-{
+abstract class Database implements interfaces\IDatabase, InfoStatus {
 
     /** @var IProvider $provider */
     protected $provider;
@@ -34,8 +32,7 @@ abstract class Database implements interfaces\IDatabase, InfoStatus
      * @param IProvider $provider
      * @param PluginBase $ownerPlugin
      */
-    public function __construct(IProvider $provider, PluginBase $ownerPlugin)
-    {
+    public function __construct(IProvider $provider, PluginBase $ownerPlugin) {
         $this->ownerPlugin = $ownerPlugin;
         if ($provider->failInitializeException()) {
             $this->showError('§cNão é possivel iniciar a database com o provedor ' . $provider->getType() . '§c. Conexão falha!');
@@ -47,35 +44,24 @@ abstract class Database implements interfaces\IDatabase, InfoStatus
         }
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function showError(string $error)
-    {
+    /** @param string $error */
+    public function showError(string $error) {
         $this->getLogger()->info('§c[Database] §7' . $error);
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function getLogger(): PluginLogger
-    {
+    /** @return PluginLogger */
+    public function getLogger(): PluginLogger {
         return $this->ownerPlugin->getLogger();
     }
 
-    public function onInvalidProvider()
-    {
+    public function onInvalidProvider() {
     }
 
-    public function onPreLoadTables()
-    {
+    public function onPreLoadTables() {
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function loadTables(): bool
-    {
+    /** @return bool */
+    public function loadTables(): bool {
         $all = $this->getDefaultTables();
         array_walk($all, function (string $table) {
             /** @var Table $table */
@@ -87,10 +73,10 @@ abstract class Database implements interfaces\IDatabase, InfoStatus
     }
 
     /**
-     * @inheritDoc
+     * @param ITable $table
+     * @return bool
      */
-    public function addTable(ITable $table): bool
-    {
+    public function addTable(ITable $table): bool {
         if (!isset($this->tables[$name = $table::NAME])) {
             $this->tables[$name] = $table;
             return true;
@@ -98,61 +84,41 @@ abstract class Database implements interfaces\IDatabase, InfoStatus
         return false;
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function showInfo(string $info)
-    {
+    /** @param string $info */
+    public function showInfo(string $info) {
         $this->getLogger()->info('§7[Database] §7' . $info);
     }
 
-    public function close(): bool
-    {
+    /** @return bool */
+    public function close(): bool {
         return $this->provider->close();
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function getProvider(): IProvider
-    {
+    /** @return IProvider */
+    public function getProvider(): IProvider {
         return $this->provider;
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function getOwnerPlugin(): PluginBase
-    {
+    /** @return PluginBase */
+    public function getOwnerPlugin(): PluginBase {
         return $this->ownerPlugin;
     }
 
     /**
-     * @inheritDoc
+     * @param string $name
+     * @return ITable|null
      */
-    public function getTable(string $name)
-    {
+    public function getTable(string $name) {
         return $this->tables[$name] ?? null;
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function showAlert(string $alert)
-    {
+    /** @param string $alert */
+    public function showAlert(string $alert) {
         $this->getLogger()->info('§e[Database] §7' . $alert);
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function printError(Throwable $error)
-    {
-        $this->showError(implode("§r\n", [
-            '§7' . $error->getMessage() . '§4(' . $error->getCode() . ')',
-            "§c+-> §aIn line §f{$error->getLine()}§a from:",
-            "§c+-> §e" . substr($error->getFile(), strpos($error->getFile(), 'luckCode')),
-            "§8"
-        ]));
+    /** @param Throwable $error */
+    public function printError(Throwable $error) {
+        $this->showError(Utils::getThrowablePrint($error));
     }
 }

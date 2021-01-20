@@ -7,8 +7,7 @@ namespace luckCode\utils;
 use pocketmine\plugin\PluginLogger;
 use Throwable;
 
-interface InfoStatus
-{
+interface InfoStatus {
 
     /** @return PluginLogger */
     public function getLogger(): PluginLogger;

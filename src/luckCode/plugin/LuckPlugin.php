@@ -16,8 +16,7 @@ use pocketmine\event\Listener;
 use pocketmine\plugin\PluginBase;
 use function array_walk;
 
-abstract class LuckPlugin extends PluginBase implements Listener
-{
+abstract class LuckPlugin extends PluginBase implements Listener {
 
     /** @var DataManager $dataManager */
     protected $dataManager;
@@ -28,25 +27,50 @@ abstract class LuckPlugin extends PluginBase implements Listener
     /** @var SystemController $systemController */
     protected $systemController;
 
-    public function onLoad()
-    {
-        if (isset(self::$instance)) {
-            self::$instance = $this;
+    public function onLoad() {
+        if (isset(static::$instance)) {
+            static::$instance = $this;
         }
         $this->checkDataManager();
         $this->checkSystemLoader();
     }
 
-    protected function checkDataManager()
-    {
+    public function onEnable() {
+        $this->checkProvider();
+        if ($this instanceof LuckSystemLoader) {
+            $this->systemController->onEnable();
+        }
+    }
+
+    public function onDisable() {
+        if ($this instanceof LuckSystemLoader) {
+            $this->systemController->onDisable();
+        }
+    }
+
+    /** @return LuckDatabase|null */
+    public function getDatabase() {
+        return $this->database;
+    }
+
+    /** @return DataManager|null */
+    public function getDataManager() {
+        return $this->dataManager;
+    }
+
+    /** @return SystemController|null */
+    public function getSystemController() {
+        return $this->systemController;
+    }
+
+    private function checkDataManager() {
         if ($this instanceof LuckDataManagerRequire) {
             $class = $this->getBaseDataManager();
             $this->dataManager = new $class();
         }
     }
 
-    protected function checkSystemLoader()
-    {
+    private function checkSystemLoader() {
         if ($this instanceof LuckSystemLoader) {
             $class = $this->getSystemControllerBase();
             /** @var SystemController $sc */
@@ -56,43 +80,14 @@ abstract class LuckPlugin extends PluginBase implements Listener
         }
     }
 
-    public function onEnable()
-    {
-        $this->checkProvider();
-        if ($this instanceof LuckSystemLoader) {
-            $this->systemController->onEnable();
-        }
-    }
-
-    protected function checkProvider()
-    {
+    private function checkProvider() {
         if ($this instanceof LuckDatabaseRequire) {
             $this->getServer()->getPluginManager()->registerEvents($this, $this);
         }
     }
 
-    public function onDisable()
-    {
-        if ($this instanceof LuckSystemLoader) {
-            $this->systemController->onDisable();
-        }
-    }
-
-    /** @return LuckDatabase */
-    public function getDatabase(): LuckDatabase
-    {
-        return $this->database;
-    }
-
-    /** @return SystemController */
-    public function getSystemController(): SystemController
-    {
-        return $this->systemController;
-    }
-
     /** @param LuckDatabaseEnableEvent $e */
-    public function onConnectDatabase(LuckDatabaseEnableEvent $e)
-    {
+    public function onConnectDatabase(LuckDatabaseEnableEvent $e) {
         if ($this instanceof LuckDatabaseRequire) {
             $db = $e->getDatabase();
             $this->database = $db;
@@ -105,8 +100,7 @@ abstract class LuckPlugin extends PluginBase implements Listener
     }
 
     /** @param LuckDatabaseNotInitializeEvent $e */
-    public function onDatabaseConnectionError(LuckDatabaseNotInitializeEvent $e)
-    {
+    public function onDatabaseConnectionError(LuckDatabaseNotInitializeEvent $e) {
         if ($this instanceof LuckDatabaseRequire) {
             $this->getLogger()->info('§cO provedor de dados do LuckCode não pode ser carregado!');
             $this->getServer()->getPluginManager()->disablePlugin($this);

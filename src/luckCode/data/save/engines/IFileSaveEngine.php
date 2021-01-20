@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace luckCode\data\save\engines;
 
-interface IFileSaveEngine
-{
+interface IFileSaveEngine {
+
     /** @return string */
     public function getName(): string;
 

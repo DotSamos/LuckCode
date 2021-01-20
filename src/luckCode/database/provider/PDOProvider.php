@@ -7,17 +7,16 @@ namespace luckCode\database\provider;
 use PDO;
 use PDOException;
 
-abstract class PDOProvider extends Provider
-{
+abstract class PDOProvider extends Provider {
 
     /** @var PDO $connection */
     protected $connection;
 
     /**
-     * @inheritDoc
+     * @param array $args
+     * @return bool
      */
-    public function tryConnect(array $args): bool
-    {
+    public function tryConnect(array $args): bool {
         try {
             $pdo = new PDO($this->getDSN($args),
                 $args['user'] ?? '',
@@ -41,26 +40,21 @@ abstract class PDOProvider extends Provider
      */
     public abstract function getDSN(array $args): string;
 
-    /**
-     * @return array
-     */
+    /** @return array */
     public abstract function getDriverOptions(): array;
 
-    /**
-     * @inheritDoc
-     */
-    public function close(): bool
-    {
-        $this->connection = null; // sim, nem eu acreditei que é assim que fecha a conexão com o PDO 
+    /** @return bool */
+    public function close(): bool {
+        $this->connection = null; // Sim, nem eu acreditei que é assim que fecha a conexão com o PDO
         parent::close();
         return true;
     }
 
     /**
-     * @inheritDoc
+     * @param string $exec
+     * @return bool
      */
-    public function exec(string $exec): bool
-    {
+    public function exec(string $exec): bool {
         try {
             $result = $this->connection->exec($exec);
             return $result !== FALSE;
@@ -72,10 +66,11 @@ abstract class PDOProvider extends Provider
     }
 
     /**
-     * @inheritDoc
+     * @param string $query
+     * @param bool $fetchAll
+     * @return array
      */
-    public function executeQuery(string $query, $fetchAll = false): array
-    {
+    public function executeQuery(string $query, $fetchAll = false): array {
         try {
             $result = $this->connection->query($query);
             return $fetchAll ? $result->fetchAll() : $result->fetch();

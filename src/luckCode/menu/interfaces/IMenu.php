@@ -8,11 +8,12 @@ use pocketmine\item\Item;
 use pocketmine\level\Position;
 use pocketmine\Player;
 
-interface IMenu
-{
+interface IMenu {
 
     const IS_CREATIVE = '§cVocê não pode abrir este menu estando no modo criativo!';
+
     const HAS_TILE = '§cNão é possivel abrir o menu em sua posição atual. Não fique com báus (ou outros blocos com menus) sobre sua cabeça ou pés!';
+
     const BAD_POSITION = '§cVocê não pode abrir um menu nesta posição!';
 
     /**

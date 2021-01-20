@@ -11,14 +11,12 @@ use pocketmine\Player;
 use function array_rand;
 use function count;
 
-class TestDoubleMenu extends DoubleMenu
-{
+class TestDoubleMenu extends DoubleMenu {
 
     /** @var LuckTask $taskUpdate */
     private $taskUpdate;
 
-    public function onOpen(Player $who)
-    {
+    public function onOpen(Player $who) {
         parent::onOpen($who);
         $window = $this;
         $class = new class($window) extends LuckTask {
@@ -27,13 +25,11 @@ class TestDoubleMenu extends DoubleMenu
 
             private $order = [];
 
-            public function __construct(DoubleMenu $window)
-            {
+            public function __construct(DoubleMenu $window) {
                 $this->window = $window;
             }
 
-            public function onRun($currentTick)
-            {
+            public function onRun($currentTick) {
                 $window = $this->window;
                 $newItems = [];
                 for ($i = 16; $i < 31; $i++) {
@@ -63,8 +59,7 @@ class TestDoubleMenu extends DoubleMenu
         $this->taskUpdate = $class;
     }
 
-    public function onClose(Player $who)
-    {
+    public function onClose(Player $who) {
         parent::onClose($who);
         if (count($this->getViewers())) {
             $this->taskUpdate->cancel();
@@ -74,16 +69,14 @@ class TestDoubleMenu extends DoubleMenu
     /**
      * @inheritDoc
      */
-    public function getItems(Player $p): array
-    {
+    public function getItems(Player $p): array {
         return [];
     }
 
     /**
      * @inheritDoc
      */
-    public function processClick(Player $p, Item $item): bool
-    {
+    public function processClick(Player $p, Item $item): bool {
         return true;
     }
 }

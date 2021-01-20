@@ -13,8 +13,7 @@ use pocketmine\item\Item;
 use pocketmine\Player;
 use function array_walk;
 
-final class EntityController
-{
+final class EntityController {
 
     /** @var Player[] $fastKill */
     private static $fastKill = [];
@@ -22,22 +21,19 @@ final class EntityController
     /**
      * @param Player $player
      */
-    public static function addFastKill(Player $player)
-    {
+    public static function addFastKill(Player $player) {
         self::$fastKill[spl_object_hash($player)] = $player;
     }
 
     /**
      * @param Player $player
      */
-    public static function removeFastKill(Player $player)
-    {
+    public static function removeFastKill(Player $player) {
         unset(self::$fastKill[spl_object_hash($player)]);
     }
 
     /** @return Player[] */
-    public static function getAllInFastKill(): array
-    {
+    public static function getAllInFastKill(): array {
         return self::$fastKill;
     }
 
@@ -45,8 +41,7 @@ final class EntityController
      * @param Entity $entity
      * @return bool
      */
-    public static function onUpdate(Entity $entity): bool
-    {
+    public static function onUpdate(Entity $entity): bool {
         $rangeMax = self::getData()->get('range_view');
         $level = $entity->level;
         if ($entity->isAlive()) {
@@ -66,8 +61,7 @@ final class EntityController
     /**
      * @return YamlData
      */
-    public static function getData(): YamlData
-    {
+    public static function getData(): YamlData {
         return LuckCodePlugin::getInstance()->getDataManager()->get('entities');
     }
 
@@ -75,8 +69,7 @@ final class EntityController
      * @param EntityDamageEvent $e
      * @return bool
      */
-    public static function onAttack(EntityDamageEvent $e): bool
-    {
+    public static function onAttack(EntityDamageEvent $e): bool {
         $entity = $e->getEntity();
         if ($e instanceof EntityDamageByEntityEvent) {
             $damager = $e->getDamager();
@@ -99,8 +92,7 @@ final class EntityController
      * @param Player $player
      * @return bool
      */
-    public static function inFastKill(Player $player): bool
-    {
+    public static function inFastKill(Player $player): bool {
         return array_key_exists(spl_object_hash($player), self::$fastKill);
     }
 }

@@ -17,8 +17,7 @@ use pocketmine\level\Position;
 use pocketmine\network\protocol\UpdateBlockPacket;
 use pocketmine\Player;
 
-abstract class DoubleMenu extends Menu
-{
+abstract class DoubleMenu extends Menu {
     /** @var Chest $chest1 */
     private $chest1;
 
@@ -37,8 +36,7 @@ abstract class DoubleMenu extends Menu
      * @param string $name
      * @throws Exception
      */
-    public function __construct(Player $p, string $name)
-    {
+    public function __construct(Player $p, string $name) {
         if (!$p->isCreative()) {
             $level = $p->level;
             $pos = $p->getPosition()->floor();
@@ -79,8 +77,7 @@ abstract class DoubleMenu extends Menu
      * @param int $id
      * @return MenuChestTile
      */
-    private function makeChest(Player $p, Position $pos, string $name, int $id): MenuChestTile
-    {
+    private function makeChest(Player $p, Position $pos, string $name, int $id): MenuChestTile {
         $this->sendBlock($p, $block = Block::get(Block::CHEST, 0, $pos));
         $this->{'chest' . $id} = $block;
         return $this->makeTile($pos, $p, $name);
@@ -90,8 +87,7 @@ abstract class DoubleMenu extends Menu
      * @param Player $who
      * @throws Exception
      */
-    public function onOpen(Player $who)
-    {
+    public function onOpen(Player $who) {
 
         $inv = $this;
         $class = new class($inv, $who) extends LuckTask {
@@ -100,14 +96,12 @@ abstract class DoubleMenu extends Menu
 
             private $who;
 
-            public function __construct(DoubleMenu $inv, Player $who)
-            {
+            public function __construct(DoubleMenu $inv, Player $who) {
                 $this->inv = $inv;
                 $this->who = $who;
             }
 
-            public function onRun($currentTick)
-            {
+            public function onRun($currentTick) {
                 $this->inv->finalOpen($this->who);
                 parent::onRun($currentTick);
             }
@@ -119,8 +113,7 @@ abstract class DoubleMenu extends Menu
      * @param Player $p
      * @throws Exception
      */
-    public function finalOpen(Player $p)
-    {
+    public function finalOpen(Player $p) {
         if (!$p->isCreative()) {
             parent::onOpen($p);
             $this->setItems($this->getItems($p));
@@ -132,21 +125,18 @@ abstract class DoubleMenu extends Menu
     /**
      * @param Player $who
      */
-    public function onClose(Player $who)
-    {
+    public function onClose(Player $who) {
         parent::onClose($who);
         $level = $who->getLevel();
         $blocks = [$level->getBlock($this->chest1), $level->getBlock($this->chest2)];
         $who->level->sendBlocks([$who], $blocks, UpdateBlockPacket::FLAG_ALL);
     }
 
-    public function getHolder()
-    {
+    public function getHolder() {
         return $this->left->getHolder();
     }
 
-    public function getContents()
-    {
+    public function getContents() {
         $contents = [];
         for ($i = 0; $i < $this->getSize(); ++$i) {
             $contents[$i] = $this->getItem($i);
@@ -155,8 +145,7 @@ abstract class DoubleMenu extends Menu
         return $contents;
     }
 
-    public function getItem($index)
-    {
+    public function getItem($index) {
         return $index < $this->left->getSize() ? $this->left->getItem($index) : $this->right->getItem($index - $this->right->getSize());
     }
 
@@ -164,8 +153,7 @@ abstract class DoubleMenu extends Menu
      * @param Item[] $items
      * @param bool $bool
      */
-    public function setContents(array $items, $bool = true)
-    {
+    public function setContents(array $items, $bool = true) {
         if (count($items) > $this->size) {
             $items = array_slice($items, 0, $this->size, true);
         }
@@ -189,8 +177,7 @@ abstract class DoubleMenu extends Menu
      * @param bool $send
      * @return bool
      */
-    public function clear($index, $send = true)
-    {
+    public function clear($index, $send = true) {
         return $index < $this->left->getSize() ? $this->left->clear($index, $send) : $this->right->clear($index - $this->right->getSize(), $send);
     }
 
@@ -200,8 +187,7 @@ abstract class DoubleMenu extends Menu
      * @param bool $send
      * @return bool
      */
-    public function setItem($index, Item $item, $send = true)
-    {
+    public function setItem($index, Item $item, $send = true) {
         return $index < $this->left->getSize() ? $this->left->setItem($index, $item, $send) : $this->right->setItem($index - $this->right->getSize(), $item, $send);
     }
 }

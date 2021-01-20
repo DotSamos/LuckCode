@@ -6,8 +6,7 @@ use luckCode\database\provider\interfaces\IProvider;
 use luckCode\database\table\interfaces\ITable;
 use pocketmine\plugin\PluginBase;
 
-interface IDatabase
-{
+interface IDatabase {
 
     /** @return IProvider */
     public function getProvider(): IProvider;

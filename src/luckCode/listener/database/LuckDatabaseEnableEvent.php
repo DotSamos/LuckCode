@@ -6,8 +6,8 @@ namespace luckCode\listener\database;
 
 use pocketmine\event\HandlerList;
 
-class LuckDatabaseEnableEvent extends LuckDatabaseEvent
-{
+class LuckDatabaseEnableEvent extends LuckDatabaseEvent {
+
     /** @var HandlerList $handlerList */
     public static $handlerList;
 }

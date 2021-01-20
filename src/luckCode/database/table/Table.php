@@ -6,15 +6,18 @@ namespace luckCode\database\table;
 
 use luckCode\database\provider\interfaces\IProvider;
 use luckCode\utils\InfoStatus;
+use luckCode\utils\Utils;
 use pocketmine\plugin\PluginBase;
 use pocketmine\plugin\PluginLogger;
 use Throwable;
 use function implode;
+use function is_numeric;
+use function str_replace;
 use function strpos;
 use function substr;
+use function wordwrap;
 
-abstract class Table implements interfaces\ITable, InfoStatus
-{
+abstract class Table implements interfaces\ITable, InfoStatus {
 
     /** @var PluginBase $ownerPlugin */
     protected $ownerPlugin;
@@ -30,18 +33,17 @@ abstract class Table implements interfaces\ITable, InfoStatus
      * @param IProvider $provider
      * @param PluginBase $ownerPlugin
      */
-    public function __construct(IProvider $provider, PluginBase $ownerPlugin)
-    {
+    public function __construct(IProvider $provider, PluginBase $ownerPlugin) {
         $this->ownerPlugin = $ownerPlugin;
         $this->provider = $provider;
         $this->tryCreateTable($this->getCreationExecute());
     }
 
     /**
-     * @inheritDoc
+     * @param string $execute
+     * @return bool
      */
-    public function tryCreateTable(string $execute): bool
-    {
+    public function tryCreateTable(string $execute): bool {
         $provider = $this->provider;
         if (!$provider->exec($execute)) {
             $this->showError('Não foi possivel inicializar a tabela:');
@@ -53,72 +55,43 @@ abstract class Table implements interfaces\ITable, InfoStatus
         }
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function showError(string $error)
-    {
-        $this->getLogger()->info('§c[Table(§a' . $this->name() . '§c)] ' . $error);
+    /** @param string $error */
+    public function showError(string $error) {
+        $this->getLogger()->info('§c[Table(§f' . $this->name() . '§c)] ' . $error);
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function getLogger(): PluginLogger
-    {
+    /** @return PluginLogger */
+    public function getLogger(): PluginLogger {
         return $this->ownerPlugin->getLogger();
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function name(): string
-    {
+    /** @return string */
+    public function name(): string {
         return static::NAME;
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function isInitialized(): bool
-    {
+    /** @return bool */
+    public function isInitialized(): bool {
         return $this->isInitialized();
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function getPluginOwner(): PluginBase
-    {
+    /** @return PluginBase */
+    public function getPluginOwner(): PluginBase {
         return $this->ownerPlugin;
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function showInfo(string $info)
-    {
-        $this->getLogger()->info('§7[Table(§a' . $this->name() . '§7)] ' . $info);
+    /** @param string $info */
+    public function showInfo(string $info) {
+        $this->getLogger()->info('§7[Table(§f' . $this->name() . '§7)] ' . $info);
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function showAlert(string $alert)
-    {
-        $this->getLogger()->info('§e[Table(§a' . $this->name() . '§e)] ' . $alert);
+    /** @param string $alert */
+    public function showAlert(string $alert) {
+        $this->getLogger()->info('§e[Table(§f' . $this->name() . '§e)] ' . $alert);
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function printError(Throwable $error)
-    {
-        $this->showError(implode("§r\n", [
-            '§7' . $error->getMessage() . '§4(' . $error->getCode() . ')',
-            "§c+-> §aIn line §f{$error->getLine()}§a from:",
-            "§c+-> §e" . substr($error->getFile(), strpos($error->getFile(), 'luckCode')),
-            "§8"
-        ]));
+    /** @param Throwable $error */
+    public function printError(Throwable $error) {
+        $this->showError(Utils::getThrowablePrint($error));
     }
 }

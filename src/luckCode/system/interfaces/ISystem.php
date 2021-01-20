@@ -4,8 +4,7 @@ namespace luckCode\system\interfaces;
 
 use pocketmine\plugin\PluginBase;
 
-interface ISystem
-{
+interface ISystem {
 
     /** @return string */
     public function getName(): string;

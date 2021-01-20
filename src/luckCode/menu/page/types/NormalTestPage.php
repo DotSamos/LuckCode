@@ -6,15 +6,13 @@ namespace luckCode\menu\page\types;
 
 use luckCode\menu\page\interfaces\IPaginatedMenu;
 
-class NormalTestPage extends TestPage
-{
+class NormalTestPage extends TestPage {
 
     /**
      * NormalTestPage constructor.
      * @param IPaginatedMenu $menu
      */
-    public function __construct(IPaginatedMenu $menu)
-    {
+    public function __construct(IPaginatedMenu $menu) {
         parent::__construct($menu, 9, 15, 16, 23);
     }
 

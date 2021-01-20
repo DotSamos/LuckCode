@@ -10,8 +10,7 @@ use pocketmine\item\Item;
 use pocketmine\Player;
 use function array_values;
 
-abstract class DoublePaginatedMenu extends DoubleMenu implements IPaginatedMenu
-{
+abstract class DoublePaginatedMenu extends DoubleMenu implements IPaginatedMenu {
 
     /** @var IPage $page */
     protected $page;
@@ -19,13 +18,11 @@ abstract class DoublePaginatedMenu extends DoubleMenu implements IPaginatedMenu
     /**
      * @inheritDoc
      */
-    public function getItems(Player $p): array
-    {
+    public function getItems(Player $p): array {
         return $this->getMainPage()->getItems($p);
     }
 
-    public function redoPage()
-    {
+    public function redoPage() {
         $redo = $this->page->getRedoPage();
         if ($redo) $this->setPage($redo);
     }
@@ -33,8 +30,7 @@ abstract class DoublePaginatedMenu extends DoubleMenu implements IPaginatedMenu
     /**
      * @inheritDoc
      */
-    public function setPage(IPage $page)
-    {
+    public function setPage(IPage $page) {
         $this->page = $page;
         $this->setItems($page->getItems(array_values($this->viewers)[0]));
     }
@@ -42,8 +38,7 @@ abstract class DoublePaginatedMenu extends DoubleMenu implements IPaginatedMenu
     /**
      * @inheritDoc
      */
-    public function processClick(Player $p, Item $item): bool
-    {
+    public function processClick(Player $p, Item $item): bool {
         return $this->page->onClick($p, $item);
     }
 }
