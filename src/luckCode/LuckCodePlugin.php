@@ -98,7 +98,7 @@ class LuckCodePlugin extends PluginBase implements LuckSystemLoader {
 
     public function onDisable() {
         $this->systemController->onDisable();
-        MenuController::closeAll("§8\n§4Seu menu foi fechado devido a desabilitação inesperada dos sistemas!\n§8");
+        MenuController::closeAll("§8\n§cSeu menu foi fechado devido a suspensão inesperada dos sistemas!\n§8");
         DataSaveWorker::startWorker();
     }
 
