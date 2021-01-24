@@ -8,6 +8,7 @@ use luckCode\LuckCodePlugin;
 use luckCode\system\types\FreezeTimeSystem;
 use luckCode\system\types\LuckCommandSystem;
 use luckCode\utils\EntityController;
+use luckCode\utils\SimpleCooldown;
 use pocketmine\Player;
 use pocketmine\Server;
 use function array_walk;
@@ -31,6 +32,8 @@ class LuckUtilityTask extends LuckTask {
                 $p->sendPopup('§r§eModo fast-kill ativo!');
             });
         }
+
+        SimpleCooldown::update();
     }
 
 }
