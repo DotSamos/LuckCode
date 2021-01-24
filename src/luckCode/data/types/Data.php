@@ -84,7 +84,7 @@ abstract class Data implements IData {
      * @return mixed
      */
     public function getByRoute(string $route, $defaultReturn = null) {
-        $vars = explode(".", $route);
+        $vars = explode('.', $route);
         $base = array_shift($vars);
         if (isset($this->data[$base])) {
             $base = $this->data[$base];
@@ -100,7 +100,7 @@ abstract class Data implements IData {
                 return $defaultReturn;
             }
         }
-        return $defaultReturn;
+        return $base;
     }
 
     /**
