@@ -44,8 +44,14 @@ class FastKillSubCommand extends LuckSubCommand {
      */
     public function execute(CommandSender $sender, array $args) {
         if($sender instanceof Player) {
-            $sender->sendMessage(LuckCodePlugin::PREFIX . EntityController::inFastKill($sender) ?  '§r§cModo fastkill desativado' : '§r§aModo fastkill ativado');
-            EntityController::inFastKill($sender) ?  EntityController::removeFastKill($sender) : EntityController::addFastKill($sender);
+            if(EntityController::inFastKill($sender)) {
+                EntityController::removeFastKill($sender);
+                $message = '§cModo fast-kill desativado!';
+            } else {
+                EntityController::addFastKill($sender);
+                $message = '§aModo fast-kill ativado!';
+            }
+            $sender->sendMessage(LuckCodePlugin::PREFIX . $message);
         }
     }
 }
