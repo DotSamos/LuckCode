@@ -4,13 +4,15 @@ declare(strict_types=1);
 
 namespace luckCode;
 
+use function date;
+use function implode;
+use function trigger_error;
 use luckCode\data\manager\types\LuckDataManager;
 use luckCode\data\save\manager\DataSaveWorker;
 use luckCode\database\types\LuckDatabase;
 use luckCode\entity\EntityManager;
 use luckCode\listener\database\LuckDatabaseNotInitializeEvent;
-use luckCode\menu\manager\MenuController;
-use luckCode\menu\tile\MenuChestTile;
+use luckCode\menu\controller\MenuController;
 use luckCode\plugin\interfaces\LuckSystemLoader;
 use luckCode\scheduler\LuckUtilityTask;
 use luckCode\system\controller\SystemController;
@@ -20,12 +22,9 @@ use luckCode\system\types\LuckCommandSystem;
 use luckCode\system\types\LuckDatabaseSystem;
 use luckCode\utils\ProviderLoader;
 use luckCode\utils\text\TextFormatter;
-use pocketmine\plugin\PluginBase;
 use pocketmine\Server;
+use pocketmine\plugin\PluginBase;
 use pocketmine\tile\Tile;
-use function date;
-use function implode;
-use function trigger_error;
 
 /**
  *  _                      _       ____               _
@@ -45,7 +44,7 @@ use function trigger_error;
  */
 class LuckCodePlugin extends PluginBase implements LuckSystemLoader {
 
-    const PREFIX = '§f[§l§3L§5C§r§f] ';
+    const PREFIX = '§f[§l§3L§r§5C§f] ';
 
     const VERSION = 0.2;
 
@@ -94,12 +93,12 @@ class LuckCodePlugin extends PluginBase implements LuckSystemLoader {
 
     private function loadBase() {
         EntityManager::registerDefaults();
-        (new LuckUtilityTask())->registerToRepeat();
+        (new LuckUtilityTask())->registerToRepeat(1);
     }
 
     public function onDisable() {
         $this->systemController->onDisable();
-        MenuController::closeAll('§cMenu fechado devido a um evento inesperado. Tente reabrir ele novamente dentro de alguns segundos...');
+        MenuController::closeAll("§8\n§4Seu menu foi fechado devido a desabilitação inesperada dos sistemas!\n§8");
         DataSaveWorker::startWorker();
     }
 
