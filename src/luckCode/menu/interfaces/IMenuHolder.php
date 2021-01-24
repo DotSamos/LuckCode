@@ -7,33 +7,38 @@ namespace luckCode\menu\interfaces;
 use pocketmine\block\Block;
 use pocketmine\inventory\CustomInventory;
 use pocketmine\inventory\InventoryType;
-use pocketmine\item\Item;
-use pocketmine\level\Level;
+use pocketmine\level\Position;
+use pocketmine\nbt\NBT;
 use pocketmine\network\protocol\DataPacket;
 use pocketmine\Player;
-use pocketmine\tile\Chest;
+use pocketmine\tile\Tile;
 
 interface IMenuHolder {
 
-    public function getHandler() : Player;
+    /** @return Player|null */
+    public function getHandler();
+
+    /** @param Player $handler */
+    public function setHandler(Player $handler);
+
+    /** @return bool */
+    public function canAddItems() : bool;
 
     public function getCustomName() : string;
 
-    /** @return Item[] */
-    public function getBaseItems() : array;
-
     /** @return CustomInventory */
     public function getInventory() : CustomInventory;
-    public function getTile() : Chest;
     public function getInventoryType() : InventoryType;
+    public function getMenuClass() : string;
 
-    /** @return Chest|null */
+    /** @return Tile|null */
     public function getOldTile();
 
-    public function getX() : int;
-    public function getY() : int;
-    public function getZ() : int;
-    public function getLevel() : Level;
+    /**
+     * @param Position $position
+     * @return NBT
+     */
+    public function getBaseSpawnTileNBT(Position $position) : NBT;
 
     /**
      * @param Player[]|Player|null $player
