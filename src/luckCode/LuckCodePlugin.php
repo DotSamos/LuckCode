@@ -34,7 +34,7 @@ use pocketmine\tile\Tile;
  * |_____|  \__,_|  \___| |_|\_\  \____|  \___/   \__,_|  \___|
  *
  * @authors @SamosMC & @SmallkingDev_
- * @version 0.1
+ * @version 0.2
  * @link https://github.com/SamosMC/LuckCode
  *
  * Utilize este plugin/api como bem entender, apenas não diga que foi
