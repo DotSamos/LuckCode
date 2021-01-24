@@ -56,12 +56,12 @@ final class MenuController {
 
     /** @param string $reason */
     public static function closeAll(string $reason) {
-        array_walk(self::$cache, function(MenuBase $base) use($reason){
-            $viewers = $base->getViewers();
-            array_walk($viewers, function(Player $p) use($base, $reason)) {
-                $p->removeWindow($base);
+        array_walk(self::$cache, function(MenuBase $menu) use($reason){
+            $players = $menu->getViewers();
+            array_walk($players, function(Player $p) use($reason, $menu){
+                $p->removeWindow($menu);
                 $p->sendMessage($reason);
-            }
+            });
         });
     }
 }
