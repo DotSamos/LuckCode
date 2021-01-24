@@ -4,13 +4,15 @@ declare(strict_types=1);
 
 namespace luckCode\command\defaults\subcommands;
 
-use luckCode\command\LuckSubCommand;
-use luckCode\LuckCodePlugin;
-use luckCode\menu\types\FreezeTimeMenu;
-use luckCode\system\types\FreezeTimeSystem;
-use pocketmine\command\CommandSender;
-use pocketmine\Player;
 use Throwable;
+use luckCode\LuckCodePlugin;
+use luckCode\command\LuckSubCommand;
+use luckCode\menu\holder\NormalMenuHolder;
+use luckCode\menu\types\FreezeTimeMenu;
+use luckCode\menu\types\FreezeTimePaginatedMenu;
+use luckCode\system\types\FreezeTimeSystem;
+use pocketmine\Player;
+use pocketmine\command\CommandSender;
 
 class FreezeTimeLuckSubCommand extends LuckSubCommand {
 
@@ -50,8 +52,8 @@ class FreezeTimeLuckSubCommand extends LuckSubCommand {
     public function execute(CommandSender $s, array $args) {
         if ($s instanceof Player) {
             try {
-                $menu = new FreezeTimeMenu($s, '§r§bFreeze§l§3Time');
-                $s->addWindow($menu);
+                $holder = new NormalMenuHolder($s, FreezeTimePaginatedMenu::class, '§r§l§3Freeze§r§bTime§r');
+                $s->addWindow($holder->getInventory());
             } catch (Throwable $e) {
                 $s->sendMessage($e->getMessage());
             }
