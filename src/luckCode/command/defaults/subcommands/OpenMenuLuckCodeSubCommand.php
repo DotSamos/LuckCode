@@ -4,16 +4,19 @@ declare(strict_types=1);
 
 namespace luckCode\command\defaults\subcommands;
 
-use luckCode\command\LuckSubCommand;
-use luckCode\LuckCodePlugin;
-use luckCode\menu\types\TestDoubleMenu;
-use luckCode\menu\types\TestDoublePaginatedMenu;
-use luckCode\menu\types\TestNormalMenu;
-use luckCode\menu\types\TestNormalPaginatedMenu;
-use pocketmine\command\CommandSender;
-use pocketmine\Player;
 use Throwable;
 use function strtolower;
+use luckCode\LuckCodePlugin;
+use luckCode\command\LuckSubCommand;
+use luckCode\menu\NormalMenu;
+use luckCode\menu\holder\DoubleMenuHolder;
+use luckCode\menu\holder\NormalMenuHolder;
+use luckCode\menu\types\LuckDoubleMenu;
+use luckCode\menu\types\LuckNormalMenu;
+use luckCode\menu\types\LuckPaginatedDoubleMenu;
+use luckCode\menu\types\LuckPaginatedNormalMenu;
+use pocketmine\Player;
+use pocketmine\command\CommandSender;
 
 class OpenMenuLuckCodeSubCommand extends LuckSubCommand {
 
@@ -68,23 +71,30 @@ class OpenMenuLuckCodeSubCommand extends LuckSubCommand {
                 }
 
                 $type = strtolower($type);
-                $name = '§l§5Luck§bCode§r§7 v' . LuckCodePlugin::VERSION;
+                $name = '§l§5Luck§r§bCode§7 v' . LuckCodePlugin::VERSION;
 
+                $holderArgs = [$s, null, $name];
                 if ($type == 'normal') {
-                    $inv = $isPaginated ? TestNormalPaginatedMenu::class : TestNormalMenu::class;
+                    $holder = NormalMenuHolder::class;
+
+                    $holderArgs[1] = $isPaginated ? 
+                    LuckPaginatedNormalMenu::class : 
+                    LuckNormalMenu::class;
+
                 } else if ($type == 'double') {
-                    $inv = $isPaginated ? TestDoublePaginatedMenu::class : TestDoubleMenu::class;
+                    $holder = DoubleMenuHolder::class;
+
+                    $holderArgs[1] = $isPaginated ? 
+                    LuckPaginatedDoubleMenu::class : 
+                    LuckDoubleMenu::class;
+
                 } else {
-                    $s->sendMessage($prefix . '§cO tipo de menu/window ' . $type . ' não existe! [normal/double]');
+                    $s->sendMessage($prefix . '§cO tipo de menu/window ' . $type . ' não existe! [normal/double] <-p>');
                 }
-                if (isset($inv)) {
-                    try {
-                        $inv = new $inv($s, $name);
-                        $s->addWindow($inv);
-                        $s->sendMessage($prefix . '§aMenu criado.');
-                    } catch (Throwable $e) {
-                        $s->sendMessage('§cNão foi possivel gerar o menu: §f' . $e->getMessage());
-                    }
+                if(isset($holder)) {
+                    $holder = new $holder(...$holderArgs);
+                    $s->addWindow($holder->getInventory());
+                    $s->sendMessage($prefix.'§aMenu/Window aberta!');
                 }
             }
         }
