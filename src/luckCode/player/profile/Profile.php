@@ -7,8 +7,7 @@ namespace luckCode\player\profile;
 use pocketmine\Player;
 use pocketmine\Server;
 
-abstract class Profile implements interfaces\IProfile
-{
+abstract class Profile implements interfaces\IProfile {
 
     /** @var Player $name */
     protected $name;
@@ -17,24 +16,17 @@ abstract class Profile implements interfaces\IProfile
      * Profile constructor.
      * @param string $player
      */
-    public function __construct(string $player)
-    {
+    public function __construct(string $player) {
         $this->name = $player;
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function getName(): string
-    {
+    /** @return string */
+    public function getName(): string {
         return $this->name;
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function getPlayer()
-    {
+    /** @return Player|null */
+    public function getPlayer() {
         return Server::getInstance()->getPlayer($this->name);
     }
 }

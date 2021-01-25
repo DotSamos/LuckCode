@@ -4,8 +4,8 @@ namespace luckCode\plugin\interfaces;
 
 use luckCode\data\manager\DataManager;
 
-interface LuckDataManagerRequire
-{
+interface LuckDataManagerRequire {
+
     /** @return DataManager */
     public function getDataManager(): DataManager;
 

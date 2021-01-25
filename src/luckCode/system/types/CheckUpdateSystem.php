@@ -9,13 +9,11 @@ use luckCode\scheduler\updater\LuckUpdater;
 use luckCode\system\System;
 use pocketmine\Server;
 
-class CheckUpdateSystem extends System
-{
+class CheckUpdateSystem extends System {
 
     const NAME = 'CheckUpdate';
 
-    public function onEnable()
-    {
+    public function onEnable() {
         $version = (string)LuckCodePlugin::getInstance()->getDescription()->getVersion();
         Server::getInstance()->getScheduler()->scheduleAsyncTask(new LuckUpdater($version));
     }

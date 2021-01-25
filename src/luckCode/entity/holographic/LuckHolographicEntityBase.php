@@ -14,8 +14,7 @@ use pocketmine\Player;
 use function spl_object_hash;
 use function uniqid;
 
-abstract class LuckHolographicEntityBase extends Human
-{
+abstract class LuckHolographicEntityBase extends Human {
 
     /** @var string[] $textCache */
     private $textCache = [];
@@ -24,8 +23,7 @@ abstract class LuckHolographicEntityBase extends Human
      * @param int $tick
      * @return bool
      */
-    public function onUpdate($tick)
-    {
+    public function onUpdate($tick) {
         EntityController::onUpdate($this);
         return parent::onUpdate($tick);
     }
@@ -35,8 +33,7 @@ abstract class LuckHolographicEntityBase extends Human
      * @param EntityDamageEvent $source
      * @return bool|void
      */
-    public function attack($damage, EntityDamageEvent $source)
-    {
+    public function attack($damage, EntityDamageEvent $source) {
         if (!EntityController::onAttack($source)) return true;
     }
 
@@ -45,8 +42,7 @@ abstract class LuckHolographicEntityBase extends Human
      * @param string $text
      * @return bool
      */
-    public function setNameTagFor(Player $p, string $text): bool
-    {
+    public function setNameTagFor(Player $p, string $text): bool {
         $hash = spl_object_hash($p);
 
         if (isset($this->textCache[$hash]) && $this->textCache[$hash] == $text) {
@@ -64,8 +60,7 @@ abstract class LuckHolographicEntityBase extends Human
     /**
      * @param Player $player
      */
-    public function spawnTo(Player $player)
-    {
+    public function spawnTo(Player $player) {
         if (!(isset($this->hasSpawned[$player->getLoaderId()]))) {
 
             $this->hasSpawned[$player->getLoaderId()] = $player;
@@ -75,7 +70,7 @@ abstract class LuckHolographicEntityBase extends Human
 
             $pk = new AddPlayerPacket();
             $pk->uuid = $uuid;
-            $pk->username = uniqid('');
+            $pk->username = uniqid();
             $pk->eid = $entityId;
             $pk->x = $this->x;
             $pk->y = $this->y;
@@ -84,7 +79,7 @@ abstract class LuckHolographicEntityBase extends Human
             $pk->pitch = 0;
             $pk->item = Item::get(Item::AIR);
             $pk->metadata = [
-                2 => [4, $this->getName()],
+                2 => [4, '§r§eCarregando...'],
                 Entity::DATA_FLAGS => [Entity::DATA_TYPE_BYTE, 1 << Entity::DATA_FLAG_INVISIBLE],
                 3 => [0, $this->getDataProperty(3)],
                 15 => [0, 1],

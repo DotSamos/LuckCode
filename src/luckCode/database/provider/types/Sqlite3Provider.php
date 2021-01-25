@@ -10,25 +10,21 @@ use SQLite3;
 use SQLite3Result;
 use Throwable;
 
-class Sqlite3Provider extends Provider
-{
+class Sqlite3Provider extends Provider {
 
     /** @var SQLite3 $connection */
     protected $connection;
 
-    /**
-     * @inheritDoc
-     */
-    public function getType(): string
-    {
+    /** @return string */
+    public function getType(): string {
         return 'Sqlite3';
     }
 
     /**
-     * @inheritDoc
+     * @param array $args
+     * @return bool
      */
-    public function tryConnect(array $args): bool
-    {
+    public function tryConnect(array $args): bool {
         $path = $args['path'] ?? $this->ownerPlugin->getDataFolder();
         $file = $args['file'] ?? 'database.db';
         if (!is_dir($path)) mkdir($path);
@@ -45,11 +41,8 @@ class Sqlite3Provider extends Provider
         }
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function close(): bool
-    {
+    /** @return bool */
+    public function close(): bool {
         if ($this->connection) {
             parent::close();
             return $this->connection->close();
@@ -57,16 +50,16 @@ class Sqlite3Provider extends Provider
         return false;
     }
 
-    public function isLocal(): bool
-    {
+    /** @return bool */
+    public function isLocal(): bool {
         return true;
     }
 
     /**
-     * @inheritDoc
+     * @param string $exec
+     * @return bool
      */
-    public function exec(string $exec): bool
-    {
+    public function exec(string $exec): bool {
         try {
             return $this->connection->exec($exec);
         } catch (Throwable $e) {
@@ -77,10 +70,11 @@ class Sqlite3Provider extends Provider
     }
 
     /**
-     * @inheritDoc
+     * @param string $query
+     * @param bool $fetchAll
+     * @return array
      */
-    public function executeQuery(string $query, $fetchAll = false): array
-    {
+    public function executeQuery(string $query, $fetchAll = false): array {
         try {
             $result = $this->connection->query($query);
             $finalResult = [];

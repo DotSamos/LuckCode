@@ -8,8 +8,7 @@ use Exception;
 use luckCode\database\provider\exceptions\ProviderInitializeException;
 use pocketmine\plugin\PluginBase;
 
-interface IProvider
-{
+interface IProvider {
 
     /** @return PluginBase */
     public function getOwnerPlugin(): PluginBase;

@@ -5,8 +5,7 @@ namespace luckCode\system\controller\interfaces;
 use luckCode\system\System;
 use pocketmine\plugin\PluginBase;
 
-interface ISystemController
-{
+interface ISystemController {
     /** @return PluginBase */
     public function getOwnerPlugin(): PluginBase;
 

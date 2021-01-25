@@ -29,13 +29,10 @@ fix_floating_inventory: true
 # logo após ter aberto considere aumentar este tempo de delay.
 # O tempo aqui está em ticks, desta maneira 20 ticks = 1 segundo, 5 ticks = 0,25
 # segundos.
-menu_double_open_cooldown: 5
-
-# Sempre que temos mais de 2 packets pesados sendo enviados para o jogador, como
-# um de mensagem (mensagem normal, popup ou tip) e um outro como o de remover o
-# menu, temos um bug comum que acaba ocultando a gui do jogador, desta maneira ele
-# não consegue ver os botões ou a sua hotbar.
-# Este "cooldown" serve para tentar evitar este tipo de coisa, porém se o que
-# fizeram no menu não foi pensando nisto, este sistema não surte grandes
-# efeitos.
-close_after: 10
+actions_cooldown:
+  normal:
+    open: 5
+    close: 5
+  double:
+    open: 10
+    close: 10 

@@ -10,12 +10,10 @@ use pocketmine\utils\Config;
 use pocketmine\utils\Utils;
 use Throwable;
 use function is_array;
-use function var_dump;
 use function version_compare;
 use function yaml_parse;
 
-class LuckUpdater extends AsyncTask
-{
+class LuckUpdater extends AsyncTask {
 
     const URL = 'https://raw.githubusercontent.com/SamosMC/LuckCode/main/plugin.yml';
 
@@ -26,15 +24,13 @@ class LuckUpdater extends AsyncTask
      * LuckUpdater constructor.
      * @param string $version
      */
-    public function __construct(string $version)
-    {
+    public function __construct(string $version) {
         $this->version = $version;
     }
 
-    public function onRun()
-    {
+    public function onRun() {
         try {
-            $data = @yaml_parse(Config::fixYAMLIndexes(Utils::getURL(self::URL, 120)));
+            $data = @yaml_parse(Config::fixYAMLIndexes(Utils::getURL(self::URL, 60*1.5)));
 
             if (!is_array($data) || !isset($data['version'])) {
                 $this->setResult(['update' => 'error']);
@@ -53,14 +49,13 @@ class LuckUpdater extends AsyncTask
     /**
      * @param Server $server
      */
-    public function onCompletion(Server $server)
-    {
+    public function onCompletion(Server $server) {
         $result = $this->getResult();
 
         if ($result['update'] === 'error') {
             $message = '§r§eAcho que vem uma nova versão do LuckCode por ai! Fica esperto oO';
         } else if ($this->getResult()['update'] == -1) {
-            $message = '§r§6Uma nova versão do LuckCode está disponível em §fhttps://github.com/SamosMC/LuckCode §7[v' . $result['version'] . ']';
+            $message = '§r§6Uma nova versão do LuckCode está disponível em §fhttps://github.com/SamosMC/LuckCode/releases §7[v' . $result['version'] . ']';
         }
         if (isset($message)) $server->getPluginManager()->getPlugin('LuckCode')->getLogger()->info($message);
     }

@@ -2,43 +2,20 @@
 
 namespace luckCode\menu\interfaces;
 
-use luckCode\menu\tile\MenuChestTile;
-use pocketmine\block\Block;
+use pocketmine\event\inventory\InventoryTransactionEvent;
 use pocketmine\item\Item;
-use pocketmine\level\Position;
 use pocketmine\Player;
 
-interface IMenu
-{
+interface IMenu {
 
-    const IS_CREATIVE = '§cVocê não pode abrir este menu estando no modo criativo!';
-    const HAS_TILE = '§cNão é possivel abrir o menu em sua posição atual. Não fique com báus (ou outros blocos com menus) sobre sua cabeça ou pés!';
-    const BAD_POSITION = '§cVocê não pode abrir um menu nesta posição!';
+    /** @param Player $player */
+    public function onOpenMenu(Player $player);
 
-    /**
-     * @param Player $p
-     * @param Block $block
-     */
-    public function sendBlock(Player $p, Block $block);
+    /** @param Player $player */
+    public function onCloseMenu(Player $player);
 
-    /**
-     * @param Position $pos
-     * @param Player $p
-     * @param string $name
-     * @return MenuChestTile
-     */
-    public function makeTile(Position $pos, Player $p, string $name): MenuChestTile;
-
-    /**
-     * @param Player $p
-     * @return Item[]
-     */
-    public function getItems(Player $p): array;
-
-    /**
-     * @param array $items
-     */
-    public function setItems(array $items);
+    /** @param InventoryTransactionEvent $e */
+    public function onTransactionEvent(InventoryTransactionEvent $e);
 
     /**
      * @param Player $p

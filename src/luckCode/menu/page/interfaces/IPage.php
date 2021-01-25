@@ -5,8 +5,7 @@ namespace luckCode\menu\page\interfaces;
 use pocketmine\item\Item;
 use pocketmine\Player;
 
-interface IPage
-{
+interface IPage {
 
     /**
      * @param Player $player

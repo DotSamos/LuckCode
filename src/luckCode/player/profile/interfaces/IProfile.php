@@ -4,8 +4,8 @@ namespace luckCode\player\profile\interfaces;
 
 use pocketmine\Player;
 
-interface IProfile
-{
+interface IProfile {
+
     /** @return string */
     public function getName(): string;
 

@@ -13,32 +13,35 @@ use function array_values;
 use function in_array;
 use function strtolower;
 
-abstract class LuckCommand extends Command
-{
+abstract class LuckCommand extends Command {
 
     /** @var LuckSubCommand[] $subCommands */
     protected $subCommands = [];
 
-    public function __construct($name, $description = "", $usageMessage = null, array $aliases = [])
-    {
-        $this->loadSubCommands();
+    /**
+     * LuckCommand constructor.
+     * @param $name
+     * @param string $description
+     * @param null $usageMessage
+     * @param array $aliases
+     */
+    public function __construct($name, $description = "", $usageMessage = null, array $aliases = []) {
         parent::__construct($name, $description, $usageMessage, $aliases);
-    }
-
-    private function loadSubCommands()
-    {
-        $this->subCommands = array_map(function (string $subcmd) {
-            return new $subcmd($this);
-        }, $this->getDefaultSubCommands());
+        $this->loadSubCommands();
     }
 
     /** @return string[] */
     public abstract function getDefaultSubCommands(): array;
 
     /** @return LuckSubCommand[] */
-    public function getSubCommands(): array
-    {
+    public function getSubCommands(): array {
         return $this->subCommands;
+    }
+
+    private function loadSubCommands() {
+        $this->subCommands = array_map(function (string $subCommandClass) {
+            return new $subCommandClass($this);
+        }, $this->getDefaultSubCommands());
     }
 
     /**
@@ -47,19 +50,22 @@ abstract class LuckCommand extends Command
      * @param array $args
      * @return bool
      */
-    public function execute(CommandSender $s, $commandLabel, array $args): bool
-    {
-        $helpUsage = '§cUse §7/' . $this->getName() . ' help §cpara ver a lista de comandos disponíveis!';
+    public function execute(CommandSender $s, $commandLabel, array $args): bool {
+        $helpUsage = '§cUse §f/' . $this->getName() . ' help §cpara ver a lista de sub-comandos disponíveis!';
         if (empty($args[0])) {
             $s->sendMessage($helpUsage);
         } else {
             /** @var LuckSubCommand|null $found */
-            $exec = strtolower($args[0]);
+            $cmdName = strtolower($args[0]);
             $found = array_values(
-                    array_filter($this->subCommands, function (LuckSubCommand $subCommand) use ($s, $exec) {
-                        return $subCommand->canExecute($s) && ($subCommand->getName() == $exec || in_array($exec, $subCommand->getAliases()));
-                    })
-                )[0] ?? null;
+                    array_filter($this->subCommands,
+                        function (LuckSubCommand $subCommand) use ($s, $cmdName) {
+                            return $subCommand->canExecute($s) && (
+                                    $subCommand->getName() == $cmdName ||
+                                    in_array($cmdName, $subCommand->getAliases())
+                                );
+                    }))[0] ?? null;
+
             if ($found) {
                 unset($args[0]);
                 $found->execute($s, array_values($args));
@@ -75,8 +81,7 @@ abstract class LuckCommand extends Command
      * @param PluginBase $plugin
      * @param string|null $prefix
      */
-    public function registerCommand(PluginBase $plugin, string $prefix = null)
-    {
+    public function registerCommand(PluginBase $plugin, string $prefix = null) {
         if (!$prefix) {
             $prefix = strtolower($plugin->getName()) . '.command';
         }

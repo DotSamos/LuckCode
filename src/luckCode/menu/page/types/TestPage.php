@@ -13,8 +13,7 @@ use pocketmine\Player;
 use function array_rand;
 use function get_class;
 
-abstract class TestPage extends Page
-{
+abstract class TestPage extends Page {
 
     /** @var Item $items */
     private $items = [];
@@ -30,8 +29,7 @@ abstract class TestPage extends Page
      * @param int $slotBack
      * @param int $nextSlot
      */
-    public function __construct(IPaginatedMenu $menu, int $startAt, int $endAt, int $slotBack, int $nextSlot)
-    {
+    public function __construct(IPaginatedMenu $menu, int $startAt, int $endAt, int $slotBack, int $nextSlot) {
         $items = [];
         for ($i = $startAt; $i < $endAt; $i++) {
             $items[$i] = Item::getCreativeItems()[array_rand(Item::getCreativeItems(), 1)];
@@ -46,16 +44,14 @@ abstract class TestPage extends Page
     /**
      * @inheritDoc
      */
-    public function getItems(Player $player): array
-    {
+    public function getItems(Player $player): array {
         return $this->items;
     }
 
     /**
      * @inheritDoc
      */
-    public function onClick(Player $player, Item $item): bool
-    {
+    public function onClick(Player $player, Item $item): bool {
         $name = $item->getCustomName();
         if ($name == TextFormatter::center("§r§aVoltar\n§7<")) {
             $this->menu->redoPage();

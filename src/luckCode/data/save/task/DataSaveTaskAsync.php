@@ -7,8 +7,7 @@ namespace luckCode\data\save\task;
 use luckCode\data\save\engines\IFileSaveEngine;
 use pocketmine\scheduler\AsyncTask;
 
-class DataSaveTaskAsync extends AsyncTask
-{
+class DataSaveTaskAsync extends AsyncTask {
 
     /** @var string $filePath */
     private $filePath;
@@ -25,18 +24,13 @@ class DataSaveTaskAsync extends AsyncTask
      * @param array $contents
      * @param string $writeEngine
      */
-    public function __construct(string $filePath, array $contents, string $writeEngine)
-    {
+    public function __construct(string $filePath, array $contents, string $writeEngine) {
         $this->filePath = $filePath;
         $this->contents = serialize($contents);
         $this->writeEngine = $writeEngine;
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function onRun()
-    {
+    public function onRun() {
         /** @var IFileSaveEngine $engineWrite */
         $engineWrite = new $this->writeEngine();
         $this->setResult($engineWrite->save($this->filePath, unserialize($this->contents)), false);

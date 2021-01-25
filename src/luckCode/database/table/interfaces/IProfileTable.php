@@ -4,8 +4,8 @@ namespace luckCode\database\table\interfaces;
 
 use luckCode\player\profile\interfaces\IProfile;
 
-interface IProfileTable
-{
+interface IProfileTable {
+
     /**
      * @param string $player
      * @return array

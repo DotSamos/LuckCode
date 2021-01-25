@@ -14,14 +14,12 @@ use pocketmine\item\Item;
 use pocketmine\level\Level;
 use pocketmine\Player;
 
-class FreezeTimeMainPage extends Page
-{
+class FreezeTimeMainPage extends Page {
 
     /**
      * @inheritDoc
      */
-    public function getItems(Player $player): array
-    {
+    public function getItems(Player $player): array {
         $day = Item::get(Block::WOOL, Wool::YELLOW)->setCustomName('§r§eDia');
         $midday = Item::get(Block::WOOL, Wool::ORANGE)->setCustomName('§r§6Meio-dia');
         $night = Item::get(Block::WOOL, Wool::BLACK)->setCustomName('§r§3Noite');
@@ -61,8 +59,7 @@ class FreezeTimeMainPage extends Page
     /**
      * @inheritDoc
      */
-    public function onClick(Player $player, Item $item): bool
-    {
+    public function onClick(Player $player, Item $item): bool {
         $prefix = LuckCodePlugin::PREFIX;
         $level = $player->getLevel()->getName();
         $name = $item->getCustomName();

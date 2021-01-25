@@ -11,29 +11,24 @@ use luckCode\listener\database\LuckDatabaseEnableEvent;
 use luckCode\listener\database\LuckDatabaseNotInitializeEvent;
 use luckCode\LuckCodePlugin;
 
-class LuckDatabase extends Database
-{
-    /**
-     * @inheritDoc
-     */
-    public function getDefaultTables(): array
-    {
+class LuckDatabase extends Database {
+
+    /** @return string[]|array */
+    public function getDefaultTables(): array {
         $enableDefaultTable = LuckCodePlugin::getInstance()->getDataManager()->get('database')->get('enable_test_table');
         return $enableDefaultTable ? [LuckTable::class] : [];
     }
 
-    public function onPreLoadTables()
-    {
+    public function onPreLoadTables() {
         (new LuckDatabaseEnableEvent($this))->call();
     }
 
-    public function onInvalidProvider()
-    {
-        (new LuckDatabaseNotInitializeEvent($this))->call();
+    public function onInvalidProvider() {
+        (new LuckDatabaseNotInitializeEvent())->call();
     }
 
-    public function close(): bool
-    {
+    /** @return bool */
+    public function close(): bool {
         $ev = new LuckDatabaseDisableEvent($this);
         $ev->call();
         if ($ev->isCancelled()) return false;
@@ -41,8 +36,7 @@ class LuckDatabase extends Database
     }
 
     /** @return LuckTable|null */
-    public function getDefaultTable()
-    {
+    public function getDefaultTable() {
         return $this->tables[LuckTable::$name] ?? null;
     }
 }

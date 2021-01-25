@@ -7,22 +7,18 @@ namespace luckCode\database\provider\types;
 use luckCode\database\provider\PDOProvider;
 use PDO;
 
-class PDOSqlite3Provider extends PDOProvider
-{
+class PDOSqlite3Provider extends PDOProvider {
 
-    /**
-     * @inheritDoc
-     */
-    public function getType(): string
-    {
+    /** @return string */
+    public function getType(): string {
         return 'PDO-Sqlite3';
     }
 
     /**
-     * @inheritDoc
+     * @param array $args
+     * @return string
      */
-    public function getDSN(array $args): string
-    {
+    public function getDSN(array $args): string {
         $path = $args['path'] ?? $this->getOwnerPlugin()->getDataFolder();
         $file = $args['file'] ?? 'database.db';
         if (!is_dir($path)) mkdir($path);
@@ -30,26 +26,23 @@ class PDOSqlite3Provider extends PDOProvider
         return "sqlite:{$finalPath}";
     }
 
-    public function isLocal(): bool
-    {
+    /** @return bool */
+    public function isLocal(): bool {
         return true;
     }
 
     /**
-     * @inheritDoc
+     * @param array $args
+     * @return bool
      */
-    public function tryConnect(array $args): bool
-    {
+    public function tryConnect(array $args): bool {
         $args['user'] = '';
         $args['password'] = '';
         return parent::tryConnect($args);
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function getDriverOptions(): array
-    {
+    /** @return array */
+    public function getDriverOptions(): array {
         return [
             PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES \'UTF8\'',
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,

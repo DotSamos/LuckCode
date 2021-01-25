@@ -1,33 +1,22 @@
-<?php
+<?php 
 
 declare(strict_types=1);
 
 namespace luckCode\menu\types;
 
-use Exception;
 use luckCode\menu\NormalMenu;
 use luckCode\scheduler\LuckTask;
-use pocketmine\item\Item;
 use pocketmine\Player;
-use function array_rand;
-use function count;
+use pocketmine\item\Item;
 
-class TestNormalMenu extends NormalMenu
-{
+class LuckNormalMenu extends NormalMenu {
 
-    /** @var LuckTask $taskUpdate */
-    private $taskUpdate;
+    /** @var LuckTask $updateTask */
+    private $updateTask;
 
-    /**
-     * @param Player $who
-     * @throws Exception
-     */
-    public function onOpen(Player $who)
-    {
-        parent::onOpen($who);
-
-        $window = $this;
-        $class = new class($window) extends LuckTask {
+	/** @param Player $player */
+    public function onOpenMenu(Player $player) {
+        $class = new class($this) extends LuckTask {
 
             /** @var NormalMenu $window */
             private $window;
@@ -68,30 +57,20 @@ class TestNormalMenu extends NormalMenu
             }
         };
         $class->registerToRepeat(5);
-        $this->taskUpdate = $class;
+        $this->updateTask = $class;
     }
 
-    public function onClose(Player $who)
-    {
-        parent::onClose($who);
-        if (count($this->getViewers())) {
-            $this->taskUpdate->cancel();
-        }
+    /** @param Player $player */
+    public function onCloseMenu(Player $player) {
+        $this->updateTask->cancel();
     }
 
-    /**
-     * @inheritDoc
+     /**
+     * @param Player $p
+     * @param Item $item
+     * @return bool
      */
-    public function getItems(Player $p): array
-    {
-        return [];
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function processClick(Player $p, Item $item): bool
-    {
-        return true;
+    public function processClick(Player $p, Item $item): bool {
+    	return true;
     }
 }

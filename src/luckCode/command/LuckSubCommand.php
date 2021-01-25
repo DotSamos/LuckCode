@@ -6,8 +6,7 @@ namespace luckCode\command;
 
 use pocketmine\command\CommandSender;
 
-abstract class LuckSubCommand
-{
+abstract class LuckSubCommand {
 
     /** @var LuckCommand $baseCommand */
     public $baseCommand;
@@ -16,8 +15,7 @@ abstract class LuckSubCommand
      * LuckSubCommand constructor.
      * @param LuckCommand $command
      */
-    public function __construct(LuckCommand $command)
-    {
+    public function __construct(LuckCommand $command) {
         $this->baseCommand = $command;
     }
 
@@ -42,7 +40,7 @@ abstract class LuckSubCommand
     /**
      * @param CommandSender $sender
      * @param array $args
-     * @return mixed
+     * @return void
      */
     public abstract function execute(CommandSender $sender, array $args);
 }

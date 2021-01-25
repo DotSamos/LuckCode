@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace luckCode\data\interfaces;
 
-interface IData
-{
+interface IData {
 
     /** @return string */
     public function getTypeData(): string;

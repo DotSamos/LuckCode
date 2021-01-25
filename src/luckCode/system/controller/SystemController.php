@@ -11,9 +11,10 @@ use pocketmine\Server;
 use function array_filter;
 use function array_walk;
 use function count;
+use function filter_var;
+use const FILTER_VALIDATE_BOOLEAN;
 
-class SystemController implements interfaces\ISystemController
-{
+class SystemController implements interfaces\ISystemController {
 
     /** @var PluginBase $ownerPlugin */
     protected $ownerPlugin;
@@ -25,8 +26,7 @@ class SystemController implements interfaces\ISystemController
      * SystemController constructor.
      * @param PluginBase $ownerPlugin
      */
-    public function __construct(PluginBase $ownerPlugin)
-    {
+    public function __construct(PluginBase $ownerPlugin) {
         $this->ownerPlugin = $ownerPlugin;
 
         if ($ownerPlugin instanceof LuckSystemLoader) {
@@ -34,51 +34,42 @@ class SystemController implements interfaces\ISystemController
         }
     }
 
-    private function loadBaseSystems(array $systems)
-    {
+    private function loadBaseSystems(array $systems) {
         $systems = array_filter($systems, function (string $class) {
             $name = $class::NAME;
             return $this->ownerPlugin instanceof LuckSystemLoader &&
-                (bool)$this->ownerPlugin->getSystemStatusList()[$name];
+                filter_var($this->ownerPlugin->getSystemStatusList()[$name], FILTER_VALIDATE_BOOLEAN);
         });
         foreach ($systems as $class) {
             $this->systems[$class::NAME] = new $class($this->ownerPlugin);
         }
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function getOwnerPlugin(): PluginBase
-    {
+    /** @return PluginBase */
+    public function getOwnerPlugin(): PluginBase {
         return $this->ownerPlugin;
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function getSystems(): array
-    {
+    /** @return System[] */
+    public function getSystems(): array {
         return $this->systems;
     }
 
     /**
-     * @inheritDoc
+     * @param string $name
+     * @return System|null
      */
-    public function getSystem(string $name)
-    {
+    public function getSystem(string $name) {
         return $this->systems[$name] ?? null;
     }
 
-    public function onLoad()
-    {
+    public function onLoad() {
         array_walk($this->systems, function (System $system) {
             $system->onLoad();
         });
     }
 
-    public function onEnable()
-    {
+    public function onEnable() {
         array_walk($this->systems, function (System $system) {
             $system->onEnable();
             if (count(Server::getInstance()->getOnlinePlayers()) > 0) { // se tem jogadores online é porque o alguem deu /reload :v
@@ -87,8 +78,7 @@ class SystemController implements interfaces\ISystemController
         });
     }
 
-    public function onDisable()
-    {
+    public function onDisable() {
         array_walk($this->systems, function (System $system) {
             $system->onDisable();
         });

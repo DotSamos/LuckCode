@@ -8,8 +8,7 @@ use luckCode\menu\page\interfaces\IPage;
 use luckCode\menu\page\interfaces\IPaginatedMenu;
 use pocketmine\Player;
 
-abstract class Page implements interfaces\IPage
-{
+abstract class Page implements interfaces\IPage {
 
     /** @var IPaginatedMenu $menu */
     protected $menu;
@@ -21,27 +20,23 @@ abstract class Page implements interfaces\IPage
      * Page constructor.
      * @param IPaginatedMenu $menu
      */
-    public function __construct(IPaginatedMenu $menu)
-    {
+    public function __construct(IPaginatedMenu $menu) {
         $this->menu = $menu;
         $menu->setPage($this);
     }
 
     /** @inheritDoc */
-    public function sendItems(Player $player)
-    {
+    public function sendItems(Player $player) {
         $this->menu->setItems($this->getItems($player));
     }
 
     /** @return IPage|null */
-    public function getRedoPage()
-    {
+    public function getRedoPage() {
         return $this->redoPage;
     }
 
     /** @inheritDoc */
-    public function setRedoPage(IPage $page)
-    {
+    public function setRedoPage(IPage $page) {
         $this->redoPage = $page;
     }
 }
