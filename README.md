@@ -5,4 +5,4 @@
 
 :inbox_tray: Versão 0.1 finalizada (14/01/2020 19:58)
 
-:inbox_tray: Versão 0.2 finalizada (24/01/2020 21:34)
+:inbox_tray: Versão 0.2 finalizada (24/01/2021 21:34)
