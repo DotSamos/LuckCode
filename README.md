@@ -3,6 +3,6 @@
 
 :calendar: Iniciado no dia 31/12/2020 14:04
 
-:inbox_tray: Versão 0.1 finalizada (14/01/2020 19:58)
+:inbox_tray: Versão 0.1 finalizada (14/01/2021 19:58)
 
 :inbox_tray: Versão 0.2 finalizada (24/01/2021 21:34)
