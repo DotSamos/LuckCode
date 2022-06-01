@@ -1,3 +1,7 @@
+> Este projeto está **abandonado**! A utilização dos recursos aqui contidos é por sua conta e risco. Não pretendo realizar atualizações ou correções de bugs que venha a existir aqui.
+
+> OBS: A qualidade do código aqui é duvidosa, este projeto foi feito no início de minha "carreira".
+
 # LuckCode
 :hammer: Uma "caixa de ferramentas" para desenvolver plugins para Pocketmine-MP (v15.10)
 
